@@ -1,0 +1,9 @@
+<form [formGroup]="form">
+  <input class="form-control" id="username" formControlName="username" placeholder="Username" type="text" required
+         minlength="4">
+  <input class="form-control" id="password" formControlName="password" placeholder="Password" type="password" required
+         minlength="4">
+  <button type="submit" class="btn btn-primary btn-block" id="submit" (click)="login()">
+    Login
+  </button>
+</form>
