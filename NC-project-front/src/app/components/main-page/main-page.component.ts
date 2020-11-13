@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {AuthenticationService} from '../../services/auth/authentication.service';
 
 @Component({
   selector: 'app-main-page',
@@ -7,7 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainPageComponent implements OnInit {
 
-  constructor() { }
+  username: string;
+  constructor(private auth: AuthenticationService) {
+    auth.authSubscribe().subscribe(value => {
+      if (!!value){
+        setTimeout(() => {
+          this.username = this.auth.getUsername();
+        }, 50);
+      }
+    });
+  }
 
   ngOnInit(): void {
   }

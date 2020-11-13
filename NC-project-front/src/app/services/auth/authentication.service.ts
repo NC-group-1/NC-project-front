@@ -19,10 +19,10 @@ export class AuthenticationService {
 
   login(user: UserModel): Observable<TokenModel> {
     return this.http.post<TokenModel>(apiPath + 'user/auth/', user)
-      .pipe(tap(({jwtToken}) => {
+      .pipe(tap(({token}) => {
         this.isAuth.next(true);
-        localStorage.setItem('Authorization', 'Bearer ' + jwtToken);
-        this.setToken('Bearer ' + jwtToken);
+        localStorage.setItem('Authorization', 'Bearer ' + token);
+        this.setToken('Bearer ' + token);
       }));
   }
   register(user: UserModel): Observable<string> {

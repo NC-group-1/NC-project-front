@@ -31,5 +31,4 @@ export class LoginPageComponent implements OnInit {
     }, (error: HttpErrorResponse) => {});
     this.form.enable();
   }
-
 }
