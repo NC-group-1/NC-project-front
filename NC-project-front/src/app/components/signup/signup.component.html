@@ -1,0 +1,22 @@
+<div class="row">
+  <div class="col-md-6 offset-md-3 mt-6">
+    <h3 class="card-header">Sign up</h3>
+    <form [formGroup]="userRegisterForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="fa fa-email"></i></span>
+          <input type="text" formControlName="username"
+                 class="form-control mb-4" id="username" placeholder="Email" required/>
+          <div class="alert alert-danger" *ngIf="data.username.errors.pattern">Invalid email address</div>
+        </div>
+      </div>
+      <h6 class="info-block">We sent you a verification code, check it</h6>
+
+      <button type="submit" class="btn btn-primary btn-block"
+              [disabled]="userRegisterForm.invalid">Enter
+      </button>
+    </form>
+  </div>
+</div>
+
+
