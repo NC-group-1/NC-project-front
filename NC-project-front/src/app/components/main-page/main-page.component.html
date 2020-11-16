@@ -1,4 +1,4 @@
 <h1>{{username}}</h1>
 <h2>Main Page</h2>
-<button *ngIf="!isAuth" routerLink="/login">To Login Page</button>
-<button *ngIf="isAuth" (click)="logout()">Logout</button>
+<button *ngIf="!loggedIn" routerLink="/login">To Login Page</button>
+<button *ngIf="loggedIn" (click)="logout()">Logout</button>

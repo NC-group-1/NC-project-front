@@ -1,0 +1,39 @@
+<div class="row mx-auto mt-10 w-20">
+  <div class="col align-items-center">
+    <h3 class="text-center">Change Password</h3>
+    <form [formGroup]="form">
+      <div class="form-group mt-4 rounded border border-secondary">
+        <div class="input-group">
+          <div class="input-group-prepend align-items-center px-1 py-1">
+            <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
+              <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
+            </svg>
+          </div>
+          <input class="form-control" id="password" formControlName="password" type="password" placeholder="Password" required minlength="6">
+        </div>
+      </div>
+      <div class="form-group rounded border border-secondary">
+        <div class="input-group">
+          <div class="input-group-prepend align-items-center px-1 py-1">
+            <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-lock-fill" fill="currentColor"
+                 xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.5 9a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-7a2 2 0 0 1-2-2V9z"/>
+              <path fill-rule="evenodd" d="M4.5 4a3.5 3.5 0 1 1 7 0v3h-1V4a2.5 2.5 0 0 0-5 0v3h-1V4z"/>
+            </svg>
+          </div>
+          <input class="form-control" id="confirmPassword" formControlName="confirmPassword" placeholder="Confirm Password" type="password" required minlength="6">
+        </div>
+      </div>
+      <p *ngIf="(form.controls.password.errors?.minlength || form.controls.password.errors?.required) && submitTouched"
+         class="text-center text-danger font-italic font-weight-bold">Minimal length of password is 6 characters</p>
+      <p *ngIf="form.errors?.notSame && submitTouched" class="text-center text-danger font-italic font-weight-bold">Passwords do not match</p>
+
+      <p class="text-center font-italic font-weight-bold"><a class="card-link" routerLink="/login">Sign In</a></p>
+      <div class="form-group">
+        <button type="submit" class="btn bg-nc btn-block font-weight-bolder py-2" id="submit" (click)="changePass(); setTouched()"> Change Password </button>
+      </div>
+    </form>
+  </div>
+</div>

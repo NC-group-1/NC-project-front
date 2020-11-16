@@ -25,8 +25,8 @@ export class AuthenticationService {
         this.setToken('Bearer ' + token);
       }));
   }
-  register(user: UserModel): Observable<string> {
-    return this.http.post<string>(apiPath + 'user/', user);
+  register(user: UserModel): void {
+    this.http.post(apiPath + 'user/', user);
   }
 
   setToken(token: string): void {

@@ -1,6 +1,10 @@
+<div class="w-25 mx-auto mt-5 bg-nc text-center rounded border border-dark" *ngIf="changed">
+  <h4> Password has been successfully changed </h4>
+</div>
 <div class="row mx-auto mt-10 w-20">
   <div class="col align-items-center">
     <h3 class="text-center">Sign in</h3>
+    <p *ngIf="wrongUsernamePassword" class="text-center text-danger font-italic font-weight-bold">Wrong Username or Password</p>
     <form [formGroup]="form">
       <div class="form-group mt-4 rounded border border-secondary">
         <div class="input-group">
@@ -28,7 +32,7 @@
                  required minlength="4">
         </div>
       </div>
-      <p class="text-center font-italic font-weight-bold"><a class="card-link" routerLink="/">Forgot password?</a></p>
+      <p class="text-center font-italic font-weight-bold"><a class="card-link" routerLink="/password/email">Forgot password?</a></p>
       <div class="form-group">
         <button type="submit" class="btn bg-nc btn-block font-weight-bolder py-2" id="submit" (click)="login()"> Login </button>
       </div>

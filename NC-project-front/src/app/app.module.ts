@@ -8,12 +8,18 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthorizationInterceptor} from './services/auth/authorization-interceptor.service';
+import { ForgotPassCodeComponent } from './components/reset-pass/forgot-pass-code/forgot-pass-code.component';
+import { ForgotPassEmailComponent } from './components/reset-pass/forgot-pass-email/forgot-pass-email.component';
+import { ChangePassComponent } from './components/reset-pass/change-pass/change-pass.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPageComponent,
-    MainPageComponent
+    MainPageComponent,
+    ForgotPassCodeComponent,
+    ForgotPassEmailComponent,
+    ChangePassComponent
   ],
   imports: [
     BrowserModule,

@@ -9,10 +9,10 @@ import {AuthenticationService} from '../../services/auth/authentication.service'
 export class MainPageComponent implements OnInit {
 
   username: string;
-  isAuth: boolean;
+  loggedIn: boolean;
   constructor(private auth: AuthenticationService) {
     auth.authSubscribe().subscribe(value => {
-      this.isAuth = value;
+      this.loggedIn = value;
       if (!!value){
         setTimeout(() => {
           this.username = this.auth.getUsername();
@@ -24,6 +24,7 @@ export class MainPageComponent implements OnInit {
   ngOnInit(): void {
   }
   logout(): void {
+    this.username = null;
     this.auth.logout();
   }
 

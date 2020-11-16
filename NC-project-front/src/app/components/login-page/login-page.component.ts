@@ -11,12 +11,14 @@ import {AuthenticationService} from '../../services/auth/authentication.service'
 })
 export class LoginPageComponent implements OnInit {
   form: FormGroup;
-
+  wrongUsernamePassword: boolean;
+  changed: boolean;
   constructor(private authenticationService: AuthenticationService,
-              private router: Router) {
+              private router: Router, private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit(): void {
+    this.changed = this.activatedRoute.snapshot.queryParamMap.get('changed') === 'true';
     this.form = new FormGroup({
       username: new FormControl(null),
       password: new FormControl(null)
@@ -28,7 +30,9 @@ export class LoginPageComponent implements OnInit {
     this.form.disable();
     this.authenticationService.login(this.form.value).subscribe((result) => {
       this.router.navigate(['/']);
-    }, (error: HttpErrorResponse) => {});
+    }, (error: HttpErrorResponse) => {
+      this.wrongUsernamePassword = true;
+    });
     this.form.enable();
   }
 }
