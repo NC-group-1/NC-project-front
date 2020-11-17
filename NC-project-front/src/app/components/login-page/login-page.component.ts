@@ -18,6 +18,7 @@ export class LoginPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authenticationService.logout();
     this.changed = this.activatedRoute.snapshot.queryParamMap.get('changed') === 'true';
     this.form = new FormGroup({
       username: new FormControl(null),
@@ -26,7 +27,6 @@ export class LoginPageComponent implements OnInit {
   }
 
   login(): void {
-    this.authenticationService.logout();
     this.form.disable();
     this.authenticationService.login(this.form.value).subscribe((result) => {
       this.router.navigate(['/']);

@@ -20,11 +20,11 @@ export class ForgotPassEmailComponent implements OnInit {
   }
   sendCode(): void{
     if (!this.form.invalid){
+      localStorage.setItem('email', this.form.controls.email.value);
       this.router.navigate(['password', 'code']);
     }
   }
   setTouched(): void{
     this.submitTouched = true;
   }
-
 }

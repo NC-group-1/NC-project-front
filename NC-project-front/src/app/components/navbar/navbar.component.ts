@@ -1,26 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../services/auth/authentication.service';
-import {Router} from '@angular/router';
 
 @Component({
-  selector: 'app-main-page',
-  templateUrl: './main-page.component.html',
-  styleUrls: ['./main-page.component.css']
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css']
 })
-export class MainPageComponent implements OnInit {
+export class NavbarComponent implements OnInit {
 
-  userId: number;
   username: string;
   loggedIn: boolean;
-  constructor(private auth: AuthenticationService, private router: Router) {
+  constructor(private auth: AuthenticationService) {
     auth.authSubscribe().subscribe(value => {
       this.loggedIn = value;
       if (!!value){
         setTimeout(() => {
           this.username = this.auth.getUsername();
         }, 50);
-      }else {
-        // this.router.navigate(['login']);
       }
     });
   }
@@ -31,4 +27,5 @@ export class MainPageComponent implements OnInit {
     this.username = null;
     this.auth.logout();
   }
+
 }

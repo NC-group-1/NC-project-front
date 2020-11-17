@@ -11,8 +11,10 @@ export class ChangePassComponent implements OnInit {
 
   form: FormGroup;
   submitTouched = false;
+  email: string;
 
   constructor(private router: Router) {
+    this.email = localStorage.getItem('email');
     this.form = new FormGroup({
         password: new FormControl(null, [Validators.required, Validators.min(6)]),
         confirmPassword: new FormControl(null, [Validators.required, Validators.min(6)])
@@ -26,6 +28,9 @@ export class ChangePassComponent implements OnInit {
   }
   changePass(): void {
     if (!this.form.invalid){
+      console.log(this.email);
+      localStorage.removeItem('email');
+      console.log(this.email);
       this.router.navigate(['login'], {queryParams: {changed: true}});
     }
   }

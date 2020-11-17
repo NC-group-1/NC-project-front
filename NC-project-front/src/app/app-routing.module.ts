@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import {AppComponent} from './components/app/app.component';
 import {MainPageComponent} from './components/main-page/main-page.component';
 import {LoginPageComponent} from './components/login-page/login-page.component';
 import {ForgotPassEmailComponent} from './components/reset-pass/forgot-pass-email/forgot-pass-email.component';
 import {ForgotPassCodeComponent} from './components/reset-pass/forgot-pass-code/forgot-pass-code.component';
 import {ChangePassComponent} from './components/reset-pass/change-pass/change-pass.component';
+import {SignupComponent} from './components/signup/signup.component';
+import {ProfileComponent} from './components/profile/profile.component';
+import {ProfileResolverService} from './services/profile/profile-resolver.service';
+import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -27,6 +30,19 @@ const routes: Routes = [
   {
     path: 'password/change',
     component: ChangePassComponent
+  },
+  {
+    path: 'signup',
+    component: SignupComponent
+  },
+  {
+    path: 'user/:id',
+    component: ProfileComponent,
+    resolve: {user: ProfileResolverService}
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
 

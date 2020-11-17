@@ -9,6 +9,7 @@ import {Router} from '@angular/router';
 })
 export class ForgotPassCodeComponent implements OnInit {
 
+  email: string;
   submitTouched = false;
   form: FormGroup;
 
@@ -28,7 +29,7 @@ export class ForgotPassCodeComponent implements OnInit {
   }
 
   sendCode(): void {
-    console.log('Do');
+    console.log(localStorage.getItem('email'));
   }
 
   setTouched(): void {

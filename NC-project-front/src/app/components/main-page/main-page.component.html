@@ -1,4 +1,9 @@
-<h1>{{username}}</h1>
 <h2>Main Page</h2>
-<button *ngIf="!loggedIn" routerLink="/login">To Login Page</button>
-<button *ngIf="loggedIn" (click)="logout()">Logout</button>
+<div *ngIf="!loggedIn">
+  <button class="btn btn-nc" routerLink="/login">Login</button>
+  <button class="btn-nc" routerLink="/signup">Sign Up</button>
+</div>
+<div>
+  <input type="number" [(ngModel)] = "userId" id="userId" placeholder="User Id">
+  <a class="btn-nc btn" routerLink="/user/{{userId}}">Find User {{userId}}</a>
+</div>

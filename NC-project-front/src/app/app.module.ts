@@ -11,6 +11,10 @@ import {AuthorizationInterceptor} from './services/auth/authorization-intercepto
 import { ForgotPassCodeComponent } from './components/reset-pass/forgot-pass-code/forgot-pass-code.component';
 import { ForgotPassEmailComponent } from './components/reset-pass/forgot-pass-email/forgot-pass-email.component';
 import { ChangePassComponent } from './components/reset-pass/change-pass/change-pass.component';
+import {SignupComponent} from './components/signup/signup.component';
+import { ProfileComponent } from './components/profile/profile.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +23,11 @@ import { ChangePassComponent } from './components/reset-pass/change-pass/change-
     MainPageComponent,
     ForgotPassCodeComponent,
     ForgotPassEmailComponent,
-    ChangePassComponent
+    ChangePassComponent,
+    SignupComponent,
+    ProfileComponent,
+    PageNotFoundComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
