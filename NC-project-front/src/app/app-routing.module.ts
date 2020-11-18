@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import {MainPageComponent} from './components/main-page/main-page.component';
 import {LoginPageComponent} from './components/login-page/login-page.component';
 import {ForgotPassEmailComponent} from './components/reset-pass/forgot-pass-email/forgot-pass-email.component';
-import {ForgotPassCodeComponent} from './components/reset-pass/forgot-pass-code/forgot-pass-code.component';
 import {ChangePassComponent} from './components/reset-pass/change-pass/change-pass.component';
 import {SignupComponent} from './components/signup/signup.component';
 import {ProfileComponent} from './components/profile/profile.component';
@@ -22,10 +21,6 @@ const routes: Routes = [
   {
     path: 'password/email',
     component: ForgotPassEmailComponent
-  },
-  {
-    path: 'password/code',
-    component: ForgotPassCodeComponent
   },
   {
     path: 'password/change',

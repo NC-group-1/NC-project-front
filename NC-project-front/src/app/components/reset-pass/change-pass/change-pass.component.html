@@ -29,6 +29,7 @@
       <p *ngIf="(form.controls.password.errors?.minlength || form.controls.password.errors?.required) && submitTouched"
          class="text-center text-danger font-italic font-weight-bold">Minimal length of password is 6 characters</p>
       <p *ngIf="form.errors?.notSame && submitTouched" class="text-center text-danger font-italic font-weight-bold">Passwords do not match</p>
+      <p *ngIf="error" class="text-center text-danger font-italic font-weight-bold">Wrong token</p>
       <div class="form-group">
         <button type="submit" class="btn btn-nc btn-block font-weight-bolder py-2" id="submit" (click)="changePass(); setTouched()"> Change Password </button>
       </div>
@@ -36,4 +37,3 @@
     </form>
   </div>
 </div>
-{{email}}

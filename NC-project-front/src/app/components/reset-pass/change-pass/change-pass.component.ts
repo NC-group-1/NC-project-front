@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {ResetPasswordService} from '../../../services/reset-pass/reset-password.service';
 
 @Component({
   selector: 'app-change-pass',
@@ -11,31 +12,36 @@ export class ChangePassComponent implements OnInit {
 
   form: FormGroup;
   submitTouched = false;
-  email: string;
+  error: boolean;
 
-  constructor(private router: Router) {
-    this.email = localStorage.getItem('email');
+  constructor(private router: Router, private passwordService: ResetPasswordService, private route: ActivatedRoute) {
     this.form = new FormGroup({
-        password: new FormControl(null, [Validators.required, Validators.min(6)]),
-        confirmPassword: new FormControl(null, [Validators.required, Validators.min(6)])
-      }, {validators: this.passwordValidator.bind(this)});
+      password: new FormControl(null, [Validators.required, Validators.min(6)]),
+      confirmPassword: new FormControl(null, [Validators.required, Validators.min(6)])
+    }, {validators: this.passwordValidator.bind(this)});
   }
+
   passwordValidator: ValidatorFn = (control: FormGroup) => {
     return control.get('confirmPassword').value === control.get('password').value ? null : {notSame: true};
   }
 
   ngOnInit(): void {
   }
+
   changePass(): void {
-    if (!this.form.invalid){
-      console.log(this.email);
-      localStorage.removeItem('email');
-      console.log(this.email);
-      this.router.navigate(['login'], {queryParams: {changed: true}});
+    if (!this.form.invalid) {
+      this.passwordService.updatePassword({
+        newPassword: this.form.value.password,
+        token: this.route.snapshot.queryParamMap.get('token')
+      }).subscribe((value) => {
+        this.router.navigate(['login'], {queryParams: {changed: true}});
+      }, error => {
+        this.error = true;
+      });
     }
   }
 
-  setTouched(): void{
+  setTouched(): void {
     this.submitTouched = true;
   }
 }

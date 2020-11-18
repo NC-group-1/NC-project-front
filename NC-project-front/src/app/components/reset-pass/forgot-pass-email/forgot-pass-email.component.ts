@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
+import {ResetPasswordService} from '../../../services/reset-pass/reset-password.service';
 
 @Component({
   selector: 'app-forgot-pass-email',
@@ -10,7 +11,8 @@ import {Router} from '@angular/router';
 export class ForgotPassEmailComponent implements OnInit {
   submitTouched = false;
   form: FormGroup;
-  constructor(private router: Router) {
+  error: boolean;
+  constructor(private router: Router, private passwordService: ResetPasswordService) {
     this.form = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email])
     });
@@ -20,8 +22,11 @@ export class ForgotPassEmailComponent implements OnInit {
   }
   sendCode(): void{
     if (!this.form.invalid){
-      localStorage.setItem('email', this.form.controls.email.value);
-      this.router.navigate(['password', 'code']);
+      this.passwordService.sendCodeOnEmail({recipients: [this.form.value.email]}).subscribe(
+        value => this.router.navigate(['password', 'change']), error => {
+          this.error = true;
+        }
+      );
     }
   }
   setTouched(): void{

@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {apiPath} from '../../../../globals';
 import {Observable} from 'rxjs';
+import {PasswordModel} from '../../../models/PasswordModel';
+import {EmailModel} from '../../../models/EmailModel';
 
 @Injectable({
   providedIn: 'root'
@@ -9,13 +11,10 @@ import {Observable} from 'rxjs';
 export class ResetPasswordService {
 
   constructor(private http: HttpClient) { }
-  sendCodeOnEmail(email: string): Observable<any>{
-    return this.http.post(apiPath + '/recovery-password', email);
+  sendCodeOnEmail(email: EmailModel): Observable<any>{
+    return this.http.post(apiPath + 'recovery-password', email);
   }
-  verifyCode(code: string, email: string): Observable<any>{
-    return this.http.post(apiPath + '/recovery-password/code', code);
-  }
-  updatePassword(password: string, email: string): Observable<any>{
-    return this.http.put(apiPath + '/recovery-password/new-password/' + 1, password);
+  updatePassword(password: PasswordModel): Observable<any>{
+    return this.http.post(apiPath + 'save-password', password);
   }
 }

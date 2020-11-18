@@ -12,6 +12,7 @@ export class MainPageComponent implements OnInit {
   userId: number;
   username: string;
   loggedIn: boolean;
+  token1: string;
   constructor(private auth: AuthenticationService, private router: Router) {
     auth.authSubscribe().subscribe(value => {
       this.loggedIn = value;

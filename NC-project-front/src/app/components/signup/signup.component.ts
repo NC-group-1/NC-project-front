@@ -4,6 +4,7 @@ import {AbstractControl, FormControl, FormGroup, Validators} from '@angular/form
 import {AuthenticationService} from '../../services/auth/authentication.service';
 import {AlertService} from '../../services/alert.service';
 import {first} from 'rxjs/operators';
+import {ResetPasswordService} from '../../services/reset-pass/reset-password.service';
 
 // const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -14,44 +15,41 @@ import {first} from 'rxjs/operators';
 })
 export class SignupComponent implements OnInit {
 
-  userRegisterForm: FormGroup;
+  form: FormGroup;
   submitTouched = false;
-  constructor(private router: Router,
-              private auth: AuthenticationService,
-              private alert: AlertService) {
+  error: boolean;
+
+  constructor(private router: Router, private passwordService: ResetPasswordService, private auth: AuthenticationService) {
+    this.form = new FormGroup({
+      email: new FormControl(null, [Validators.required, Validators.email])
+    });
   }
 
   ngOnInit(): void {
-    this.userRegisterForm = new FormGroup({
-      email: new FormControl('', [
-        Validators.required,
-        Validators.email
-      ])
-    });
-  }
-  setTouched(): void{
-    this.submitTouched = true;
-  }
-  get data(): { [p: string]: AbstractControl }{
-    return this.userRegisterForm.controls;
   }
 
-  onSubmit(): void {
-    this.alert.clear();
-
-    if (this.userRegisterForm.invalid) {
-      return;
+  sendCode(): void {
+    if (!this.form.invalid) {
+      this.auth.register({
+        email: this.form.value.email,
+        role: 'ROLE_MANAGER'
+      }).subscribe(
+        value => {
+          console.log({recipients: [this.form.value.email]});
+          this.passwordService.sendCodeOnEmail({recipients: [this.form.value.email]}).subscribe(
+            value1 => {
+            }, error => {
+              console.log(error);
+              this.error = true;
+            });
+        }, error1 => {
+          console.log(error1);
+          this.error = true;
+        });
     }
+  }
 
-    this.auth.register(this.userRegisterForm.value).pipe(first())
-      .subscribe({
-        next: () => {
-          this.alert.success('Registration successful', {keepAfterRouteChange: true});
-          this.router.navigate(['/login']);
-        },
-        error: error => {
-          this.alert.error(error);
-        }
-      });
+  setTouched(): void {
+    this.submitTouched = true;
   }
 }

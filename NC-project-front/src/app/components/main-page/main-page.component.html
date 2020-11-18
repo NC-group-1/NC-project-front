@@ -7,3 +7,5 @@
   <input type="number" [(ngModel)] = "userId" id="userId" placeholder="User Id">
   <a class="btn-nc btn" routerLink="/user/{{userId}}">Find User {{userId}}</a>
 </div>
+<input [(ngModel)] = "token1" id="token1" placeholder="Token">
+<a class="btn-nc btn" [routerLink]="['password/change']" [queryParams]="{token:token1}">Token</a>

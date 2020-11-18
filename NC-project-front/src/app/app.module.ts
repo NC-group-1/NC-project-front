@@ -8,20 +8,19 @@ import { MainPageComponent } from './components/main-page/main-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthorizationInterceptor} from './services/auth/authorization-interceptor.service';
-import { ForgotPassCodeComponent } from './components/reset-pass/forgot-pass-code/forgot-pass-code.component';
 import { ForgotPassEmailComponent } from './components/reset-pass/forgot-pass-email/forgot-pass-email.component';
 import { ChangePassComponent } from './components/reset-pass/change-pass/change-pass.component';
 import {SignupComponent} from './components/signup/signup.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import {ActivatedRouteSnapshot, Router, RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginPageComponent,
     MainPageComponent,
-    ForgotPassCodeComponent,
     ForgotPassEmailComponent,
     ChangePassComponent,
     SignupComponent,
@@ -34,7 +33,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
