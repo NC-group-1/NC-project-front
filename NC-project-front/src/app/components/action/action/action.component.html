@@ -1,0 +1,22 @@
+<p>action works!</p>
+<div>
+  <table>
+    <thead>
+      <th>Name</th>
+      <th>Key</th>
+      <th>Description</th>
+    </thead>
+    <tbody>
+      <tr *ngFor = "let action of actions">
+        <td>{{action.name}}</td>
+        <td>{{action.key.key}}</td>
+        <td>{{action.description}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <mat-paginator [pageSizeOptions]="pageSizeOptions"
+                 [length]="length"
+                 [pageSize]="pageSize"
+                 (page)="onPaginationChange($event)" showFirstLastButtons>
+  </mat-paginator>
+</div>
