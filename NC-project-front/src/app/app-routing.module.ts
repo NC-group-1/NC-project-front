@@ -36,6 +36,10 @@ const routes: Routes = [
     resolve: {user: ProfileResolverService}
   },
   {
+    path: 'user/profile',
+    component: ProfileComponent
+  },
+  {
     path: '**',
     component: PageNotFoundComponent
   }
