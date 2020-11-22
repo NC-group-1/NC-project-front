@@ -1,0 +1,24 @@
+.logo{
+  width: 375px;
+  height: 83px;
+}
+.profile-pic{
+  height: 80px;
+  width: 80px;
+  border-radius: 50%;
+}
+.nav-nc{
+  transition-duration: 0.5s;
+}
+.nav-nc:hover{
+  background-color: #005793;
+  color: white;
+  transition-duration: 0.5s;
+}
+.close-red{
+  transition-duration: 0.25s;
+}
+.close-red:hover{
+  color: orangered;
+  transition-duration: 0.25s;
+}
