@@ -1,19 +1,25 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
+import {ProjectModel} from '../../model/ProjectModel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
+  private urlPath = 'http://localhost:8081/';
+
   constructor(private httpClient: HttpClient) {}
 
-  post(name: string, link: string) {
-    const params = {
-      nameProject: name,
-      linkProject: link
-    };
+  postProject(project: ProjectModel) {
+    return this.httpClient.post(this.urlPath + 'project', project);
+  }
 
-    return this.httpClient.post('http://localhost:8090/createProject', params);
+  getProjects() {
+    return this.httpClient.get<ProjectModel[]>(this.urlPath + 'project');
+  }
+
+  updateProject(project: ProjectModel) {
+    return this.httpClient.post(this.urlPath + 'project/update', project);
   }
 }

@@ -1,31 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
-
-export interface ListProject {
-  name: string;
-  link: string;
-  date: string;
-  creator: string;
-  archived: boolean;
-  edit: boolean;
-}
+import {HttpClientService} from '../service/http-client.service';
+import {ProjectModel} from '../../model/ProjectModel';
 
 @Component({
   selector: 'app-list-project',
   templateUrl: './list-project.component.html',
   styleUrls: ['./list-project.component.scss']
 })
-export class ListProjectComponent {
+export class ListProjectComponent implements OnInit{
   selectedProject: string;
-  displayedColumns: string[] = ['radioBtn', 'name', 'link', 'date', 'creator', 'archived', 'editBtn'];
-  listProject: ListProject[] = [
-    {name: 'Project1', link: 'Link1', date: '1/1/2020', creator: 'Admin', archived: false, edit: false},
-    {name: 'Project2', link: 'Link2', date: '2/1/2020', creator: 'Admin', archived: true, edit: false}
-  ];
-  dataSource = new MatTableDataSource(this.listProject);
+  displayedColumns: string[] = ['radioBtn', 'name', 'link', 'date', 'role', 'archived', 'editBtn'];
+  listProject: ProjectModel[];
+  dataSource: any;
 
-  constructor() {
+  constructor(private httpClientService: HttpClientService) {
     this.selectedProject = '';
+    this.listProject = [];
+    this.dataSource = null;
+
+    this.httpClientService.getProjects().subscribe(
+      response => {
+        this.listProject = response;
+        this.dataSource = new MatTableDataSource(this.listProject);
+      },
+      error => console.log(error)
+    );
   }
 
   applyFilter(event: Event) {
@@ -46,7 +46,17 @@ export class ListProjectComponent {
   }
 
   change(index: number) {
-    // console.log(JSON.stringify(this.listProject));
     this.listProject[index].edit = !this.listProject[index].edit;
+
+    if(this.listProject[index].edit == false) {
+      this.httpClientService.updateProject(this.listProject[index])
+        .subscribe(
+          response => console.log(response),
+          error => console.log(error)
+        );
+    }
+  }
+
+  ngOnInit(): void {
   }
 }

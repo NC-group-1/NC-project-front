@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpClientService} from '../service/http-client.service';
+import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({
   selector: 'app-create-project',
@@ -8,18 +9,25 @@ import {HttpClientService} from '../service/http-client.service';
   styleUrls: ['./create-project.component.scss']
 })
 export class CreateProjectComponent implements OnInit {
+  form: FormGroup;
 
-  constructor(private httpClientService: HttpClientService, private router: Router) {}
+  constructor(private httpClientService: HttpClientService, private router: Router) {
+    this.form = new FormGroup({
+      name: new FormControl(null),
+      link: new FormControl(null)
+    });
+  }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
 
-  createProject(nameProject: string, linkProject: string) {
-    this.httpClientService.post(nameProject, linkProject)
+  }
+
+  createProject() {
+    this.httpClientService.postProject(this.form.value)
       .subscribe(
         response => console.log(response),
         error => console.log(error)
       );
-
     this.router.navigateByUrl('/listProject');
   }
 }

@@ -10,7 +10,7 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/mater
 import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 
@@ -20,18 +20,19 @@ import {MatSelectModule} from '@angular/material/select';
     CreateProjectComponent,
     ListProjectComponent
   ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatTableModule,
-    MatRadioModule,
-    BrowserAnimationsModule,
-    MatSelectModule
-  ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatTableModule,
+        MatRadioModule,
+        BrowserAnimationsModule,
+        MatSelectModule,
+        ReactiveFormsModule
+    ],
   providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }],
   bootstrap: [AppComponent]
 })
