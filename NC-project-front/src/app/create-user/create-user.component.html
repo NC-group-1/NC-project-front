@@ -1,0 +1,21 @@
+<div class="form">
+  <p class="header">New users</p>
+  <div class="w3-card-4">
+    <div class="w3-container" style="background-color: #F3F3F3">
+      <p class="card-header">Invite a new person</p>
+    </div>
+    <form class="w3-container" action="">
+      <p>
+        <label class="w3-text card-header">Name of project <i class="fa fa-list-alt"></i></label>
+        <input class="w3-input w3-border" #nameProject type="text">
+      </p>
+      <p>
+        <label class="w3-text card-header">Unique web-site link <i class="fa fa-link"></i></label>
+        <input class="w3-input w3-border" #linkProject type="text">
+      </p>
+      <p>
+        <button class="w3-button w3-round-xlarge" style="background-color: #0275B1; color: white" (click)="createUser(nameProject.value, linkProject.value)">Create</button>
+      </p>
+    </form>
+  </div>
+</div>

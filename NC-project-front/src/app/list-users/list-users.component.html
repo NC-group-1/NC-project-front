@@ -1,0 +1,92 @@
+<div class="form">
+  <p class="header">List of users</p>
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
+  </mat-form-field>
+
+  <mat-radio-group
+    aria-labelledby="example-radio-group-label"
+    class="example-radio-group"
+    [(ngModel)]="selectedUser">
+    <table width="100%" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="radioBtn">
+        <th width="5%" mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element"><mat-radio-button class="example-radio-button" [value]="element.name"></mat-radio-button></td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th width="30%" mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <p [hidden]="element.edit">{{element.name}}</p>
+
+          <div [hidden]="!element.edit" style="width: 75%">
+            <mat-form-field>
+              <mat-label>Edit</mat-label>
+              <input #inputName matInput placeholder="Element name" [value]="element.name" (change)="updateName(i, inputName.value)">
+            </mat-form-field>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="link">
+        <th width="30%" mat-header-cell *matHeaderCellDef> Link </th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <p [hidden]="element.edit">{{element.surname}}</p>
+
+          <div [hidden]="!element.edit" style="width: 75%">
+            <mat-form-field>
+              <mat-label>Edit</mat-label>
+              <input #inputLink matInput placeholder="Element link" [value]="element.surname" (change)="updateSurname(i, inputLink.value)">
+            </mat-form-field>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th width="10%" mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="creator">
+        <th width="10%" mat-header-cell *matHeaderCellDef> Role </th>
+        <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="archived">
+        <th width="30%" mat-header-cell *matHeaderCellDef> Activate </th>
+        <td mat-cell *matCellDef="let element">
+          <p [hidden]="element.edit">{{element.activate ? 'Archived': 'Not archived'}}</p>
+
+          <div [hidden]="!element.edit" style="width: 75%">
+            <mat-form-field>
+              <mat-label>Select an option</mat-label>
+              <mat-select [(value)]="element.activated">
+                <mat-option [value]="option" *ngFor="let option of [true, false]">{{ option ? 'Activate': 'Not activate' }}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="editBtn">
+        <th width="5%" mat-header-cell *matHeaderCellDef> Edit </th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <button class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white" (click)="change(i)"><i class="fa fa-pencil"></i></button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell" colspan="7">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table>
+  </mat-radio-group>
+  <br />
+  <div class="w3-bar">
+    <a [routerLink]="['/createUser']" class="w3-button w3-round-xlarge w3-left" style="background-color: #0275B1; color: white">+Add</a>
+    <button class="w3-button w3-round-xlarge w3-right" style="background-color: #0275B1; color: white" (click)="open()">Activate</button>
+  </div>
+</div>
