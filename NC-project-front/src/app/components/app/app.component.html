@@ -1,2 +1,7 @@
-<app-navbar></app-navbar>
-<router-outlet></router-outlet>
+<app-navbar *ngIf="loggedIn"></app-navbar>
+<div [class]="loggedIn ? 'row mx-5 mt-4' : ''">
+  <app-main-menu *ngIf="loggedIn" class="col-3 mx-3"></app-main-menu>
+  <div [class]="loggedIn ? 'col-6' : ''">
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -15,6 +15,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import {ActivatedRouteSnapshot, Router, RouterModule} from '@angular/router';
+import { MainMenuComponent } from './components/main-menu/main-menu.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import {ActivatedRouteSnapshot, Router, RouterModule} from '@angular/router';
     SignupComponent,
     ProfileComponent,
     PageNotFoundComponent,
-    NavbarComponent
+    NavbarComponent,
+    MainMenuComponent
   ],
   imports: [
     BrowserModule,

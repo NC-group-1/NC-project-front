@@ -31,7 +31,7 @@ const routes: Routes = [
     component: SignupComponent
   },
   {
-    path: 'user/:id',
+    path: 'user/:email',
     component: ProfileComponent,
     resolve: {user: ProfileResolverService}
   },

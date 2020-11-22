@@ -1,11 +1,13 @@
+<div class="text-center mx-auto">
 <h2>Main Page</h2>
 <div *ngIf="!loggedIn">
   <button class="btn btn-nc" routerLink="/login">Login</button>
   <button class="btn-nc" routerLink="/signup">Sign Up</button>
 </div>
 <div>
-  <input type="number" [(ngModel)] = "userId" id="userId" placeholder="User Id">
+  <input type="email" [(ngModel)] = "userId" id="userId" placeholder="User Email">
   <a class="btn-nc btn" routerLink="/user/{{userId}}">Find User {{userId}}</a>
 </div>
 <input [(ngModel)] = "token1" id="token1" placeholder="Token">
 <a class="btn-nc btn" [routerLink]="['password/change']" [queryParams]="{token:token1}">Token</a>
+</div>

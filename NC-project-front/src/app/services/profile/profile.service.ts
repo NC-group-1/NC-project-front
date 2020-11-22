@@ -13,9 +13,8 @@ export class ProfileService {
 
   constructor(private http: HttpClient, private router: Router) {
   }
-
-  getUser(id): Observable<UserDataModel> {
-    return this.http.get<UserDataModel>(apiPath + 'user/' + id)
+  getUserByEmail(email: string): Observable<UserDataModel>{
+    return this.http.get<UserDataModel>(apiPath + 'user/' + email)
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 }
