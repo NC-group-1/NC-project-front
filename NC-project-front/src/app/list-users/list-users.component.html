@@ -5,18 +5,26 @@
     <input matInput (keyup)="applyFilter($event)" placeholder="Search" #input>
   </mat-form-field>
 
-  <mat-radio-group
-    aria-labelledby="example-radio-group-label"
-    class="example-radio-group"
-    [(ngModel)]="selectedUser">
-    <table width="100%" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      <ng-container matColumnDef="radioBtn">
-        <th width="5%" mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element"><mat-radio-button class="example-radio-button" [value]="element.name"></mat-radio-button></td>
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        [aria-label]="checkboxLabel()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <mat-checkbox (click)="$event.stopPropagation()"
+                        (change)="$event ? selection.toggle(row) : null"
+                        [checked]="selection.isSelected(row)"
+                        [aria-label]="checkboxLabel(row)">
+          </mat-checkbox>
+        </td>
       </ng-container>
 
       <ng-container matColumnDef="name">
-        <th width="30%" mat-header-cell *matHeaderCellDef> Name </th>
+        <th  mat-header-cell *matHeaderCellDef> Name </th>
         <td mat-cell *matCellDef="let element; let i = index">
           <p [hidden]="element.edit">{{element.name}}</p>
 
@@ -29,8 +37,8 @@
         </td>
       </ng-container>
 
-      <ng-container matColumnDef="link">
-        <th width="30%" mat-header-cell *matHeaderCellDef> Link </th>
+      <ng-container matColumnDef="surname">
+        <th mat-header-cell *matHeaderCellDef> Surname </th>
         <td mat-cell *matCellDef="let element; let i = index">
           <p [hidden]="element.edit">{{element.surname}}</p>
 
@@ -44,49 +52,67 @@
       </ng-container>
 
       <ng-container matColumnDef="email">
-        <th width="10%" mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="creator">
-        <th width="10%" mat-header-cell *matHeaderCellDef> Role </th>
-        <td mat-cell *matCellDef="let element"> {{element.role}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="archived">
-        <th width="30%" mat-header-cell *matHeaderCellDef> Activate </th>
-        <td mat-cell *matCellDef="let element">
-          <p [hidden]="element.edit">{{element.activate ? 'Archived': 'Not archived'}}</p>
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element; let i = index">
+          <p [hidden]="element.edit">{{element.email}}</p>
 
           <div [hidden]="!element.edit" style="width: 75%">
             <mat-form-field>
-              <mat-label>Select an option</mat-label>
-              <mat-select [(value)]="element.activated">
-                <mat-option [value]="option" *ngFor="let option of [true, false]">{{ option ? 'Activate': 'Not activate' }}</mat-option>
-              </mat-select>
+              <mat-label>Edit</mat-label>
+              <input #inputEmail matInput placeholder="Element link" [value]="element.email" (change)="updateEmail(i, inputEmail.value)">
             </mat-form-field>
           </div>
         </td>
       </ng-container>
 
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef> Role </th>
+        <td mat-cell *matCellDef="let element"> {{element.role}} </td>
+      </ng-container>
+
+<!--      <ng-container matColumnDef="activated">-->
+<!--        <th mat-header-cell *matHeaderCellDef> Activated </th>-->
+<!--        <td mat-cell *matCellDef="let element">-->
+<!--          <p [hidden]="element.edit">{{element.activated ?  'Deactivated': 'Activated'}}</p>-->
+
+<!--          <div [hidden]="!element.edit" style="width: 75%">-->
+<!--            <mat-form-field>-->
+<!--              <mat-label>Select an option</mat-label>-->
+<!--              <mat-select [(value)]="element.activated">-->
+<!--                <mat-option [value]="option" *ngFor="let option of [true, false]">{{ option ? 'Deactivate': 'Activated' }}</mat-option>-->
+<!--              </mat-select>-->
+<!--            </mat-form-field>-->
+<!--          </div>-->
+<!--        </td>-->
+<!--      </ng-container>-->
+
+      <ng-container matColumnDef="activated">
+        <th mat-header-cell *matHeaderCellDef> Activated </th>
+        <td mat-cell *matCellDef="let element"> {{element.activated ?  'Deactivated': 'Activated'}} </td>
+      </ng-container>
+
       <ng-container matColumnDef="editBtn">
-        <th width="5%" mat-header-cell *matHeaderCellDef> Edit </th>
+        <th mat-header-cell *matHeaderCellDef> Edit </th>
         <td mat-cell *matCellDef="let element; let i = index">
           <button class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white" (click)="change(i)"><i class="fa fa-pencil"></i></button>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+<!--          (click)="selection.toggle(row)">-->
+      </tr>
 
       <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="7">No data matching the filter "{{input.value}}"</td>
+        <td class="mat-cell" colspan="8">No data matching the filter "{{input.value}}"</td>
       </tr>
     </table>
-  </mat-radio-group>
-  <br />
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+
+
   <div class="w3-bar">
-    <a [routerLink]="['/createUser']" class="w3-button w3-round-xlarge w3-left" style="background-color: #0275B1; color: white">+Add</a>
-    <button class="w3-button w3-round-xlarge w3-right" style="background-color: #0275B1; color: white" (click)="open()">Activate</button>
+    <a [routerLink]="['/createUser']" class="w3-button w3-round-xlarge w3-left" style="background-color: #0275B1; margin-top: 10px; color: white">+Add</a>
+    <button class="w3-button w3-round-xlarge w3-right" style="background-color: #0275B1; margin-top: 10px; color: white" (click)="activate()">Activate</button>
   </div>
 </div>

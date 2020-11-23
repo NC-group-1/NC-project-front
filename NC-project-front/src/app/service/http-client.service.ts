@@ -8,12 +8,12 @@ export class HttpClientService {
 
   constructor(private httpClient: HttpClient) {}
 
-  post(name: string, link: string) {
+  post(name: string, surname: string) {
     const params = {
-      nameProject: name,
-      linkProject: link
+      nameUser: name,
+      surnameUser: surname
     };
 
-    return this.httpClient.post('http://localhost:8090/createProject', params);
+    return this.httpClient.post('http://localhost:8090/createUser', params);
   }
 }
