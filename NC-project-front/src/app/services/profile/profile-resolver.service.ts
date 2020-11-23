@@ -13,6 +13,6 @@ export class ProfileResolverService implements Resolve<UserDataModel>{
   constructor(private profileService: ProfileService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<UserDataModel> {
-    return this.profileService.getUserByEmail(route.paramMap.get('email'));
+    return this.profileService.getUserById(parseInt(route.paramMap.get('id'), 10));
   }
 }

@@ -15,15 +15,15 @@
     <div class="w3-half w3-container">
 
 
-      <h3 #nameField [class]="nameEditing ? 'd-none' : 'd-inline-block text-uppercase text-shadow-black'">{{user.name}}</h3>
+      <h3 #nameField [class]="nameEditing ? 'd-none' : 'd-inline-block text-shadow-black text-uppercase'">{{user.name}}</h3>
       <button *ngIf="!editing" class="w3-button w3-large ml-4 p-0 rounded" (click)="nameEdit()">
         <i class="fa fa-pencil"></i>
       </button>
-      <div *ngIf="nameEditing">
+      <div [class]="!nameEditing ? 'd-none' : ''">
         <div class="input-group w-50">
-          <input type="text" class="form-control" formControlName="name" [ngModel]="nameField.innerText">
+          <input type="text" class="form-control" formControlName="name" [ngModel]="user.name">
         </div>
-        <a type="submit" class="btn btn-nc font-weight-bolder my-2">Save</a>
+        <a type="submit" class="btn btn-nc font-weight-bolder my-2" (click)="updateProfile()">Save</a>
         <a class="btn color-nc my-2" (click)="nameEdit()">Cancel</a>
       </div>
 
@@ -32,15 +32,15 @@
       <div class="w-100"></div>
 
 
-      <h3 #surnameField [class]="surnameEditing ? 'd-none' : 'd-inline-block text-uppercase text-shadow-black'">{{user.surname}}</h3>
+      <h3 #surnameField [class]="surnameEditing ? 'd-none' : 'd-inline-block text-shadow-black text-uppercase'">{{user.surname}}</h3>
       <button *ngIf="!editing" class="w3-button w3-large ml-4 p-0 rounded" (click)="surnameEdit()">
         <i class="fa fa-pencil"></i>
       </button>
-      <div *ngIf="surnameEditing">
+      <div [class]="!surnameEditing ? 'd-none' : ''">
         <div class="input-group w-50">
-          <input type="text" class="form-control" formControlName="surname" [ngModel]="surnameField.innerText">
+          <input type="text" class="form-control" formControlName="surname" [ngModel]="user.surname">
         </div>
-        <a type="submit" class="btn btn-nc font-weight-bolder my-2">Save</a>
+        <a type="submit" class="btn btn-nc font-weight-bolder my-2" (click)="updateProfile()">Save</a>
         <a class="btn color-nc my-2" (click)="surnameEdit()">Cancel</a>
       </div>
 
@@ -58,10 +58,10 @@
         <i class="fa fa-pencil"></i>
       </button>
       <p #aboutMeField [class]="aboutMeEditing ? 'd-none' : 'text-justify mr-4 shadow p-2 break-word'">{{user.aboutMe}}</p>
-      <div *ngIf="aboutMeEditing">
+      <div [class]="!aboutMeEditing ? 'd-none' : ''">
         <div class="form-group">
-          <textarea class="form-control" formControlName="aboutMe" rows="3" [ngModel]="aboutMeField.innerText"></textarea>
-          <a type="submit" class="btn btn-nc font-weight-bolder my-2">Save</a>
+          <textarea class="form-control" formControlName="aboutMe" rows="3" [ngModel]="user.aboutMe"></textarea>
+          <a type="submit" class="btn btn-nc font-weight-bolder my-2" (click)="updateProfile()">Save</a>
           <a class="btn color-nc my-2" (click)="aboutMeEdit()">Cancel</a>
         </div>
       </div>
