@@ -1,4 +1,5 @@
 export class UserDataModel{
+  userId?: number;
   name?: string;
   surname?: string;
   email?: string;
