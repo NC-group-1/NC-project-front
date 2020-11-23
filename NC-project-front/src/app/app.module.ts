@@ -28,7 +28,7 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
     ProfileComponent,
     PageNotFoundComponent,
     NavbarComponent,
-    MainMenuComponent
+    MainMenuComponent,
   ],
   imports: [
     BrowserModule,

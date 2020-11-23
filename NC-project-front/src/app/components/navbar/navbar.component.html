@@ -3,7 +3,7 @@
 
   <div class="col-9">
     <a routerLink="/">
-      <img src="assets/images/logo.png" alt="Return to main page" class="logo">
+      <img src="assets/images/logo.png" alt="Return to main page" class="logo shadowed">
     </a>
   </div>
 
@@ -24,7 +24,7 @@
       aria-labelledby="navbarDropdown">
       <div *ngFor="let ntf of notifications; let i = index" class="m-0" (click)="$event.stopPropagation()">
         <div class="row bg-nc-trans-hover">
-          <p class="px-3 col-10 py-3 my-0 text-shadow-black" style="word-wrap: break-word">
+          <p class="px-3 col-10 py-3 my-0 text-shadow-black break-word">
             {{ntf.description}}
           </p>
           <div class="col-2 my-auto text-white px-0">
@@ -51,7 +51,7 @@
       </div>
       <div class="float-left ml-3 mt-2">
         <div class="">
-          <p class="font-weight-bold" style="margin: 0.5rem 0 0.5rem 0">N. SURNAME</p>
+          <p class="font-weight-bold" style="margin: 0.5rem 0 0.5rem 0">{{user?.name[0] + '. ' + user?.surname}}</p>
         </div>
         <div class="text-secondary">
           <p class="" style="margin-top: 0.5rem">{{user?.role?.slice(5)}}</p>

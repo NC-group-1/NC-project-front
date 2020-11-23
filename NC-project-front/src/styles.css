@@ -6,7 +6,19 @@
 .min-width-15{
   min-width: 15rem!important;
 }
-
+.profile-pic-full{
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+}
+.logo{
+  width: 375px;
+  height: 83px;
+}
+.logo-footer{
+  width: 300px;
+  height: 160px;
+}
 .w-35{
   width: 35%;
 }
@@ -36,14 +48,25 @@
   transition-duration: 0.25s;
   background-color: rgba(86,129,152,0.85);
 }
+.bg-nc-gray{
+  background-color: #f2f5f9;
+}
+
+.shadowed {
+  -webkit-filter: drop-shadow(0px 3px 4px #222);
+  filter: drop-shadow(0px 3px 4px #222);
+}
 .dropdown-shadow{
   box-shadow: 6px 6px 6px 6px rgba(15,15,15,0.6);
 }
 .text-shadow-black{
-  text-shadow: 2px 2px 6px black;
+  text-shadow: 2px 2px 3px rgba(15,15,15,0.6);
 }
 .text-shadow-gray{
-  text-shadow: 2px 2px 6px gray;
+  text-shadow: 2px 2px 3px rgba(25,25,25,0.4);
+}
+.break-word{
+  word-break: break-word;
 }
 .bg-nc{
   background-color: #0275b1;
@@ -51,6 +74,9 @@
 }
 .color-nc{
   color: #0275b1;
+}
+.font-05{
+  font-size: 0.5rem;
 }
 body{
   background-color: #f7f9fb;
