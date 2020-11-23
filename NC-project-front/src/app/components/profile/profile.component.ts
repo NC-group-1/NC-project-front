@@ -4,6 +4,7 @@ import {UserDataModel} from '../../../models/UserDataModel';
 import {DatePipe} from '@angular/common';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ProfileService} from '../../services/profile/profile.service';
+import {AuthenticationService} from '../../services/auth/authentication.service';
 
 @Component({
   selector: 'app-profile',
@@ -13,15 +14,19 @@ import {ProfileService} from '../../services/profile/profile.service';
 export class ProfileComponent implements OnInit {
 
   user: UserDataModel;
+  hasEditingPermission: boolean;
   editing: boolean;
   nameEditing: boolean;
   surnameEditing: boolean;
   aboutMeEditing: boolean;
   form: FormGroup;
 
-  constructor(private activatedRoute: ActivatedRoute, private profileService: ProfileService) {
+  constructor(private activatedRoute: ActivatedRoute, private profileService: ProfileService, private auth: AuthenticationService) {
     this.activatedRoute.params.subscribe(param => {
       this.user = this.activatedRoute.snapshot.data.user;
+      if (auth.getRole().includes('ROLE_ADMIN') || auth.getUsername() === this.user.email ){
+        this.hasEditingPermission = true;
+      }
     });
   }
 

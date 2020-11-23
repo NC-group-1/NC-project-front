@@ -16,6 +16,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { NavbarComponent } from './components/navbar/navbar.component';
 import {ActivatedRouteSnapshot, Router, RouterModule} from '@angular/router';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
     PageNotFoundComponent,
     NavbarComponent,
     MainMenuComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,

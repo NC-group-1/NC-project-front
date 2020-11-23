@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 import {ResetPasswordService} from '../../../services/reset-pass/reset-password.service';
+import {AuthenticationService} from '../../../services/auth/authentication.service';
 
 @Component({
   selector: 'app-change-pass',
@@ -14,7 +15,7 @@ export class ChangePassComponent implements OnInit {
   submitTouched = false;
   error: boolean;
 
-  constructor(private router: Router, private passwordService: ResetPasswordService, private route: ActivatedRoute) {
+  constructor(private router: Router, private passwordService: ResetPasswordService, private route: ActivatedRoute, private auth: AuthenticationService) {
     this.form = new FormGroup({
       password: new FormControl(null, [Validators.required, Validators.min(6)]),
       confirmPassword: new FormControl(null, [Validators.required, Validators.min(6)])
@@ -26,6 +27,7 @@ export class ChangePassComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.auth.logout();
   }
 
   changePass(): void {

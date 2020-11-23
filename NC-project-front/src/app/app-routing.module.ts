@@ -8,10 +8,14 @@ import {SignupComponent} from './components/signup/signup.component';
 import {ProfileComponent} from './components/profile/profile.component';
 import {ProfileResolverService} from './services/profile/profile-resolver.service';
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
+import {SettingsComponent} from './components/settings/settings.component';
+import {LoginActivateGuard} from './guards/login-activate.guard';
+import {MyProfileResolverService} from './services/profile/my-profile-resolver.service';
 
 const routes: Routes = [
   {
     path: '',
+    canActivate: [LoginActivateGuard],
     component: MainPageComponent
   },
   {
@@ -19,25 +23,41 @@ const routes: Routes = [
     component: LoginPageComponent
   },
   {
-    path: 'password/email',
-    component: ForgotPassEmailComponent
-  },
-  {
-    path: 'password/change',
-    component: ChangePassComponent
+    path: 'password',
+    children: [
+      {
+        path: 'email',
+        component: ForgotPassEmailComponent
+      },
+      {
+        path: 'change',
+        component: ChangePassComponent
+      }
+    ]
   },
   {
     path: 'signup',
     component: SignupComponent
   },
   {
-    path: 'user/:id',
-    component: ProfileComponent,
-    resolve: {user: ProfileResolverService}
-  },
-  {
-    path: 'user/profile',
-    component: ProfileComponent
+    path: 'user',
+    canActivate: [LoginActivateGuard],
+    children: [
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        resolve: {user: MyProfileResolverService}
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent
+      },
+      {
+        path: ':id',
+        component: ProfileComponent,
+        resolve: {user: ProfileResolverService}
+      }
+    ]
   },
   {
     path: '**',

@@ -15,8 +15,8 @@
     <div class="w3-half w3-container">
 
 
-      <h3 #nameField [class]="nameEditing ? 'd-none' : 'd-inline-block text-shadow-black text-uppercase'">{{user.name}}</h3>
-      <button *ngIf="!editing" class="w3-button w3-large ml-4 p-0 rounded" (click)="nameEdit()">
+      <h3 [class]="nameEditing ? 'd-none' : 'd-inline-block text-shadow-black text-uppercase'">{{user.name}}</h3>
+      <button *ngIf="!editing && hasEditingPermission" class="w3-button w3-large ml-4 p-0 rounded" (click)="nameEdit()">
         <i class="fa fa-pencil"></i>
       </button>
       <div [class]="!nameEditing ? 'd-none' : ''">
@@ -32,8 +32,8 @@
       <div class="w-100"></div>
 
 
-      <h3 #surnameField [class]="surnameEditing ? 'd-none' : 'd-inline-block text-shadow-black text-uppercase'">{{user.surname}}</h3>
-      <button *ngIf="!editing" class="w3-button w3-large ml-4 p-0 rounded" (click)="surnameEdit()">
+      <h3 [class]="surnameEditing ? 'd-none' : 'd-inline-block text-shadow-black text-uppercase'">{{user.surname}}</h3>
+      <button *ngIf="!editing && hasEditingPermission" class="w3-button w3-large ml-4 p-0 rounded" (click)="surnameEdit()">
         <i class="fa fa-pencil"></i>
       </button>
       <div [class]="!surnameEditing ? 'd-none' : ''">
@@ -44,20 +44,20 @@
         <a class="btn color-nc my-2" (click)="surnameEdit()">Cancel</a>
       </div>
 
-      <p>{{user.role}}</p>
+      <p class="text-secondary text-shadow-gray">{{user.role.slice(5)}}</p>
 
 
-      <p>Registered: {{user.regDate | date: "dd-MM-yyyy"}}</p>
+      <p><span class="text-secondary text-shadow-gray mr-2">Registered:</span><span class="text-shadow-gray">{{user.regDate | date: "dd-MM-yyyy"}}</span></p>
 
 
-      <p>Status: {{user.activated}}</p>
+      <p><span class="text-secondary text-shadow-gray mr-2">Status:</span><span class="text-shadow-gray">{{user.activated ? 'Active': 'Inactive'}}</span></p>
 
 
       <h5 class="d-inline-block text-uppercase text-shadow-gray">About me:</h5>
-      <button *ngIf="!editing" class="w3-button w3-large ml-4 p-0 rounded" (click)="aboutMeEdit()">
+      <button *ngIf="!editing && hasEditingPermission" class="w3-button w3-large ml-4 p-0 rounded" (click)="aboutMeEdit()">
         <i class="fa fa-pencil"></i>
       </button>
-      <p #aboutMeField [class]="aboutMeEditing ? 'd-none' : 'text-justify mr-4 shadow p-2 break-word'">{{user.aboutMe}}</p>
+      <p [class]="aboutMeEditing ? 'd-none' : 'text-justify mr-4 shadow p-2 break-word'">{{user.aboutMe}}</p>
       <div [class]="!aboutMeEditing ? 'd-none' : ''">
         <div class="form-group">
           <textarea class="form-control" formControlName="aboutMe" rows="3" [ngModel]="user.aboutMe"></textarea>
