@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthenticationService} from '../../services/auth/authentication.service';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProfileService} from '../../services/profile/profile.service';
 import {UserModel} from '../../../models/UserModel';
 import {UserDataModel} from '../../../models/UserDataModel';
@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit {
     {description: 'Notification 4'}];
   username: string;
   loggedIn: boolean;
-  constructor(private auth: AuthenticationService, private profileService: ProfileService) {
+  constructor(private auth: AuthenticationService, private profileService: ProfileService, private router: Router) {
     auth.authSubscribe().subscribe(value => {
       this.loggedIn = value;
       if (!!value){
@@ -38,6 +38,7 @@ export class NavbarComponent implements OnInit {
   }
   logout(): void {
     this.username = null;
+    this.router.navigate(['login']);
     this.auth.logout();
   }
 
