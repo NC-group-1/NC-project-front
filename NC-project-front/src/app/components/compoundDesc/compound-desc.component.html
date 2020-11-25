@@ -1,0 +1,93 @@
+<div class="create-edit-compound">
+  <h2>Details of compound #3</h2>
+  <svg>
+    <g fill="#none">
+      <path stroke="#bebebe" d="M5 0 1215 0" />
+    </g>
+  </svg>
+
+  <div style="width: 35%; margin-left:3%; height:100%;
+    display: inline-block;">
+    <mat-card>
+      <h3>Description</h3>
+        <div class="example-container mat-elevation-z8">
+          <table mat-table [dataSource]="dataSource2">
+
+            <!-- Position Column -->
+            <ng-container matColumnDef="position">
+              <th style="padding-left:15px;" mat-header-cell *matHeaderCellDef></th>
+              <td style="padding-left:15px;" mat-cell *matCellDef="let ELEMENT_DATA2"></td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="name">
+              <th mat-header-cell *matHeaderCellDef> Name </th>
+              <td mat-cell *matCellDef="let ELEMENT_DATA2"> {{ELEMENT_DATA2.name}} </td>
+            </ng-container>
+
+            <!-- Key Column -->
+            <ng-container matColumnDef="key">
+              <th mat-header-cell *matHeaderCellDef> Key </th>
+              <td mat-cell *matCellDef="let ELEMENT_DATA2">{{ELEMENT_DATA2.key}} </td>
+            </ng-container>
+
+            <!-- Delete Column -->
+            <ng-container matColumnDef="delete">
+              <th mat-header-cell *matHeaderCellDef>  </th>
+              <td mat-cell *matCellDef="let ELEMENT_DATA2"><a id="butStyleDelete" (click)="deleteRowData(ELEMENT_DATA2)"> - </a></td>
+            </ng-container>
+
+            <tr  id="trHeadTable2" mat-header-row *matHeaderRowDef="displayedColumns2; sticky: true"></tr>
+            <tr id="trRowTable2" mat-row *matRowDef="let row; columns: displayedColumns2;"></tr>
+          </table>
+        </div>
+          <button id="btnTable2Save" mat-raised-button color="primary">Save</button>
+    </mat-card>
+    </div>
+    <div style="width: 40%; margin-left:3%; height:100%;
+      display: inline-block;">
+    <mat-card>
+      <h3>List of all action/compound</h3>
+
+      <div class="example-container2 mat-elevation-z8">
+        <mat-form-field>
+          <mat-label>Filter</mat-label>
+          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+        </mat-form-field>
+        <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8">
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <th style="padding-left:15px;" mat-header-cell *matHeaderCellDef></th>
+            <td style="padding-left:15px;" mat-cell *matCellDef="let ELEMENT_DATA3"></td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let ELEMENT_DATA3"> {{ELEMENT_DATA3.name}} </td>
+          </ng-container>
+
+          <!-- Weight Column -->
+          <ng-container matColumnDef="key">
+            <th mat-header-cell *matHeaderCellDef> Key </th>
+            <td mat-cell *matCellDef="let ELEMENT_DATA3"> {{ELEMENT_DATA3.key}} </td>
+          </ng-container>
+
+          <!-- Symbol Column -->
+          <ng-container matColumnDef="plus">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td id="butStylePlus" mat-cell *matCellDef="let ELEMENT_DATA3"><a id="butStylePlus" mat-button color="primary" (click)="addFromAllListToCompound(ELEMENT_DATA3)"> + </a></td>
+          </ng-container>
+
+          <tr id="trHeadTable2" mat-header-row *matHeaderRowDef="displayedColumns3; sticky: true"></tr>
+          <tr id="trRowTable2" mat-row *matRowDef="let row; columns: displayedColumns3;"></tr>
+
+          <!-- Row shown when there is no matching data. -->
+          <tr class="mat-row" *matNoDataRow>
+            <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
+          </tr>
+        </table>
+      </div>
+    </mat-card>
+  </div>
+</div>

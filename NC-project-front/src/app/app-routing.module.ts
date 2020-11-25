@@ -10,6 +10,8 @@ import {ProfileResolverService} from './services/profile/profile-resolver.servic
 import {PageNotFoundComponent} from './components/page-not-found/page-not-found.component';
 import {SettingsComponent} from './components/settings/settings.component';
 import {LoginActivateGuard} from './guards/login-activate.guard';
+import {CompoundComponent} from './components/compound/compound.component';
+import {CompoundDescComponent} from './components/compoundDesc/compound-desc.component';
 import {MyProfileResolverService} from './services/profile/my-profile-resolver.service';
 
 const routes: Routes = [
@@ -58,6 +60,14 @@ const routes: Routes = [
         resolve: {user: ProfileResolverService}
       }
     ]
+  },
+  {
+    path: 'compound',
+    component: CompoundComponent,
+  },
+  {
+    path: 'compound/description',
+    component: CompoundDescComponent,
   },
   {
     path: '**',

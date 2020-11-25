@@ -6,6 +6,7 @@ import { AppComponent } from './components/app/app.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthorizationInterceptor} from './services/auth/authorization-interceptor.service';
 import { ForgotPassEmailComponent } from './components/reset-pass/forgot-pass-email/forgot-pass-email.component';
@@ -14,9 +15,13 @@ import {SignupComponent} from './components/signup/signup.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import {CompoundComponent} from './components/compound/compound.component';
+import {CompoundDescComponent} from './components/compoundDesc/compound-desc.component';
 import {ActivatedRouteSnapshot, Router, RouterModule} from '@angular/router';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { DemoMaterialModule } from './components/compound/material-module';
+
 
 @NgModule({
   declarations: [
@@ -29,6 +34,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     ProfileComponent,
     PageNotFoundComponent,
     NavbarComponent,
+    CompoundComponent,
+    CompoundDescComponent,
     MainMenuComponent,
     SettingsComponent,
   ],
@@ -37,7 +44,9 @@ import { SettingsComponent } from './components/settings/settings.component';
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    DemoMaterialModule,
     FormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

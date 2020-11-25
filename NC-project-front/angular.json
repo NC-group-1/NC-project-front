@@ -124,5 +124,8 @@
       }
     }
   },
-  "defaultProject": "NC-project-front"
+  "defaultProject": "NC-project-front",
+  "cli": {
+    "analytics": "7745df0c-7264-4798-aabf-96d287e5567e"
+  }
 }
