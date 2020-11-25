@@ -14,7 +14,8 @@ export class CreateProjectComponent implements OnInit {
   constructor(private httpClientService: HttpClientService, private router: Router) {
     this.form = new FormGroup({
       name: new FormControl(null),
-      link: new FormControl(null)
+      link: new FormControl(null),
+      user_id: new FormControl(null)
     });
   }
 
@@ -23,6 +24,7 @@ export class CreateProjectComponent implements OnInit {
   }
 
   createProject() {
+    this.form.value.user_id = 1;
     this.httpClientService.postProject(this.form.value)
       .subscribe(
         response => console.log(response),

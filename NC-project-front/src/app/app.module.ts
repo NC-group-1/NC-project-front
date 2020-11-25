@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -20,19 +21,20 @@ import {MatSelectModule} from '@angular/material/select';
     CreateProjectComponent,
     ListProjectComponent
   ],
-    imports: [
-        BrowserModule,
-        FormsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatTableModule,
-        MatRadioModule,
-        BrowserAnimationsModule,
-        MatSelectModule,
-        ReactiveFormsModule
-    ],
+  imports: [
+    BrowserModule,
+    FormsModule,
+    AppRoutingModule,
+    HttpClientModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatRadioModule,
+    BrowserAnimationsModule,
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatPaginatorModule
+  ],
   providers: [{ provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } }],
   bootstrap: [AppComponent]
 })
