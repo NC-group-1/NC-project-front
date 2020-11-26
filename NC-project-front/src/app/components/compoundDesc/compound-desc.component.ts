@@ -1,17 +1,18 @@
-import {SelectionModel} from '@angular/cdk/collections';
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, OnInit} from '@angular/core';
+import {PageEvent} from '@angular/material/paginator';
 import {MatTableDataSource} from '@angular/material/table';
+import {CompoundDescService} from '../../services/compound/compoundDesc.service';
+import {CompoundModel} from '../../../models/CompoundModel';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
-
-export interface PeriodicElement2 {
-  position: number;
+/*export interface PeriodicElement2 {
+  id: number;
   name: string;
   key: string;
 }
 
 export interface PeriodicElement3 {
-  position: number;
+  id: number;
   name: string;
   key: string;
 }
@@ -30,7 +31,7 @@ const ELEMENT_DATA3: PeriodicElement3[] = [
   {position: 3, name: 'Action #6', key:''},
   {position: 4, name: 'UserName Value', key:'userNameValue'},
   {position: 5, name: 'UserPass Value', key:'userPassValue'},
-];
+];*/
 
 /**
  * @title Basic Inputs
@@ -42,13 +43,17 @@ const ELEMENT_DATA3: PeriodicElement3[] = [
 })
 export class CompoundDescComponent {
 
-  displayedColumns2: string[] = ['position', 'name', 'key', 'delete'];
+  displayedColumns2: string[] = ['id', 'name', 'key', 'delete'];
   dataSource2 = new MatTableDataSource<PeriodicElement2>(ELEMENT_DATA2);
   @ViewChild(MatTableDataSource,{static:true}) table: MatTableDataSource<any>;
 
 
-  displayedColumns3: string[] = ['position', 'name', 'key', 'plus'];
+  displayedColumns3: string[] = ['id', 'name', 'key', 'plus'];
   dataSource3 = new MatTableDataSource<PeriodicElement3>(ELEMENT_DATA3);
+  length = 0;
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions: number[] = [5, 10, 15];
 
   constructor(private _snackBar: MatSnackBar) {}
 

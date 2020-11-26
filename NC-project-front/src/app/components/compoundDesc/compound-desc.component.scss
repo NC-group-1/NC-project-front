@@ -41,7 +41,7 @@ body {
 
 .create-edit-compound {
   position: absolute;
-  width: 75%;
+  width: 70%;
   height: 100%;
   left: 25%;
   top: 10%;
@@ -52,33 +52,21 @@ body {
 }
 
 .example-container {
-  height: 65%;
-  width: 100%;
-  margin-top: 5%;
   overflow: auto;
 }
 
 .example-container2 {
-  height: 60%;
-  width: 100%;
-  margin-top: 1%;
   overflow: auto;
 }
 
 .listOfCompound {
     width: 90%;
-    height: 70%;
     display: inline-block;
     margin-left: 6%;
 }
 
 #tableCompound {
   overflow: auto;
-}
-
-.descriptionOfCompound {
-  position: relative;
-  width: 100%;
 }
 
 table {

@@ -81,7 +81,13 @@
                   (click)="selection.toggle(row)">
               </tr>
             </table>
+            <mat-paginator [pageSizeOptions]="pageSizeOptions"
+                 [length]="length"
+                 [pageSize]="pageSize"
+                 (page)="onPaginationChange($event)" showFirstLastButtons>
+            </mat-paginator>
           </div>
+
           <p id="underTable">*if you want to edit description of compounds, click on Open</p>
           <section>
             <div class="example-button-row">

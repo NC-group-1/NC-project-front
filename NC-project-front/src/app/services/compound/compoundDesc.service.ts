@@ -1,29 +1,28 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
-import {CompoundDescModel} from '../../models/CompoundDescModel';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {CompoundModel} from '../../../models/CompoundModel';
+import {Observable} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  private urlPath = 'http://localhost:8081/';
+  private apiPath = 'http://localhost:8081/';
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) { }
 
   getActionOfCompound() {
-    return this.httpClient.get<CompoundDescModel[]>(this.urlPath + 'action');
+    return this.http.get<CompoundDescModel[]>(this.apiPath + 'compound/action'+id);
   }
 
-  getAllActionCompound() {
-    return this.httpClient.get<CompoundDescModel[]>(this.urlPath + 'action');
+  postActionInCompound(action: CompoundDescModel): Observable<any> {
+    return this.http.post(this.apiPath + 'compound/action', action);
   }
 
-  postActionInCompound(action: CompoundDescModel) {
-    return this.httpClient.post(this.urlPath + 'action', action);
-  }
-
-  deleteActionInCompound(action: CompoundDescModel) {
-    return this.httpClient.post(this.urlPath + 'action', action);
+  deleteActionInCompound(action: CompoundDescModel): Observable<any> {
+    return this.http.delete(this.apiPath + 'compound/action', action);
   }
 }

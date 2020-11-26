@@ -6,7 +6,7 @@
     </g>
   </svg>
 
-  <div style="width: 35%; margin-left:3%; height:100%;
+  <div style="margin-left:3%;
     display: inline-block;">
     <mat-card>
       <h3>Description</h3>
@@ -44,16 +44,16 @@
           <button id="btnTable2Save" mat-raised-button color="primary">Save</button>
     </mat-card>
     </div>
-    <div style="width: 40%; margin-left:3%; height:100%;
+    <div style="margin-left:5%;
       display: inline-block;">
     <mat-card>
       <h3>List of all action/compound</h3>
-
+      <mat-form-field>
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
+      </mat-form-field>
       <div class="example-container2 mat-elevation-z8">
-        <mat-form-field>
-          <mat-label>Filter</mat-label>
-          <input matInput (keyup)="applyFilter($event)" placeholder="Ex. ium" #input>
-        </mat-form-field>
+
         <table mat-table [dataSource]="dataSource3" class="mat-elevation-z8">
           <!-- Position Column -->
           <ng-container matColumnDef="position">
@@ -87,6 +87,11 @@
             <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
           </tr>
         </table>
+        <mat-paginator [pageSizeOptions]="pageSizeOptions"
+             [length]="length"
+             [pageSize]="pageSize"
+             (page)="onPaginationChange($event)" showFirstLastButtons>
+        </mat-paginator>
       </div>
     </mat-card>
   </div>
