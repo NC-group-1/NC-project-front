@@ -73,10 +73,4 @@ export class CompoundDescComponent {
     });
   }
 
-  reloadNumberOfCompounds(): void {
-    this.compoundListService.getNumberOfAction().subscribe((data: number) => {
-        this.length = data;
-    });
-  }
-
 }

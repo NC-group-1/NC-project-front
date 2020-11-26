@@ -5,6 +5,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {CompoundListService} from '../../services/compound/compoundList.service';
 import {CompoundModel} from '../../../models/CompoundModel';
 import {MatSnackBar} from '@angular/material/snack-bar';
+import {CompoundsPage} from '../../../models/CompoundsPage';
 
 /**
  * @title Basic Inputs
@@ -40,7 +41,7 @@ export class CompoundComponent implements OnInit {
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
+    const numRows = this.dataSource?.data.length;
     return numSelected === numRows;
   }
 
@@ -48,7 +49,7 @@ export class CompoundComponent implements OnInit {
   masterToggle() {
     this.isAllSelected() ?
         this.selection.clear() :
-        this.dataSource.data.forEach(row => this.selection.select(row));
+        this.dataSource?.data.forEach(row => this.selection.select(row));
   }
 
   /** The label for the checkbox on the passed row */
@@ -61,7 +62,7 @@ export class CompoundComponent implements OnInit {
 
   /** Delete all compounds if they are selected */
   deleteCompound(){
-    this.dataSource.data = this.dataSource.data.filter(row => {return !this.selection.isSelected(row)});
+    this.dataSource.data = this.dataSource?.data.filter(row => {return !this.selection.isSelected(row)});
     this.selection.clear();
   }
 
@@ -79,10 +80,10 @@ export class CompoundComponent implements OnInit {
 
   /** Add new compound*/
   addCompound(){
-    const max = this.dataSource.data.reduce((prev,current)=>{
+    const max = this.dataSource?.data.reduce((prev,current)=>{
     return (prev.id > current.id) ? prev : current
     })
-    this.dataSource.data.unshift({id : max.id + 1, name : 'Compound #'+(max.id + 1), description: " "});
+    this.dataSource?.data.unshift({id : max.id + 1, name : 'Compound #'+(max.id + 1), description: " "});
     return this.dataSource.filter = "";
   }
 
@@ -93,30 +94,24 @@ export class CompoundComponent implements OnInit {
   }
 
   reloadCompounds(): void {
-    this.compoundListService.getPaginatedCompounds(this.pageSize, this.pageIndex)
-       .subscribe((data: CompoundModel[]) => {
-      this.dataSource.data = data;
-      this.listCompound = data;
+    this.compoundListService.getPaginatedCompounds()
+       .subscribe((data: CompoundsPage) => {
+      this.dataSource.data = data.list;
+      this.length = data.size;
+      this.listCompound = data.list;
     });
   }
 
-  reloadNumberOfCompounds(): void {
-    this.compoundListService.getNumberOfCompounds().subscribe((data: number) => {
-        this.length = data;
-    });
-  }
 
   ngOnInit(): void {
-    this.reloadNumberOfCompounds();
-    this.reloadCompounds();
-    this.compoundListService.getPaginatedCompounds(this.pageSize, this.pageIndex).subscribe(
+    this.compoundListService.getPaginatedCompounds().subscribe(
       response => {
-        this.listCompound = response;
+        this.listCompound = response.list;
         this.dataSource = new MatTableDataSource(this.listCompound);
       },
       error => console.log(error)
     );
 
   }
-  
+
 }

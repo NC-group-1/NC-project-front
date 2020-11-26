@@ -3,6 +3,8 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {CompoundModel} from '../../../models/CompoundModel';
 import {Action} from '../../../models/action';
 import {Observable} from 'rxjs';
+import {ActivatedRoute} from '@angular/router';
+import {CompoundsPage} from '../../../models/CompoundsPage';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +13,7 @@ export class CompoundListService {
 
   private apiPath = 'http://localhost:8081/';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private route: ActivatedRoute) { }
 
   getCompoundID() {
     return this.http.get<CompoundModel[]>(this.apiPath + 'compound/');
@@ -29,8 +31,8 @@ export class CompoundListService {
     return this.http.delete(this.apiPath + 'compound/update', compound);
   }*/
 
-  getPaginatedCompounds(pageSize: number, pageIndex: number): Observable<CompoundModel[]>{
-    return this.http.get<CompoundModel[]>(this.apiPath + 'compound/page?index=' + pageIndex + '&size=' + pageSize);
+  getPaginatedCompounds(): Observable<CompoundsPage>{
+    return this.http.get<CompoundsPage>(this.apiPath + 'compound?page=' + this.route.snapshot.queryParamMap.get('page') + '&size=' + this.route.snapshot.queryParamMap.get('size'));
   }
 
   getNumberOfCompounds(): Observable<number>{

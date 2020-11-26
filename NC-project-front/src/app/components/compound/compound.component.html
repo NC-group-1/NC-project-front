@@ -1,11 +1,11 @@
-<div class="create-edit-compound">
-  <h2>Create/Edit compound</h2>
+<div class="create-edit-compound bg-white shadow-lg">
+  <h2 class="py-5">Create/Edit compound</h2>
   <svg>
     <g fill="#none">
       <path stroke="#bebebe" d="M5 0 1215 0" />
     </g>
   </svg>
-        <div class="listOfCompound">
+        <div class="m-5">
           <div class="example-container3 mat-elevation-z8">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
               <!-- Checkbox Column -->
@@ -27,7 +27,7 @@
               </ng-container>
 
               <!-- Position Column -->
-              <ng-container matColumnDef="position">
+              <ng-container matColumnDef="id">
                 <th mat-header-cell *matHeaderCellDef></th>
                 <td mat-cell *matCellDef="let element"></td>
               </ng-container>
