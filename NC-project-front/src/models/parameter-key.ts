@@ -1,4 +1,4 @@
 export class ParameterKey {
-  id: number;
-  key: string;
+  id?: number;
+  key?: string;
 }
