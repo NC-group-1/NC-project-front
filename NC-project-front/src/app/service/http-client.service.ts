@@ -16,20 +16,20 @@ export class HttpClientService {
     return this.httpClient.post(this.urlPath + 'project', project);
   }
 
-  getProjects() {
-    return this.httpClient.get<ProjectModel[]>(this.urlPath + 'project');
-  }
+  // getProjects() {
+  //   return this.httpClient.get<ProjectModel[]>(this.urlPath + 'project');
+  // }
 
   updateProject(project: ProjectModel) {
-    return this.httpClient.post(this.urlPath + 'project/update', project);
+    return this.httpClient.put(this.urlPath + 'project/update', project);
   }
 
-  // getPaginatedProjects(pageSize: number, pageIndex: number): Observable<ProjectModel[]>{
-  //   return this.httpClient.get<ProjectModel[]>(this.urlPath + 'project/get_project_list/' + pageIndex + '/' + pageSize);
-  // }
-  //
-  // getNumberOfProjects(): Observable<number>{
-  //   return this.httpClient.get<number>(this.urlPath + 'project/get_number');
-  // }
+  getPaginatedProjects(pageSize: number, pageIndex: number): Observable<ProjectModel[]>{
+    return this.httpClient.get<ProjectModel[]>(this.urlPath + 'project/get_project_list/' + pageIndex + '/' + pageSize);
+  }
+
+  getNumberOfProjects(pageSize: number): Observable<number>{
+    return this.httpClient.get<number>(this.urlPath + 'project/get_number/' + pageSize);
+  }
 
 }

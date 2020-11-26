@@ -24,10 +24,10 @@ export class ListProjectComponent implements OnInit{
     this.listProject = [];
     this.dataSource = null;
   }
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
 
   open() {
     console.log(this.selectedProject);
@@ -53,33 +53,36 @@ export class ListProjectComponent implements OnInit{
     }
   }
 
-  // onPaginationChange(pageEvent: PageEvent): void {
-  //   this.pageSize = pageEvent.pageSize;
-  //   this.pageIndex = pageEvent.pageIndex;
-  //   this.reloadProjects();
-  // }
-  //
-  // reloadProjects(): void {
-  //   this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex)
-  //     .subscribe(
-  //       data => this.listProject = data
-  //     );
-  // }
-  // reloadNumberOfProjects(): void {
-  //   this.httpClientService.getNumberOfProjects()
-  //     .subscribe(
-  //     data => this.length = data
-  //   );
-  // }
-  //
+  onPaginationChange(pageEvent: PageEvent): void {
+    this.pageSize = pageEvent.pageSize;
+    this.pageIndex = pageEvent.pageIndex;
+    this.reloadProjects();
+  }
+
+  reloadProjects(): void {
+    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex)
+      .subscribe(
+        data => {
+          this.listProject = data;
+          this.dataSource = new MatTableDataSource(this.listProject);
+        }
+      );
+  }
+  reloadNumberOfProjects(): void {
+    this.httpClientService.getNumberOfProjects(this.pageSize)
+      .subscribe(
+      data => this.length = data
+    );
+  }
+
   ngOnInit(): void {
-    // this.reloadNumberOfProjects();
-    // this.reloadProjects();
-    this.httpClientService.getProjects().subscribe(
+    this.reloadNumberOfProjects();
+    this.reloadProjects();
+    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex).subscribe(
       response => {
         this.listProject = response;
         this.dataSource = new MatTableDataSource(this.listProject);
-        console.log(JSON.stringify(this.listProject));
+        // console.log(JSON.stringify(this.listProject));
       },
       error => console.log(error)
     );
