@@ -70,22 +70,6 @@
         <td mat-cell *matCellDef="let element"> {{element.role}} </td>
       </ng-container>
 
-<!--      <ng-container matColumnDef="activated">-->
-<!--        <th mat-header-cell *matHeaderCellDef> Activated </th>-->
-<!--        <td mat-cell *matCellDef="let element">-->
-<!--          <p [hidden]="element.edit">{{element.activated ?  'Deactivated': 'Activated'}}</p>-->
-
-<!--          <div [hidden]="!element.edit" style="width: 75%">-->
-<!--            <mat-form-field>-->
-<!--              <mat-label>Select an option</mat-label>-->
-<!--              <mat-select [(value)]="element.activated">-->
-<!--                <mat-option [value]="option" *ngFor="let option of [true, false]">{{ option ? 'Deactivate': 'Activated' }}</mat-option>-->
-<!--              </mat-select>-->
-<!--            </mat-form-field>-->
-<!--          </div>-->
-<!--        </td>-->
-<!--      </ng-container>-->
-
       <ng-container matColumnDef="activated">
         <th mat-header-cell *matHeaderCellDef> Activated </th>
         <td mat-cell *matCellDef="let element"> {{element.activated ?  'Deactivated': 'Activated'}} </td>
@@ -93,14 +77,14 @@
 
       <ng-container matColumnDef="editBtn">
         <th mat-header-cell *matHeaderCellDef> Edit </th>
-        <td mat-cell *matCellDef="let element; let i = index">
-          <button class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white" (click)="change(i)"><i class="fa fa-pencil"></i></button>
+        <td mat-cell *matCellDef="let element;">
+          <button class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white" (click)="change(element.user_id)"><i class="fa fa-pencil"></i></button>
         </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-<!--          (click)="selection.toggle(row)">-->
+          (click)="selection.toggle(row)">
       </tr>
 
       <tr class="mat-row" *matNoDataRow>
@@ -108,8 +92,11 @@
       </tr>
     </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-
+  <mat-paginator [pageSizeOptions]="pageSizeOptions"
+                 [length]="length"
+                 [pageSize]="pageSize"
+                 (page)="onPaginationChange($event)" showFirstLastButtons>
+  </mat-paginator>
 
   <div class="w3-bar">
     <a [routerLink]="['/createUser']" class="w3-button w3-round-xlarge w3-left" style="background-color: #0275B1; margin-top: 10px; color: white">+Add</a>

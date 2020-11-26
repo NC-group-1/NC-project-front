@@ -1,41 +1,33 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
-import {AfterViewInit, ViewChild} from '@angular/core';
-import {MatPaginator} from '@angular/material/paginator';
-
-export interface ListUsers {
-  name: string;
-  surname: string;
-  email: string;
-  role: string;
-  activated: boolean;
-  edit: boolean;
-}
+import {PageEvent} from '@angular/material/paginator';
+import {HttpClientService} from '../service/http-client.service';
+import {UserModel} from '../../model/UserModel';
 
 @Component({
   selector: 'app-list-project',
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.scss']
 })
-export class ListUsersComponent implements AfterViewInit{
+
+export class ListUsersComponent implements OnInit {
   selectedUser: string;
-  displayedColumns: string[] = ['select', 'name', 'surname', 'email', 'role', 'activated', 'editBtn'];
-  listUsers: ListUsers[] = [
+  length = 0;
+  pageSize = 5;
+  pageIndex = 0;
+  pageSizeOptions: number[] = [5, 10, 15];
+
+  displayedColumns: string[] = ['user_id','select','name', 'surname', 'email', 'role', 'activated', 'editBtn'];
+  listUsers: UserModel[] = [
     {name: 'Name1', surname: 'Surname1', email: 'email1', role: 'Admin', activated: false, edit: false},
     {name: 'Name2', surname: 'Surname2', email: 'email2', role: 'Manager', activated: false, edit: false}
   ];
-  dataSource = new MatTableDataSource<ListUsers>(this.listUsers);
-  selection = new SelectionModel<ListUsers>(true, []);
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
+  dataSource = new MatTableDataSource<UserModel>(this.listUsers);
+  selection = new SelectionModel<UserModel>(true, []);
 
-
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
-
-  constructor() {
+  constructor(private httpClientService: HttpClientService) {
     this.selectedUser = '';
   }
 
@@ -77,12 +69,34 @@ export class ListUsersComponent implements AfterViewInit{
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  checkboxLabel(row?: ListUsers): string {
+  checkboxLabel(row?: UserModel): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.name + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.user_id + 1}`;
   }
 
+  onPaginationChange (pageEvent: PageEvent): void {
+    this.pageSize = pageEvent.pageSize;
+    this.pageIndex = pageEvent.pageIndex;
+    this.reloadActions();
+  }
 
+  reloadActions(): void {
+    this.httpClientService.getPaginatedActions(this.pageSize, this.pageIndex)
+      .subscribe((data: UserModel[]) => {
+        this.listUsers = data;
+      });
+  }
+
+  reloadNumberOfActions(): void {
+    this.httpClientService.getNumberOfActions().subscribe((data: number) => {
+      this.length = data;
+    });
+  }
+
+  ngOnInit(): void {
+    this.reloadNumberOfActions();
+    this.reloadActions();
+  }
 }
