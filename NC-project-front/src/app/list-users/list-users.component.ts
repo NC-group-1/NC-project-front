@@ -13,27 +13,42 @@ import {UserModel} from '../../model/UserModel';
 
 export class ListUsersComponent implements OnInit {
   selectedUser: string;
+  displayedColumns: string[] = ['user_id','select','name', 'surname', 'email', 'role', 'activated', 'editBtn'];
+  listUsers: UserModel[] = [];
+  dataSource : any;
   length = 0;
   pageSize = 5;
   pageIndex = 0;
   pageSizeOptions: number[] = [5, 10, 15];
+  filter = '';
+  orderBy = '';
+  order = '';
 
-  displayedColumns: string[] = ['user_id','select','name', 'surname', 'email', 'role', 'activated', 'editBtn'];
-  listUsers: UserModel[] = [
-    {name: 'Name1', surname: 'Surname1', email: 'email1', role: 'Admin', activated: false, edit: false},
-    {name: 'Name2', surname: 'Surname2', email: 'email2', role: 'Manager', activated: false, edit: false}
-  ];
-
-  dataSource = new MatTableDataSource<UserModel>(this.listUsers);
   selection = new SelectionModel<UserModel>(true, []);
 
   constructor(private httpClientService: HttpClientService) {
     this.selectedUser = '';
+    this.listUsers =[];
+    this.dataSource = null;
   }
+
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex, this.filter, this.orderBy, this.order)
+      .subscribe(
+      response => {
+        this.listUsers = response;
+        this.dataSource = new MatTableDataSource(this.listUsers);
+        // console.log(JSON.stringify(this.listUsers));
+      },
+      error => console.log(error)
+    );
   }
 
   activate() {
@@ -66,7 +81,7 @@ export class ListUsersComponent implements OnInit {
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
-      this.dataSource.data.forEach(row => this.selection.select(row));
+      this.dataSource.data.forEach((row: UserModel) => this.selection.select(row));
   }
 
   checkboxLabel(row?: UserModel): string {
@@ -79,24 +94,39 @@ export class ListUsersComponent implements OnInit {
   onPaginationChange (pageEvent: PageEvent): void {
     this.pageSize = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
-    this.reloadActions();
+    this.reloadUsers();
   }
 
-  reloadActions(): void {
-    this.httpClientService.getPaginatedActions(this.pageSize, this.pageIndex)
-      .subscribe((data: UserModel[]) => {
-        this.listUsers = data;
-      });
+  reloadUsers(): void {
+    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex, this.filter, this.orderBy, this.order)
+      .subscribe(
+      response => {
+        this.listUsers = response;
+        this.dataSource = new MatTableDataSource(this.listUsers);
+        // console.log(JSON.stringify(this.listUsers));
+      },
+      error => console.log(error)
+    );
   }
 
-  reloadNumberOfActions(): void {
-    this.httpClientService.getNumberOfActions().subscribe((data: number) => {
-      this.length = data;
-    });
+  reloadNumberOfUsers(): void {
+    this.httpClientService.getNumberOfUsers(this.pageSize)
+      .subscribe(
+        data => this.length = data
+      );
   }
 
   ngOnInit(): void {
-    this.reloadNumberOfActions();
-    this.reloadActions();
+    this.reloadNumberOfUsers();
+    this.reloadUsers();
+    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex, this.filter, this.orderBy, this.order)
+      .subscribe(
+      response => {
+        this.listUsers = response;
+        this.dataSource = new MatTableDataSource(this.listUsers);
+        // console.log(JSON.stringify(this.listUsers));
+      },
+      error => console.log(error)
+    );
   }
 }

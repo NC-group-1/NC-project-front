@@ -6,6 +6,12 @@
   </mat-form-field>
 
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <ng-container matColumnDef="user_id">
+        <th [hidden]="true" mat-header-cell *matHeaderCellDef></th>
+        <td [hidden]="true" mat-cell *matCellDef="let element"><p>{{element.user_id}}</p></td>
+      </ng-container>
+
       <ng-container matColumnDef="select">
         <th mat-header-cell *matHeaderCellDef>
           <mat-checkbox (change)="$event ? masterToggle() : null"
@@ -25,13 +31,13 @@
 
       <ng-container matColumnDef="name">
         <th  mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element; let i = index">
+        <td mat-cell *matCellDef="let element;">
           <p [hidden]="element.edit">{{element.name}}</p>
 
           <div [hidden]="!element.edit" style="width: 75%">
             <mat-form-field>
               <mat-label>Edit</mat-label>
-              <input #inputName matInput placeholder="Element name" [value]="element.name" (change)="updateName(i, inputName.value)">
+              <input #inputName matInput placeholder="Element name" [value]="element.name" (change)="updateName(element.user_id, inputName.value)">
             </mat-form-field>
           </div>
         </td>
@@ -39,13 +45,13 @@
 
       <ng-container matColumnDef="surname">
         <th mat-header-cell *matHeaderCellDef> Surname </th>
-        <td mat-cell *matCellDef="let element; let i = index">
+        <td mat-cell *matCellDef="let element;">
           <p [hidden]="element.edit">{{element.surname}}</p>
 
           <div [hidden]="!element.edit" style="width: 75%">
             <mat-form-field>
               <mat-label>Edit</mat-label>
-              <input #inputLink matInput placeholder="Element link" [value]="element.surname" (change)="updateSurname(i, inputLink.value)">
+              <input #inputLink matInput placeholder="Element link" [value]="element.surname" (change)="updateSurname(element.user_id, inputLink.value)">
             </mat-form-field>
           </div>
         </td>
@@ -53,13 +59,13 @@
 
       <ng-container matColumnDef="email">
         <th mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let element; let i = index">
+        <td mat-cell *matCellDef="let element;">
           <p [hidden]="element.edit">{{element.email}}</p>
 
           <div [hidden]="!element.edit" style="width: 75%">
             <mat-form-field>
               <mat-label>Edit</mat-label>
-              <input #inputEmail matInput placeholder="Element link" [value]="element.email" (change)="updateEmail(i, inputEmail.value)">
+              <input #inputEmail matInput placeholder="Element link" [value]="element.email" (change)="updateEmail(element.user_id, inputEmail.value)">
             </mat-form-field>
           </div>
         </td>
@@ -84,7 +90,7 @@
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;">
-          (click)="selection.toggle(row)">
+<!--          (click)="selection.toggle(row)">-->
       </tr>
 
       <tr class="mat-row" *matNoDataRow>
