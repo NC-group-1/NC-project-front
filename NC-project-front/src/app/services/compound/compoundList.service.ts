@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {CompoundModel} from '../../../models/CompoundModel';
+import {Action} from '../../../models/action';
 import {Observable} from 'rxjs';
-import {tap} from 'rxjs/operators';
-import {Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +11,7 @@ export class CompoundListService {
 
   private apiPath = 'http://localhost:8081/';
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient) { }
 
   getCompoundID() {
     return this.http.get<CompoundModel[]>(this.apiPath + 'compound/');
@@ -30,15 +29,32 @@ export class CompoundListService {
     return this.http.delete(this.apiPath + 'compound/update', compound);
   }*/
 
-
   getPaginatedCompounds(pageSize: number, pageIndex: number): Observable<CompoundModel[]>{
-  return this.http.get<CompoundModel[]>(this.apiPath + 'compounds/page?index=' + pageIndex + '&size=' + pageSize)
-    .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
+    return this.http.get<CompoundModel[]>(this.apiPath + 'compound/page?index=' + pageIndex + '&size=' + pageSize);
   }
 
   getNumberOfCompounds(): Observable<number>{
-  return this.http.get<number>(this.apiPath + 'compounds/number')
-    .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
+    return this.http.get<number>(this.apiPath + 'compound/number');
+  }
+
+  getActionOfCompound(id: number) {
+    return this.http.get<CompoundModel[]>(this.apiPath + 'compound/action'+id);
+  }
+
+  postActionInCompound(action: CompoundModel): Observable<any> {
+    return this.http.post(this.apiPath + 'compound/action', action);
+  }
+
+  /*deleteActionInCompound(action: CompoundModel): Observable<any> {
+    return this.http.delete(this.apiPath + 'compound/action', action);
+  }*/
+
+  getPaginatedAction(pageSize: number, pageIndex: number): Observable<Action[]>{
+    return this.http.get<Action[]>(this.apiPath + 'action/page?index=' + pageIndex + '&size=' + pageSize);
+  }
+
+  getNumberOfAction(): Observable<number>{
+    return this.http.get<number>(this.apiPath + 'action/number')
   }
 
 }

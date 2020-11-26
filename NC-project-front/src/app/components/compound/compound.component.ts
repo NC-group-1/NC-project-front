@@ -6,25 +6,6 @@ import {CompoundListService} from '../../services/compound/compoundList.service'
 import {CompoundModel} from '../../../models/CompoundModel';
 import {MatSnackBar} from '@angular/material/snack-bar';
 
-/*export interface PeriodicElement {
-  id: number;
-  name: string;
-  description: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {id: 1, name: 'Compound #10', description: 'Ipsum illum he la pillotre illum he la pillotre'},
-  {id: 2, name: 'Compound #9', description: 'Ipsum illum he la pillotre illum he la pillotre'},
-  {id: 3, name: 'Compound #8', description: 'Ipsum illum he la pillotre illum he la pillotre'},
-  {id: 4, name: 'Compound #7', description: 'Ipsum illum he la pillotre'},
-  {id: 5, name: 'Compound #6', description: 'Ipsum illum he la pillotre'},
-  {id: 6, name: 'Compound #5', description: 'Ipsum illum he la pillotre'},
-  {id: 7, name: 'Compound #4', description: 'Ipsum illum he la pillotre'},
-  {id: 8, name: 'Compound #3', description: 'Ipsum illum he la pillotre'},
-  {id: 9, name: 'Compound #2', description: 'Ipsum illum he la pillotre'},
-  {id: 10, name: 'Compound #1', description: 'Ipsum illum he la pillotre'},
-];*/
-
 /**
  * @title Basic Inputs
  */
@@ -35,10 +16,10 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class CompoundComponent implements OnInit {
   displayedColumns: string[] = ['select', 'id', 'name', 'description', 'open', 'edit'];
-  //dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
   listCompound: CompoundModel[];
   dataSource = new MatTableDataSource<CompoundModel>();
   selection = new SelectionModel<CompoundModel>(true, []);
+
   length = 0;
   pageSize = 5;
   pageIndex = 0;
@@ -125,16 +106,17 @@ export class CompoundComponent implements OnInit {
     });
   }
 
-    ngOnInit(): void {
-      this.reloadNumberOfCompounds();
-      this.reloadCompounds();
-      this.compoundListService.getPaginatedCompounds(this.pageSize, this.pageIndex).subscribe(
-        response => {
-          this.listCompound = response;
-          this.dataSource = new MatTableDataSource(this.listCompound);
-        },
-        error => console.log(error)
-      );
+  ngOnInit(): void {
+    this.reloadNumberOfCompounds();
+    this.reloadCompounds();
+    this.compoundListService.getPaginatedCompounds(this.pageSize, this.pageIndex).subscribe(
+      response => {
+        this.listCompound = response;
+        this.dataSource = new MatTableDataSource(this.listCompound);
+      },
+      error => console.log(error)
+    );
 
-    }
+  }
+  
 }
