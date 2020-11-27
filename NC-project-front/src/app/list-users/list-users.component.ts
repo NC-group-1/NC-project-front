@@ -1,9 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {PageEvent} from '@angular/material/paginator';
 import {HttpClientService} from '../service/http-client.service';
+import {UserResponseModel} from '../../model/UserResponseModel';
 import {UserModel} from '../../model/UserModel';
+import {Sort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-list-project',
@@ -13,9 +15,10 @@ import {UserModel} from '../../model/UserModel';
 
 export class ListUsersComponent implements OnInit {
   selectedUser: string;
-  displayedColumns: string[] = ['user_id','select','name', 'surname', 'email', 'role', 'activated', 'editBtn'];
-  listUsers: UserModel[] = [];
-  dataSource : any;
+  displayedColumns: string[] = ['user_id', 'select', 'name', 'surname', 'email', 'role', 'activated', 'editBtn'];
+  responseUser?: UserResponseModel;
+  listUsers: UserModel[];
+  dataSource: any;
   length = 0;
   pageSize = 5;
   pageIndex = 0;
@@ -28,8 +31,28 @@ export class ListUsersComponent implements OnInit {
 
   constructor(private httpClientService: HttpClientService) {
     this.selectedUser = '';
-    this.listUsers =[];
-    this.dataSource = null;
+    this.listUsers = [];
+    this.dataSource = new MatTableDataSource();
+  }
+
+  ngOnInit(): void {
+    this.reloadUsers();
+  }
+
+  reloadUsers(): void {
+    console.log(this.orderBy);
+    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order)
+      .subscribe(
+        response => {
+          // console.log(JSON.stringify(response));
+          this.responseUser = response;
+          this.listUsers = response.list;
+          this.dataSource = new MatTableDataSource(this.listUsers);
+          this.length = response.size;
+          // console.log(JSON.stringify(this.listUsers));
+        },
+        error => console.log(error)
+      );
   }
 
   // applyFilter(event: Event) {
@@ -38,21 +61,22 @@ export class ListUsersComponent implements OnInit {
   // }
 
   applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex, this.filter, this.orderBy, this.order)
-      .subscribe(
-      response => {
-        this.listUsers = response;
-        this.dataSource = new MatTableDataSource(this.listUsers);
-        // console.log(JSON.stringify(this.listUsers));
-      },
-      error => console.log(error)
-    );
+    this.filter = (event.target as HTMLInputElement).value;
+    // this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.reloadUsers();
   }
 
   activate() {
     this.selection.selected.forEach(select => select.activated = !select.activated);
+    this.selection.selected
+      .forEach(value => {
+          this.httpClientService.updateUser(value)
+            .subscribe(
+              response => console.log(response),
+              error => console.log(error)
+            );
+        }
+      );
   }
 
   updateName(index: number, name: string) {
@@ -68,8 +92,15 @@ export class ListUsersComponent implements OnInit {
   }
 
   change(index: number) {
-    // console.log(JSON.stringify(this.listProject));
     this.listUsers[index].edit = !this.listUsers[index].edit;
+
+    if (!this.listUsers[index].edit) {
+      this.httpClientService.updateUser(this.listUsers[index])
+        .subscribe(
+          response => console.log(response),
+          error => console.log(error)
+        );
+    }
   }
 
   isAllSelected() {
@@ -91,42 +122,15 @@ export class ListUsersComponent implements OnInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.user_id + 1}`;
   }
 
-  onPaginationChange (pageEvent: PageEvent): void {
+  onPaginationChange(pageEvent: PageEvent): void {
     this.pageSize = pageEvent.pageSize;
     this.pageIndex = pageEvent.pageIndex;
     this.reloadUsers();
   }
 
-  reloadUsers(): void {
-    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex, this.filter, this.orderBy, this.order)
-      .subscribe(
-      response => {
-        this.listUsers = response;
-        this.dataSource = new MatTableDataSource(this.listUsers);
-        // console.log(JSON.stringify(this.listUsers));
-      },
-      error => console.log(error)
-    );
-  }
-
-  reloadNumberOfUsers(): void {
-    this.httpClientService.getNumberOfUsers(this.pageSize)
-      .subscribe(
-        data => this.length = data
-      );
-  }
-
-  ngOnInit(): void {
-    this.reloadNumberOfUsers();
+  sortData(orderBy: string) {
+    this.orderBy = orderBy;
+    this.order == '' ? this.order = 'DESC' : this.order = '';
     this.reloadUsers();
-    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex, this.filter, this.orderBy, this.order)
-      .subscribe(
-      response => {
-        this.listUsers = response;
-        this.dataSource = new MatTableDataSource(this.listUsers);
-        // console.log(JSON.stringify(this.listUsers));
-      },
-      error => console.log(error)
-    );
   }
 }

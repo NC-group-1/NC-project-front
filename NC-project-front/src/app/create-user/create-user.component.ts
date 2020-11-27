@@ -41,7 +41,7 @@ export class CreateUserComponent implements OnInit {
   ngOnInit(): void {}
 
   createUser(emailUser: string) {
-    this.httpClientService.post(emailUser, this.role)
+    this.httpClientService.createUser(emailUser, this.role)
       .subscribe(
         response => console.log(response),
         error => console.log(error)
