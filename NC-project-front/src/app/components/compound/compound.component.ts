@@ -16,10 +16,10 @@ import {CompoundsPage} from '../../../models/CompoundsPage';
   styleUrls: ['./compound.component.scss']
 })
 export class CompoundComponent implements OnInit {
-  displayedColumns: string[] = ['select', 'id', 'name', 'description', 'open', 'edit'];
+  selectedCompounds: string;
+  displayedColumns: string[] = ['id', 'radioBtn', 'name', 'description', 'open', 'edit'];
   listCompound: CompoundModel[];
-  dataSource = new MatTableDataSource<CompoundModel>();
-  selection = new SelectionModel<CompoundModel>(true, []);
+  dataSource: any;
 
   length = 0;
   pageSize = 5;
@@ -27,6 +27,7 @@ export class CompoundComponent implements OnInit {
   pageSizeOptions: number[] = [5, 10, 15];
 
   constructor(private compoundListService: CompoundListService, private _snackBar: MatSnackBar){
+    this.selectedCompounds = '';
     this.listCompound = [];
     this.dataSource = null;
   }
@@ -38,53 +39,65 @@ export class CompoundComponent implements OnInit {
     });
   }
 
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource?.data.length;
-    return numSelected === numRows;
+  /*open(index: number) {
+    this.httpClientService.postProject(this.form.value)
+      .subscribe(
+        response => console.log(response),
+        error => console.log(error)
+      );
+    this.router.navigateByUrl('/compound/description');
+}
+    console.log(this.selectedProject);
   }
+*/
 
-  /** Selects all rows if they are not all selected; otherwise clear selection. */
-  masterToggle() {
-    this.isAllSelected() ?
-        this.selection.clear() :
-        this.dataSource?.data.forEach(row => this.selection.select(row));
-  }
+  /** Delete compound if they are selected */
+/*  deleteCompound(index: number){
+    this.listCompound[index].delete = !this.listCompound[index].delete;
 
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: CompoundModel): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+    if(!this.listCompound[index].delete) {
+      this.compoundListService.deleteCompound(this.listCompound[index])
+        .subscribe(
+          response => console.log(response),
+          error => console.log(error)
+        );
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
-  }
-
-  /** Delete all compounds if they are selected */
-  deleteCompound(){
-    this.dataSource.data = this.dataSource?.data.filter(row => {return !this.selection.isSelected(row)});
-    this.selection.clear();
-  }
+  }*/
 
   updateDesc(index: number, description: string) {
-    this.dataSource[index].description = description;
+    this.listCompound[index].description = description;
   }
 
   updateName(index: number, name: string) {
-    this.dataSource[index].name = name;
+    this.listCompound[index].name = name;
   }
 
   change(index: number) {
-    this.dataSource[index].edit = !this.dataSource[index].edit;
+    this.listCompound[index].edit = !this.listCompound[index].edit;
+
+    if(!this.listCompound[index].edit) {
+      this.compoundListService.updateCompound(this.listCompound[index])
+        .subscribe(
+          response => console.log(response),
+          error => console.log(error)
+        );
+    }
   }
 
   /** Add new compound*/
   addCompound(){
     const max = this.dataSource?.data.reduce((prev,current)=>{
-    return (prev.id > current.id) ? prev : current
+      return (prev.id > current.id) ? prev : current
     })
+
     this.dataSource?.data.unshift({id : max.id + 1, name : 'Compound #'+(max.id + 1), description: " "});
     return this.dataSource.filter = "";
+
+    this.compoundListService.postCompound({id : max.id + 1, name : 'Compound #'+(max.id + 1), description: " "})
+      .subscribe(
+        response => console.log(response),
+        error => console.log(error)
+    );
   }
 
   onPaginationChange(pageEvent: PageEvent): void {
@@ -96,9 +109,12 @@ export class CompoundComponent implements OnInit {
   reloadCompounds(): void {
     this.compoundListService.getPaginatedCompounds()
        .subscribe((data: CompoundsPage) => {
-      this.dataSource.data = data.list;
+      //this.dataSource.data = data.list;
       this.length = data.size;
-      this.listCompound = data.list;
+      const newList = data.list.slice(this.pageSize*this.pageIndex,this.pageSize*this.pageIndex+this.pageSize);
+      this.dataSource = new MatTableDataSource(newList);
+      this.listCompound = newList;
+
     });
   }
 
@@ -106,6 +122,7 @@ export class CompoundComponent implements OnInit {
   ngOnInit(): void {
     this.compoundListService.getPaginatedCompounds().subscribe(
       response => {
+        this.length = response.size;
         this.listCompound = response.list;
         this.dataSource = new MatTableDataSource(this.listCompound);
       },

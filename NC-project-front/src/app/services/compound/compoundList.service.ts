@@ -20,7 +20,7 @@ export class CompoundListService {
   }
 
   postCompound(compound: CompoundModel): Observable<any> {
-  return this.http.post(this.apiPath + 'compound', compound);
+    return this.http.post(this.apiPath + 'compound', compound);
   }
 
   updateCompound(compound: CompoundModel): Observable<any> {

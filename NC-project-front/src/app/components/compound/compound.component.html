@@ -5,96 +5,80 @@
       <path stroke="#bebebe" d="M5 0 1215 0" />
     </g>
   </svg>
-        <div class="m-5">
-          <div class="example-container3 mat-elevation-z8">
-            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-              <!-- Checkbox Column -->
-              <ng-container matColumnDef="select">
-                <th mat-header-cell *matHeaderCellDef>
-                  <mat-checkbox (change)="$event ? masterToggle() : null"
-                                [checked]="selection.hasValue() && isAllSelected()"
-                                [indeterminate]="selection.hasValue() && !isAllSelected()"
-                                [aria-label]="checkboxLabel()">
-                  </mat-checkbox>
-                </th>
-                <td mat-cell *matCellDef="let row">
-                  <mat-checkbox (click)="$event.stopPropagation()"
-                                (change)="$event ? selection.toggle(row) : null"
-                                [checked]="selection.isSelected(row)"
-                                [aria-label]="checkboxLabel(row)">
-                  </mat-checkbox>
-                </td>
-              </ng-container>
+  <mat-radio-group
+    aria-labelledby="example-radio-group-label"
+    class="example-radio-group"
+    [(ngModel)]="selectedCompounds">
+    <table width="100%" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="id">
+        <th [hidden]="true" mat-header-cell *matHeaderCellDef></th>
+        <td [hidden]="true" mat-cell *matCellDef="let element"><p>{{element.id}}</p></td>
+      </ng-container>
 
-              <!-- Position Column -->
-              <ng-container matColumnDef="id">
-                <th mat-header-cell *matHeaderCellDef></th>
-                <td mat-cell *matCellDef="let element"></td>
-              </ng-container>
+      <ng-container matColumnDef="radioBtn">
+        <th width="5%" mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element"><mat-radio-button class="w3-margin-left example-radio-button" [value]="element.name"></mat-radio-button></td>
+      </ng-container>
 
-              <!-- Name Column -->
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Compound </th>
-                <td style="margin:0;" mat-cell *matCellDef="let element; let i = index">
-                  <p [hidden]="element.edit">{{element.name}}</p>
+      <ng-container matColumnDef="name">
+        <th width="30%" mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element;">
+          <p [hidden]="element.edit">{{element.name}}</p>
 
-                  <div [hidden]="!element.edit" style="width: 75%">
-                    <mat-form-field>
-                      <mat-label>Edit</mat-label>
-                      <input #inputName matInput placeholder="Element name" [value]="element.name" (change)="updateName(i, inputName.value)">
-                    </mat-form-field>
-                  </div>
-                </td>
-              </ng-container>
+          <div [hidden]="!element.edit" style="width: 75%">
+            <mat-form-field>
+              <mat-label>Edit</mat-label>
+              <input #inputName matInput placeholder="Element name" [value]="element.name" (change)="updateName(element.id, inputName.value)">
+            </mat-form-field>
+          </div>
+        </td>
+      </ng-container>
 
-              <!-- Description Column -->
-              <ng-container matColumnDef="description">
-                <th mat-header-cell *matHeaderCellDef> Description </th>
-                <td mat-cell *matCellDef="let element; let i = index">
-                  <p [hidden]="element.edit">{{element.description}}</p>
+      <ng-container matColumnDef="description">
+        <th width="25%" mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element;">
+          <p [hidden]="element.edit">{{element.description}}</p>
 
-                  <div [hidden]="!element.edit" style="width: 75%">
-                    <mat-form-field>
-                      <mat-label>Edit</mat-label>
-                      <input #inputDesc matInput placeholder="Element description" [value]="element.description" (change)="updateDesc(i, inputDesc.value)">
-                    </mat-form-field>
-                  </div>
-                </td>
-              </ng-container>
+          <div [hidden]="!element.edit" style="width: 75%">
+            <mat-form-field>
+              <mat-label>Edit</mat-label>
+              <input #inputLink matInput placeholder="Element description" [value]="element.description" (change)="updateLink(element.id, inputLink.value)">
+            </mat-form-field>
+          </div>
+        </td>
+      </ng-container>
 
-              <!-- Open Column -->
-              <ng-container  matColumnDef="open">
-                <th   mat-header-cell *matHeaderCellDef> Details </th>
-                <td [routerLink]="['/compound/description']" mat-cell *matCellDef="let element"><a id="butStyleOpen"> Open </a></td>
-              </ng-container>
+      <!-- Open Column -->
+      <ng-container  matColumnDef="open">
+        <th   mat-header-cell *matHeaderCellDef> Details </th>
+        <td [routerLink]="['/compound/description']" mat-cell *matCellDef="let element"><a id="butStyleOpen"> Open </a></td>
+      </ng-container>
 
-              <!-- Edit Column -->
-              <ng-container style="width:10%;"  matColumnDef="edit">
-                <th style="width:5%;"  mat-header-cell *matHeaderCellDef></th>
-                <td  style="width:5%;" mat-cell *matCellDef="let element; let i = index">
-                  <button class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white"  (click)="change(i)"><i class="fa fa-pencil"></i></button>
-                </td>
-              </ng-container>
+      <ng-container matColumnDef="edit">
+        <th width="5%" mat-header-cell *matHeaderCellDef> Edit </th>
+        <td mat-cell *matCellDef="let element">
+          <button class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white" (click)="change(element.id)"><i class="fa fa-pencil"></i></button>
+        </td>
+      </ng-container>
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-                  (click)="selection.toggle(row)">
-              </tr>
-            </table>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+  </mat-radio-group>
             <mat-paginator [pageSizeOptions]="pageSizeOptions"
                  [length]="length"
                  [pageSize]="pageSize"
                  (page)="onPaginationChange($event)" showFirstLastButtons>
             </mat-paginator>
-          </div>
 
           <p id="underTable">*if you want to edit description of compounds, click on Open</p>
           <section>
             <div class="example-button-row">
-              <button id="btn1" mat-raised-button color="primary" (click)="deleteCompound(); openSnackBar('Compound have been removed!', 'Okey')" >Delete</button>
+              <button id="btn1" mat-raised-button color="primary" (click)="deleteCompound(element.id); openSnackBar('Compound have been removed!', 'Okey')" >Delete</button>
               <button id="btn2" mat-raised-button color="primary" (click)="addCompound(); openSnackBar('A new compound has been created!', 'Okey')">New</button>
             </div>
           </section>
-        </div>
+
 
 </div>
