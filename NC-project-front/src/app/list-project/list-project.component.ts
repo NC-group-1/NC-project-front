@@ -3,6 +3,7 @@ import {MatTableDataSource} from '@angular/material/table';
 import {HttpClientService} from '../service/http-client.service';
 import {ProjectModel} from '../../model/ProjectModel';
 import {PageEvent} from '@angular/material/paginator';
+import {ProjectResponseModel} from '../../model/ProjectResponseModel';
 
 @Component({
   selector: 'app-list-project',
@@ -12,40 +13,65 @@ import {PageEvent} from '@angular/material/paginator';
 export class ListProjectComponent implements OnInit{
   selectedProject: string;
   displayedColumns: string[] = ['project_id', 'radioBtn', 'name', 'link', 'date', 'role', 'archived', 'editBtn'];
-  listProject: ProjectModel[];
+  responseProject?: ProjectResponseModel;
+  listProjects: ProjectModel[];
   dataSource: any;
   length = 0;
   pageSize = 5;
   pageIndex = 0;
   pageSizeOptions: number[] = [5, 10, 15];
+  filter = '';
+  orderBy = '';
+  order = '';
 
   constructor(private httpClientService: HttpClientService) {
     this.selectedProject = '';
-    this.listProject = [];
-    this.dataSource = null;
+    this.listProjects = [];
+    this.dataSource = new MatTableDataSource();
   }
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  // }
+
+  ngOnInit(): void {
+    this.reloadProjects();
+  }
+
+  reloadProjects(): void {
+    console.log(this.orderBy);
+    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order)
+      .subscribe(
+        response => {
+          // console.log(JSON.stringify(response));
+          this.responseProject = response;
+          this.listProjects = response.list;
+          this.dataSource = new MatTableDataSource(this.listProjects);
+          this.length = response.size;
+          // console.log(JSON.stringify(this.listUsers));
+        },
+        error => console.log(error)
+      );
+  }
+
+  applyFilter(event: Event) {
+    this.filter = (event.target as HTMLInputElement).value;
+    this.reloadProjects();
+  }
 
   open() {
     console.log(this.selectedProject);
   }
 
   updateName(index: number, name: string) {
-    this.listProject[index].name = name;
+    this.listProjects[index].name = name;
   }
 
   updateLink(index: number, link: string) {
-    this.listProject[index].link = link;
+    this.listProjects[index].link = link;
   }
 
   change(index: number) {
-    this.listProject[index].edit = !this.listProject[index].edit;
+    this.listProjects[index].edit = !this.listProjects[index].edit;
 
-    if(!this.listProject[index].edit) {
-      this.httpClientService.updateProject(this.listProject[index])
+    if(!this.listProjects[index].edit) {
+      this.httpClientService.updateProject(this.listProjects[index])
         .subscribe(
           response => console.log(response),
           error => console.log(error)
@@ -59,33 +85,10 @@ export class ListProjectComponent implements OnInit{
     this.reloadProjects();
   }
 
-  reloadProjects(): void {
-    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex)
-      .subscribe(
-        data => {
-          this.listProject = data;
-          this.dataSource = new MatTableDataSource(this.listProject);
-        }
-      );
-  }
-  reloadNumberOfProjects(): void {
-    this.httpClientService.getNumberOfProjects(this.pageSize)
-      .subscribe(
-      data => this.length = data
-    );
-  }
-
-  ngOnInit(): void {
-    this.reloadNumberOfProjects();
+  sortData(orderBy: string) {
+    this.orderBy = orderBy;
+    this.order == '' ? this.order = 'DESC' : this.order = '';
     this.reloadProjects();
-    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex).subscribe(
-      response => {
-        this.listProject = response;
-        this.dataSource = new MatTableDataSource(this.listProject);
-        // console.log(JSON.stringify(this.listProject));
-      },
-      error => console.log(error)
-    );
-
   }
+
 }
