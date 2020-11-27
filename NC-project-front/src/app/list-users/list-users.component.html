@@ -61,7 +61,7 @@
     </ng-container>
 
     <ng-container matColumnDef="email">
-      <th *matHeaderCellDef mat-header-cell> Email</th>
+      <th *matHeaderCellDef mat-header-cell (click)="sortData('email')"> Email</th>
       <td *matCellDef="let element;" mat-cell>
         <p [hidden]="element.edit">{{element.email}}</p>
 
@@ -76,7 +76,7 @@
     </ng-container>
 
     <ng-container matColumnDef="role">
-      <th *matHeaderCellDef mat-header-cell> Role</th>
+      <th *matHeaderCellDef mat-header-cell (click)="sortData('role')"> Role</th>
       <td *matCellDef="let element" mat-cell> {{element.role}} </td>
     </ng-container>
 
