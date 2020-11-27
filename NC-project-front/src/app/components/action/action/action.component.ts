@@ -7,6 +7,7 @@ import {ParameterKey} from '../../../../models/parameter-key';
 import {ParameterKeyService} from '../../../services/parameterKey/parameter-key.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {HttpErrorResponse} from '@angular/common/http';
+import {ActionPage} from '../../../../models/action-page';
 
 @Component({
   selector: 'app-action',
@@ -36,7 +37,7 @@ export class ActionComponent implements OnInit {
     this.manageActionForm = this.formBuilder.group({
       id: new FormControl(null),
       name: new FormControl(''),
-      key: this.formBuilder.group({id: new FormControl(null), key: new FormControl('') }),
+      key: this.formBuilder.group({id: new FormControl(0), key: new FormControl('') }),
       type: new FormControl('', this.validateActionTypeInput()),
       description: new FormControl('')
     });
@@ -50,15 +51,10 @@ export class ActionComponent implements OnInit {
 
   reloadActions(): void {
     this.actionService.getPaginatedActions(this.pageSize, this.pageIndex)
-        .subscribe((data: Action[]) => {
-      this.actionTableDS.data = data;
-      this.actions = data;
-    });
-  }
-
-  reloadNumberOfActions(): void {
-    this.actionService.getNumberOfActions().subscribe((data: number) => {
-      this.length = data;
+        .subscribe((data: ActionPage) => {
+      this.actionTableDS.data = data.list;
+      this.actions = data.list;
+      this.length = data.size;
     });
   }
 
@@ -82,25 +78,33 @@ export class ActionComponent implements OnInit {
     if (this.keys.length === 1 && this.keys[0].key === this.manageActionForm.value.key.key) {
       this.manageActionForm.get('key.id').setValue(this.keys[0].id);
     } else {
-      this.manageActionForm.get('key.id').setValue(null);
+      this.manageActionForm.get('key.id').setValue(0);
     }
   }
 
   reloadKeys(): void {
     this.parameterKeyService.getSearchedParameterKeys(this.manageActionForm.value.key.key).subscribe(
       (data: ParameterKey[]) => {this.keys = data; });
+    if (this.keys === null) {
+      this.keys = [];
+    }
   }
 
   ngOnInit(): void {
-    this.reloadNumberOfActions();
     this.reloadActions();
     this.reloadKeys();
     this.reloadActionTypes();
   }
 
   onSubmitButton(): void {
-    console.log(this.manageActionForm.value);
     this.manageActionForm.disable();
+    if (this.manageActionForm.value.key.key === '') {
+      // this.manageActionForm.get('key').setValue(null);
+      this.manageActionForm.value.key = null;
+    }
+    if (this.manageActionForm.value.description === '') {
+      this.manageActionForm.value.description = null;
+    }
     if (this.creation && !this.editing){
       this.saveCreatedAction();
     } else {
@@ -108,6 +112,7 @@ export class ActionComponent implements OnInit {
     }
     this.manageActionForm.enable();
     this.cancelEdit();
+    this.reloadActions();
   }
 
   private saveEditedAction(): void {
@@ -119,6 +124,7 @@ export class ActionComponent implements OnInit {
   }
 
   private saveCreatedAction(): void {
+    console.log(this.manageActionForm.value);
     this.actionService.createAction(this.manageActionForm.value).subscribe((result) => {
       console.log(result);
     }, (error: HttpErrorResponse) => {
@@ -133,8 +139,9 @@ export class ActionComponent implements OnInit {
       name: '',
       type: '',
       description: '',
-      key: { key: '' }
+      key: {id: 0, key: '' }
     });
+    this.reloadKeys();
     console.log(this.manageActionForm.value);
   }
 

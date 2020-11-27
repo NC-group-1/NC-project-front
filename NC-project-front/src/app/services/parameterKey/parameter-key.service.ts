@@ -15,7 +15,7 @@ export class ParameterKeyService {
   constructor(private http: HttpClient, private router: Router) { }
 
   getSearchedParameterKeys(searchStr: string): Observable<ParameterKey[]>{
-    return this.http.get<ParameterKey[]>(this.apiPath + 'parameter-key/search?string=' + searchStr)
+    return this.http.get<ParameterKey[]>(this.apiPath + 'api/keys?name=' + searchStr)
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 }

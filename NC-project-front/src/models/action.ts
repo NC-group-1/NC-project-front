@@ -5,5 +5,5 @@ export class Action {
   name: string;
   description?: string;
   type: string;
-  key: ParameterKey;
+  key?: ParameterKey;
 }

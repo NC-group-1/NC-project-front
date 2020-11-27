@@ -58,18 +58,18 @@
              formControlName="key"
              [matAutocomplete]="auto" >
       </div>
-      <mat-hint *ngIf="manageActionForm.value.key.id === null && manageActionForm.value.key.key === ''">
+      <mat-hint *ngIf="manageActionForm.value.key.id === 0 && manageActionForm.value.key.key === ''">
         Action will be without parameter key
       </mat-hint>
-      <mat-hint *ngIf="manageActionForm.value.key.id === null && manageActionForm.value.key.key !== ''">
+      <mat-hint *ngIf="manageActionForm.value.key.id === 0 && manageActionForm.value.key.key !== ''">
         Will be created new parameter key
       </mat-hint>
-      <mat-hint *ngIf="manageActionForm.value.key.id !== null">
+      <mat-hint *ngIf="manageActionForm.value.key.id !== 0">
         Will be used existing parameter key
       </mat-hint>
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let key of keys" [value]="key.key"
-                    (onSelectionChange)="this.manageActionForm.get('key.id').setValue( key.id)">
+                    (click)="this.manageActionForm.get('key.id').setValue( key.id)">
           {{key.key}}
         </mat-option>
       </mat-autocomplete>
