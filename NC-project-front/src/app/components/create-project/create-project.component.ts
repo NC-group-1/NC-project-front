@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClientService} from '../../service/projects/http-client.service';
+import {HttpClientService} from '../../services/projects/http-client.service';
 import {FormControl, FormGroup} from '@angular/forms';
 
 @Component({

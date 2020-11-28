@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
-import {HttpClientService} from '../../service/projects/http-client.service';
+import {HttpClientService} from '../../services/projects/http-client.service';
 import {ProjectModel} from '../../../model/ProjectModel';
 import {PageEvent} from '@angular/material/paginator';
 import {ProjectResponseModel} from '../../../model/ProjectResponseModel';
