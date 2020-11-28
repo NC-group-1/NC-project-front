@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { CreateProjectComponent } from './create-project/create-project.component';
-import { ListProjectComponent } from './list-project/list-project.component';
+import { CreateProjectComponent } from './components/create-project/create-project.component';
+import { ListProjectComponent } from './components/list-project/list-project.component';
 import {HttpClientModule} from '@angular/common/http';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';

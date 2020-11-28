@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
-import {HttpClientService} from '../service/http-client.service';
-import {ProjectModel} from '../../model/ProjectModel';
+import {HttpClientService} from '../../service/projects/http-client.service';
+import {ProjectModel} from '../../../model/ProjectModel';
 import {PageEvent} from '@angular/material/paginator';
-import {ProjectResponseModel} from '../../model/ProjectResponseModel';
+import {ProjectResponseModel} from '../../../model/ProjectResponseModel';
 
 @Component({
   selector: 'app-list-project',
