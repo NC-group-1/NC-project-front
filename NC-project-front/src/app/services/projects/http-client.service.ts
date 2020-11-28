@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {ProjectModel} from '../../../model/ProjectModel';
+import {ProjectModel} from '../../../models/ProjectModel';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
-import {ProjectResponseModel} from '../../../model/ProjectResponseModel';
+import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
 import {tap} from 'rxjs/operators';
 
 @Injectable({

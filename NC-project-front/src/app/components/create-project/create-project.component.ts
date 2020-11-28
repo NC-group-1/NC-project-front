@@ -20,7 +20,6 @@ export class CreateProjectComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
   }
 
   createProject() {
