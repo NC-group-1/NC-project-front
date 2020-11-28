@@ -14,9 +14,17 @@ import {SignupComponent} from './components/signup/signup.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import {ActivatedRouteSnapshot, Router, RouterModule} from '@angular/router';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { CreateProjectComponent } from './components/create-project/create-project.component';
+import { ListProjectComponent } from './components/list-project/list-project.component';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatTableModule} from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -31,6 +39,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     NavbarComponent,
     MainMenuComponent,
     SettingsComponent,
+    CreateProjectComponent,
+    ListProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -38,9 +48,17 @@ import { SettingsComponent } from './components/settings/settings.component';
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTableModule,
+    MatRadioModule,
+    BrowserAnimationsModule,
+    MatSelectModule,
+    MatPaginatorModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
+    useValue: { appearance: 'fill' },
     useClass: AuthorizationInterceptor,
     multi: true,
   }],

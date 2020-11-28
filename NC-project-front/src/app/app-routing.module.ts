@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
 import {MainPageComponent} from './components/main-page/main-page.component';
 import {LoginPageComponent} from './components/login-page/login-page.component';
 import {ForgotPassEmailComponent} from './components/reset-pass/forgot-pass-email/forgot-pass-email.component';
@@ -11,6 +12,8 @@ import {PageNotFoundComponent} from './components/page-not-found/page-not-found.
 import {SettingsComponent} from './components/settings/settings.component';
 import {LoginActivateGuard} from './guards/login-activate.guard';
 import {MyProfileResolverService} from './services/profile/my-profile-resolver.service';
+import {CreateProjectComponent} from './components/create-project/create-project.component';
+import {ListProjectComponent} from './components/list-project/list-project.component';
 
 const routes: Routes = [
   {
@@ -62,6 +65,14 @@ const routes: Routes = [
   {
     path: '**',
     component: PageNotFoundComponent
+  },
+  {
+    path: 'createProject',
+    component: CreateProjectComponent
+  },
+  {
+    path: 'listProject',
+    component: ListProjectComponent
   }
 ];
 
