@@ -2,9 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {PageEvent} from '@angular/material/paginator';
-import {HttpClientService} from '../service/http-client.service';
-import {UserResponseModel} from '../../model/UserResponseModel';
-import {UserModel} from '../../model/UserModel';
+import {HttpClientService} from '../../service/users/http-client.service';
+import {UserResponseModel} from '../../../model/UserResponseModel';
+import {UserListModel} from '../../../model/UserListModel';
 import {Sort} from '@angular/material/sort';
 
 @Component({
@@ -17,7 +17,7 @@ export class ListUsersComponent implements OnInit {
   selectedUser: string;
   displayedColumns: string[] = ['user_id', 'select', 'name', 'surname', 'email', 'role', 'activated', 'editBtn'];
   responseUser?: UserResponseModel;
-  listUsers: UserModel[];
+  listUsers: UserListModel[];
   dataSource: any;
   length = 0;
   pageSize = 5;
@@ -27,7 +27,7 @@ export class ListUsersComponent implements OnInit {
   orderBy = '';
   order = '';
 
-  selection = new SelectionModel<UserModel>(true, []);
+  selection = new SelectionModel<UserListModel>(true, []);
 
   constructor(private httpClientService: HttpClientService) {
     this.selectedUser = '';
@@ -112,10 +112,10 @@ export class ListUsersComponent implements OnInit {
   masterToggle() {
     this.isAllSelected() ?
       this.selection.clear() :
-      this.dataSource.data.forEach((row: UserModel) => this.selection.select(row));
+      this.dataSource.data.forEach((row: UserListModel) => this.selection.select(row));
   }
 
-  checkboxLabel(row?: UserModel): string {
+  checkboxLabel(row?: UserListModel): string {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }

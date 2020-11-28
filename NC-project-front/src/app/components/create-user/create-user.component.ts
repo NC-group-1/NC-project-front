@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClientService} from '../service/http-client.service';
+import {HttpClientService} from '../../service/users/http-client.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 interface Role {

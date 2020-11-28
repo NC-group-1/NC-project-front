@@ -1,6 +1,6 @@
-import {UserModel} from './UserModel';
+import {UserListModel} from './UserListModel';
 
 export class UserResponseModel {
-  list: UserModel[] = [];
+  list: UserListModel[] = [];
   size: number = 5;
 }

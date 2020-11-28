@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {UserResponseModel} from '../../model/UserResponseModel';
-import {UserModel} from '../../model/UserModel';
+import {UserResponseModel} from '../../../model/UserResponseModel';
+import {UserListModel} from '../../../model/UserListModel';
 import {tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 
@@ -33,7 +33,7 @@ export class HttpClientService {
     return this.httpClient.post(this.urlPath, params);
   }
 
-  updateUser(user: UserModel) {
+  updateUser(user: UserListModel) {
     return this.httpClient.post(this.urlPath + 'user/update', user);
   }
 
