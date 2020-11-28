@@ -112,11 +112,12 @@ export class ActionComponent implements OnInit {
     }
     this.manageActionForm.enable();
     this.cancelEdit();
-    this.reloadActions();
+    // this.reloadActions();
   }
 
   private saveEditedAction(): void {
     this.actionService.updateAction(this.manageActionForm.value).subscribe((result) => {
+      this.reloadActions();
       console.log(result);
     }, (error: HttpErrorResponse) => {
       console.log(error);
@@ -126,6 +127,7 @@ export class ActionComponent implements OnInit {
   private saveCreatedAction(): void {
     console.log(this.manageActionForm.value);
     this.actionService.createAction(this.manageActionForm.value).subscribe((result) => {
+      this.reloadActions();
       console.log(result);
     }, (error: HttpErrorResponse) => {
       console.log(error);
