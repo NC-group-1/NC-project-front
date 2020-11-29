@@ -14,6 +14,7 @@ import {LoginActivateGuard} from './guards/login-activate.guard';
 import {MyProfileResolverService} from './services/profile/my-profile-resolver.service';
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {ListProjectComponent} from './components/list-project/list-project.component';
+import {ActionComponent} from './components/action/action/action.component';
 
 const routes: Routes = [
   {
@@ -73,6 +74,10 @@ const routes: Routes = [
   {
     path: 'listProject',
     component: ListProjectComponent
+  },
+  {
+    path: 'manageAction',
+    component: ActionComponent
   }
 ];
 
