@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import {CreateUserComponent} from './components/create-user/create-user.component';
+import {ListUsersComponent} from './components/list-users/list-users.component';
 
 import {MainPageComponent} from './components/main-page/main-page.component';
 import {LoginPageComponent} from './components/login-page/login-page.component';
@@ -71,11 +73,18 @@ const routes: Routes = [
     component: ListProjectComponent
   },
   {
+    path: 'createUser',
+    component: CreateUserComponent
+  },
+  {
+    path: 'listUsers',
+    component: ListUsersComponent
+  },
+  {
     path: '**',
     component: PageNotFoundComponent
   }
-];
-
+  ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

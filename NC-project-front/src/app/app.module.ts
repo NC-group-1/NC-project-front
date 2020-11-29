@@ -18,6 +18,8 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { ListProjectComponent } from './components/list-project/list-project.component';
+import { CreateUserComponent } from './components/create-user/create-user.component';
+import { ListUsersComponent } from './components/list-users/list-users.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
@@ -25,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MainMenuComponent,
     SettingsComponent,
     CreateProjectComponent,
-    ListProjectComponent
+    ListProjectComponent,
+    CreateUserComponent,
+    ListUsersComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +59,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatRadioModule,
     BrowserAnimationsModule,
     MatSelectModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    ReactiveFormsModule,
+    MatCheckboxModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
