@@ -2,9 +2,9 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {PageEvent} from '@angular/material/paginator';
-import {HttpClientService} from '../../service/users/http-client.service';
-import {UserResponseModel} from '../../../model/UserResponseModel';
-import {UserListModel} from '../../../model/UserListModel';
+import {HttpClientService} from '../../services/users/http-client.service';
+import {UserResponseModel} from '../../../models/UserResponseModel';
+import {UserListModel} from '../../../models/UserListModel';
 import {Sort} from '@angular/material/sort';
 
 @Component({
@@ -130,7 +130,7 @@ export class ListUsersComponent implements OnInit {
 
   sortData(orderBy: string) {
     this.orderBy = orderBy;
-    this.order == '' ? this.order = 'DESC' : this.order = '';
+    this.order === '' ? this.order = 'DESC' : this.order = '';
     this.reloadUsers();
   }
 }

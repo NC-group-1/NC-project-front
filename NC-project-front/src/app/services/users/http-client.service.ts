@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {UserResponseModel} from '../../../model/UserResponseModel';
-import {UserListModel} from '../../../model/UserListModel';
+import {UserResponseModel} from '../../../models/UserResponseModel';
+import {UserListModel} from '../../../models/UserListModel';
 import {tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 

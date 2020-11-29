@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import {HttpClientService} from '../../service/users/http-client.service';
+import {HttpClientService} from '../../services/users/http-client.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 interface Role {
@@ -27,11 +27,11 @@ export class CreateUserComponent implements OnInit {
     {role: 'Engineer'}
   ];
 
-  displayedColumns: string[] = ['role', 'first', 'second', 'third', 'fourth','fifth','sixth','seventh','eighth', 'ninth'];
+  displayedColumns: string[] = ['role', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth'];
   dataSource = this.users;
 
   constructor(private httpClientService: HttpClientService, private router: Router) {
-    this.role ='';
+    this.role = '';
   }
 
   setRole(role: string) {
