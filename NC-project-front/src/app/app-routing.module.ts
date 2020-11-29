@@ -81,12 +81,12 @@ const routes: Routes = [
     component: ListUsersComponent
   },
   {
-    path: '**',
-    component: PageNotFoundComponent
-  },
-  {
     path: 'manageAction',
     component: ActionComponent
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
   ];
 @NgModule({
