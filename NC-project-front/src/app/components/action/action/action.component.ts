@@ -153,7 +153,7 @@ export class ActionComponent implements OnInit {
     this.manageActionForm.get('name').setValue(action.name);
     this.manageActionForm.get('type').setValue(action.type);
     this.manageActionForm.get('description').setValue(action.description);
-    if (action.key === null) {
+    if (action.key.key === null) {
       this.manageActionForm.get('key.key').setValue('');
     }
     else {
