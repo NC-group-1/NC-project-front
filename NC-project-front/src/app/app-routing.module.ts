@@ -63,16 +63,16 @@ const routes: Routes = [
     ]
   },
   {
-    path: '**',
-    component: PageNotFoundComponent
-  },
-  {
     path: 'createProject',
     component: CreateProjectComponent
   },
   {
     path: 'listProject',
     component: ListProjectComponent
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
 
