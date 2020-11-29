@@ -17,6 +17,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import {ActivatedRouteSnapshot, Router, RouterModule} from '@angular/router';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { CompoundListComponent } from './components/compound-list/compound-list.component';
+import { CompoundEditComponent } from './components/compound-edit/compound-edit.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +33,8 @@ import { SettingsComponent } from './components/settings/settings.component';
     NavbarComponent,
     MainMenuComponent,
     SettingsComponent,
+    CompoundListComponent,
+    CompoundEditComponent,
   ],
   imports: [
     BrowserModule,
