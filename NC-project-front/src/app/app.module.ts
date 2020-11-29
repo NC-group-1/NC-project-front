@@ -73,7 +73,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
-    useValue: { appearance: 'fill' },
+    // useValue: { appearance: 'fill' },
     useClass: AuthorizationInterceptor,
     multi: true,
   }],
