@@ -1,0 +1,68 @@
+<div class="bg-white pb-5 shadow-lg">
+  <h2 class="color-nc pt-3 pl-3 m-0 text-shadow-gray">
+    Main menu
+  </h2>
+  <hr class="mx-4">
+  <div class="text-shadow-gray mx-4">
+    <a class="btn m-0 p-0 text-secondary" routerLink="/dashboard">
+      <h3 [class]="router.url === '/dashboard' ? 'text-primary text-uppercase' : ''">
+
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+                d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-5 0v-3H2v3h2z"/>
+        </svg>
+        Dashboard
+      </h3>
+    </a>
+    <br>
+    <a class="btn m-0 p-0 text-secondary" routerLink="/invite">
+      <h3 [class]="router.url === '/invite' ? 'text-primary text-uppercase' : ''">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person-plus" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+                d="M8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6 5c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.516 10.68 8.289 10 6 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10zM13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+        </svg>
+        Invite
+      </h3>
+    </a>
+    <br>
+    <a class="btn m-0 p-0 text-secondary" routerLink="/user">
+      <h3 [class]="router.url.startsWith('/user') ? 'text-primary text-uppercase' : ''">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-person" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+                d="M10 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0zM8 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6 5c0 1-1 1-1 1H3s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C11.516 10.68 10.289 10 8 10c-2.29 0-3.516.68-4.168 1.332-.678.678-.83 1.418-.832 1.664h10z"/>
+        </svg>
+        User
+      </h3>
+    </a>
+    <br>
+    <a class="btn m-0 p-0 text-secondary" routerLink="/library">
+      <h3 [class]="router.url === '/library' ? 'text-primary text-uppercase' : ''">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-journal-bookmark-fill" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg">
+          <path
+            d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
+          <path
+            d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
+          <path fill-rule="evenodd" d="M6 1h6v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8V1z"/>
+        </svg>
+        Manage Library
+      </h3>
+    </a>
+    <br>
+    <a class="btn m-0 p-0 text-secondary" routerLink="/project">
+      <h3 [class]="router.url === '/project' ? 'text-primary text-uppercase' : ''">
+        <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-files" fill="currentColor"
+             xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd"
+                d="M4 2h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V4a1 1 0 0 0-1-1H4z"/>
+          <path
+            d="M6 0h7a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2v-1a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1H4a2 2 0 0 1 2-2z"/>
+        </svg>
+        Project
+      </h3>
+    </a>
+  </div>
+</div>
