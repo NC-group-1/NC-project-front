@@ -34,7 +34,7 @@ export class HttpClientService {
   }
 
   updateUser(user: UserListModel) {
-    return this.httpClient.post(this.urlPath + 'user/update', user);
+    return this.httpClient.put(this.urlPath + 'user/update', user);
   }
 
   // getNumberOfUsers( pageSize: number): Observable<number>{

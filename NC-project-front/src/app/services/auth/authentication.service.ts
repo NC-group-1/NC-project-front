@@ -18,7 +18,7 @@ export class AuthenticationService {
   }
 
   login(user: UserModel): Observable<TokenModel> {
-    console.log(user);
+    // console.log(user);
     return this.http.post<TokenModel>(apiPath + 'user/auth/', user)
       .pipe(tap(({token}) => {
         this.isAuth.next(true);
@@ -26,6 +26,7 @@ export class AuthenticationService {
         this.setToken('Bearer ' + token);
       }));
   }
+
   register(user: UserModel): Observable<any> {
     return this.http.post(apiPath + 'user/', user);
   }

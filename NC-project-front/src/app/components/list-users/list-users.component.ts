@@ -6,6 +6,9 @@ import {HttpClientService} from '../../services/users/http-client.service';
 import {UserResponseModel} from '../../../models/UserResponseModel';
 import {UserListModel} from '../../../models/UserListModel';
 import {Sort} from '@angular/material/sort';
+import {ActivatedRoute, Router} from "@angular/router";
+import {AuthenticationService} from "../../services/auth/authentication.service";
+import {UserModel} from "../../../models/UserModel";
 
 @Component({
   selector: 'app-list-project',
@@ -15,9 +18,11 @@ import {Sort} from '@angular/material/sort';
 
 export class ListUsersComponent implements OnInit {
   selectedUser: string;
+  hasSerchingPermission: boolean;
   displayedColumns: string[] = ['user_id', 'select', 'name', 'surname', 'email', 'role', 'activated', 'editBtn'];
   responseUser?: UserResponseModel;
   listUsers: UserListModel[];
+  user: UserListModel;
   dataSource: any;
   length = 0;
   pageSize = 5;
@@ -29,10 +34,16 @@ export class ListUsersComponent implements OnInit {
 
   selection = new SelectionModel<UserListModel>(true, []);
 
-  constructor(private httpClientService: HttpClientService) {
+  constructor(private activatedRoute: ActivatedRoute, private httpClientService: HttpClientService, private auth: AuthenticationService) {
     this.selectedUser = '';
     this.listUsers = [];
     this.dataSource = new MatTableDataSource();
+    this.activatedRoute.params.subscribe(param => {
+      this.user = this.activatedRoute.snapshot.data.user;
+      if (!auth.getRole().includes('engineer')){
+        this.hasSerchingPermission = true;
+      }
+    });
   }
 
   ngOnInit(): void {

@@ -29,7 +29,8 @@ export class HttpClientService {
   }
 
   updateProject(project: ProjectModel) {
-    return this.httpClient.post(this.urlPath + 'project/update', project);
+    return this.httpClient.put(this.urlPath + 'project/update', project);
   }
+
 
 }

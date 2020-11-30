@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClientService} from '../../services/users/http-client.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ProfileService} from "../../services/profile/profile.service";
+import {AuthenticationService} from "../../services/auth/authentication.service";
+import {UserListModel} from "../../../models/UserListModel";
 
 interface Role {
   role: string;
@@ -15,6 +18,8 @@ interface Role {
 export class CreateUserComponent implements OnInit {
 
   role: string;
+  hasCreatingPermission: boolean;
+  user: UserListModel;
 
   userFormGroup = new FormGroup({
     emailUser: new FormControl('', [Validators.required, Validators.email]),
@@ -30,8 +35,14 @@ export class CreateUserComponent implements OnInit {
   displayedColumns: string[] = ['role', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth'];
   dataSource = this.users;
 
-  constructor(private httpClientService: HttpClientService, private router: Router) {
+  constructor(private activatedRoute: ActivatedRoute, private httpClientService: HttpClientService, private router: Router, private auth: AuthenticationService) {
     this.role = '';
+    this.activatedRoute.params.subscribe(param => {
+      this.user = this.activatedRoute.snapshot.data.user;
+      if (auth.getRole().includes('admin')){
+        this.hasCreatingPermission = true;
+      }
+    });
   }
 
   setRole(role: string) {

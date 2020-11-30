@@ -42,6 +42,7 @@ export class ListProjectComponent implements OnInit{
           // console.log(JSON.stringify(response));
           this.responseProject = response;
           this.listProjects = response.list;
+          console.log(this.listProjects);
           this.dataSource = new MatTableDataSource(this.listProjects);
           this.length = response.size;
           // console.log(JSON.stringify(this.listUsers));

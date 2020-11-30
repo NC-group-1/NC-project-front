@@ -1,9 +1,10 @@
-<div class="form">
+<div class="form" *ngIf="hasSerchingPermission">
   <p class="header">List of users</p>
   <mat-form-field>
     <mat-label>Filter</mat-label>
     <input #input (keyup)="applyFilter($event)" matInput placeholder="Search">
   </mat-form-field>
+
 
   <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
     <ng-container matColumnDef="user_id">

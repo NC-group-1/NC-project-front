@@ -1,4 +1,4 @@
-<div class="form">
+<div class="form" *ngIf="hasCreatingPermission">
   <div class="header">
     <p >New user</p>
     <h6>(We’ll send them an invation email with lint to join)</h6>
@@ -36,7 +36,7 @@
         <mat-error *ngIf="userFormGroup.controls['roleUser'].hasError('required')" >Please choose role</mat-error>
       </mat-form-field>
 
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w3-centered">
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w3-centered ">
 
         <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef> Role </th>
