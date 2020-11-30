@@ -16,6 +16,11 @@ import {MyProfileResolverService} from './services/profile/my-profile-resolver.s
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {ListProjectComponent} from './components/list-project/list-project.component';
 import {ActionComponent} from './components/action/action/action.component';
+import {CompoundListComponent} from './components/compound-list/compound-list.component';
+import {CompoundEditComponent} from './components/compound-edit/compound-edit.component';
+import {CompoundListResolverService} from './services/compound/compound-list-resolver.service';
+import {CompoundResolverService} from './services/compound/compound-resolver.service';
+import {ActionPageResolverService} from './services/action/action-page-resolver.service';
 
 const routes: Routes = [
   {
@@ -37,6 +42,35 @@ const routes: Routes = [
       {
         path: 'change',
         component: ChangePassComponent
+      }
+    ]
+  },
+  {
+    path: 'compounds',
+    canActivate: [LoginActivateGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: '0',
+        pathMatch: 'full'
+      },
+      {
+        path: 'edit/:compoundId',
+        component: CompoundEditComponent,
+        resolve: {compound: CompoundResolverService, actionPage: ActionPageResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
+        path: 'new',
+        component: CompoundEditComponent,
+        resolve: {actionPage: ActionPageResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
+        path: ':page',
+        component: CompoundListComponent,
+        resolve: {compoundPage: CompoundListResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       }
     ]
   },

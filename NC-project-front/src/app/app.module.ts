@@ -24,14 +24,18 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { ListProjectComponent } from './components/list-project/list-project.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { ListUsersComponent } from './components/list-users/list-users.component';
-import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
+import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {MatTableModule} from '@angular/material/table';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { CompoundListComponent } from './components/compound-list/compound-list.component';
+import { CompoundEditComponent } from './components/compound-edit/compound-edit.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -51,6 +55,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ListProjectComponent,
     CreateUserComponent,
     ListUsersComponent,
+    CompoundListComponent,
+    CompoundEditComponent
   ],
   imports: [
     BrowserModule,
@@ -69,7 +75,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatTooltipModule,
     MatRadioModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSortModule,
+    DragDropModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

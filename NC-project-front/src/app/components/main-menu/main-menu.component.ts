@@ -10,8 +10,7 @@ import {Router} from '@angular/router';
 })
 export class MainMenuComponent implements OnInit {
 
-
-  constructor(public router: Router) {
+  constructor(public router: Router, public auth: AuthenticationService) {
   }
 
   ngOnInit(): void {

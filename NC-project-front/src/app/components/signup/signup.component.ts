@@ -36,7 +36,7 @@ export class SignupComponent implements OnInit {
       }).subscribe(
         value => {
           console.log({recipients: [this.form.value.email]});
-          this.passwordService.sendCodeOnEmail({recipients: [this.form.value.email]}).subscribe(
+          this.passwordService.sendCodeOnEmail(this.form.value.email).subscribe(
             value1 => {
             }, error => {
               console.log(error);

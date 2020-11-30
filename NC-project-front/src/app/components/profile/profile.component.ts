@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private profileService: ProfileService, private auth: AuthenticationService) {
     this.activatedRoute.params.subscribe(param => {
       this.user = this.activatedRoute.snapshot.data.user;
-      if (auth.getRole().includes('ROLE_ADMIN') || auth.getUsername() === this.user.email ){
+      if (auth.getRole() === 'ROLE_ADMIN' || auth.getUsername() === this.user.email ){
         this.hasEditingPermission = true;
       }
     });
@@ -65,12 +65,12 @@ export class ProfileComponent implements OnInit {
     this.setEditFalse();
     this.profileService.updateUserProfile(
       {
-        userId: parseInt(this.activatedRoute.snapshot.paramMap.get('id'), 10),
+        userId: this.user.userId,
         name: this.form.value.name,
         surname: this.form.value.surname,
         aboutMe: this.form.value.aboutMe,
       }).subscribe(value =>
-      this.profileService.getUserById(parseInt(this.activatedRoute.snapshot.paramMap.get('id'), 10))
+      this.profileService.getUserById(this.user.userId)
         .subscribe(value1 => this.user = value1));
   }
 }
