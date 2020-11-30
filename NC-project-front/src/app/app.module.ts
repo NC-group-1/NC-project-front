@@ -19,6 +19,11 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CompoundListComponent } from './components/compound-list/compound-list.component';
 import { CompoundEditComponent } from './components/compound-edit/compound-edit.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatTableModule} from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatSortModule} from '@angular/material/sort';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 
 @NgModule({
   declarations: [
@@ -42,6 +47,11 @@ import { CompoundEditComponent } from './components/compound-edit/compound-edit.
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
+    BrowserAnimationsModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    DragDropModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

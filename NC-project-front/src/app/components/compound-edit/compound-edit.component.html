@@ -1,1 +1,33 @@
-<p>compound-edit works!</p>
+<div class="bg-white shadow-lg p-3">
+  <
+
+  <div cdkDropListGroup class="row actions-container w-100">
+
+    <div class="col-6 float-left">
+      <h2>Compound's actions</h2>
+      <div
+        cdkDropList
+        #compoundActionsList="cdkDropList"
+        [cdkDropListData]="compoundActions"
+        class="action-list" (cdkDropListDropped)="drop($event)">
+        <div class="action-box" *ngFor="let action of compoundActions" cdkDrag>{{action.action.name}}</div>
+      </div>
+    </div>
+
+    <div class="col-6 float-left">
+      <div class="example-container">
+        <h2>List of actions</h2>
+        <div
+          cdkDropList
+          #actionsAndCompounds="cdkDropList"
+          [cdkDropListData]="actionsAsCompActions"
+          class="action-list" (cdkDropListDropped)="drop($event)">
+          <div class="action-box" *ngFor="let item of actionsAsCompActions" cdkDrag>{{item.action.name}}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+

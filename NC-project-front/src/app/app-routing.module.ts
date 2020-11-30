@@ -11,6 +11,11 @@ import {PageNotFoundComponent} from './components/page-not-found/page-not-found.
 import {SettingsComponent} from './components/settings/settings.component';
 import {LoginActivateGuard} from './guards/login-activate.guard';
 import {MyProfileResolverService} from './services/profile/my-profile-resolver.service';
+import {CompoundListComponent} from './components/compound-list/compound-list.component';
+import {CompoundEditComponent} from './components/compound-edit/compound-edit.component';
+import {CompoundListResolverService} from './services/compound/compound-list-resolver.service';
+import {CompoundResolverService} from './services/compound/compound-resolver.service';
+import {ActionPageResolverService} from './services/action/action-page-resolver.service';
 
 const routes: Routes = [
   {
@@ -32,6 +37,35 @@ const routes: Routes = [
       {
         path: 'change',
         component: ChangePassComponent
+      }
+    ]
+  },
+  {
+    path: 'compounds',
+    canActivate: [LoginActivateGuard],
+    children: [
+      {
+        path: '',
+        redirectTo: '0',
+        pathMatch: 'full'
+      },
+      {
+        path: 'edit/:compoundId',
+        component: CompoundEditComponent,
+        resolve: {compound: CompoundResolverService, actionPage: ActionPageResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
+        path: 'new',
+        component: CompoundEditComponent,
+        resolve: {actionPage: ActionPageResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
+        path: ':page',
+        component: CompoundListComponent,
+        resolve: {compoundPage: CompoundListResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       }
     ]
   },

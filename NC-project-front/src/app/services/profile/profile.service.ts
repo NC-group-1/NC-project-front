@@ -22,6 +22,6 @@ export class ProfileService {
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
   updateUserProfile(user: UserDataModel): Observable<UserDataModel>{
-    return this.http.put(apiPath + 'user/', user);
+    return this.http.put(apiPath + 'user', user);
   }
 }

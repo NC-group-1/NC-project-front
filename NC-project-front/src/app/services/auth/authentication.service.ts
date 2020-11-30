@@ -41,11 +41,17 @@ export class AuthenticationService {
     }
   }
 
-  getRole(): string[] {
+  getRole(): string {
     const temp = this.token.toString().substr(8);
     const s = atob(temp.split('.')[1]);
     const parse = JSON.parse(s);
     return parse.role;
+  }
+  getId(): string {
+    const temp = this.token.toString().substr(8);
+    const s = atob(temp.split('.')[1]);
+    const parse = JSON.parse(s);
+    return parse.userId;
   }
 
   getUsername(): string {

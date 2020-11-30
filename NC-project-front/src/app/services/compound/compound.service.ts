@@ -11,17 +11,22 @@ import {ActionOfCompound} from '../../../models/ActionOfCompound';
 @Injectable({
   providedIn: 'root'
 })
-export class CompoundServiceService {
+export class CompoundService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  getCompoundPage(page, size): Observable<CompoundPage>{
-    return this.http.get<CompoundPage>(apiPath + 'compound?page=' + page + '&size=' + size);
+  getCompoundPage(page, size, name, description, orderBy, direction): Observable<CompoundPage>{
+    return this.http.get<CompoundPage>(apiPath + 'compound?page=' + page +
+      '&size=' + (!size ? '' : size) +
+      '&name=' + (!name ? '' : name) +
+      '&description=' + (!description ? '' : description) +
+      '&orderBy=' + (!orderBy ? '' : orderBy) +
+      '&direction=' + (!direction ? '' : direction));
   }
   createCompound(compound: CompoundModel): Observable<any>{
     return this.http.post(apiPath + 'compound', compound);
   }
-  getCompoundById(compoundId: number): Observable<CompoundModel>{
+  getCompoundById(compoundId): Observable<CompoundModel>{
     return this.http.get<CompoundModel>(apiPath + 'compound/' + compoundId);
   }
   updateCompound(action: Action): Observable<any>{
