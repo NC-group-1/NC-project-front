@@ -1,5 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
+@import url("https://www.w3schools.com/w3css/4/w3.css");
 .min-width-30{
   min-width: 30rem!important;
 }
@@ -78,12 +80,17 @@
 .font-05{
   font-size: 0.5rem;
 }
-body{
+body {
   background-color: #f7f9fb;
 }
+
 .pointer{
   cursor: pointer
 }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.form {
+  padding: 20px;
+}

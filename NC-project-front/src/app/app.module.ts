@@ -1,7 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatIconModule} from '@angular/material/icon';
+import {MatButtonModule} from '@angular/material/button';
+import {MatTooltipModule} from '@angular/material/tooltip';
+import { ActionComponent } from './components/action/action/action.component';
 import { AppComponent } from './components/app/app.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
@@ -14,7 +18,6 @@ import {SignupComponent} from './components/signup/signup.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import {ActivatedRouteSnapshot, Router, RouterModule} from '@angular/router';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CompoundListComponent } from './components/compound-list/compound-list.component';
@@ -24,10 +27,23 @@ import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import { CreateProjectComponent } from './components/create-project/create-project.component';
+import { ListProjectComponent } from './components/list-project/list-project.component';
+import { CreateUserComponent } from './components/create-user/create-user.component';
+import { ListUsersComponent } from './components/list-users/list-users.component';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
+import {MatInputModule} from '@angular/material/input';
+import {MatTableModule} from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatRadioModule} from '@angular/material/radio';
+import {MatSelectModule} from '@angular/material/select';
+import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [
     AppComponent,
+    ActionComponent,
     LoginPageComponent,
     MainPageComponent,
     ForgotPassEmailComponent,
@@ -40,21 +56,38 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     SettingsComponent,
     CompoundListComponent,
     CompoundEditComponent,
+    CreateProjectComponent,
+    ListProjectComponent,
+    CreateUserComponent,
+    ListUsersComponent,
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
     AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatPaginatorModule,
     ReactiveFormsModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatInputModule,
     FormsModule,
     BrowserAnimationsModule,
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
     DragDropModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatCheckboxModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
+    // useValue: { appearance: 'fill' },
     useClass: AuthorizationInterceptor,
     multi: true,
   }],

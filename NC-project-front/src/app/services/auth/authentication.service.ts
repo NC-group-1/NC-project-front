@@ -18,6 +18,7 @@ export class AuthenticationService {
   }
 
   login(user: UserModel): Observable<TokenModel> {
+    console.log(user);
     return this.http.post<TokenModel>(apiPath + 'user/auth/', user)
       .pipe(tap(({token}) => {
         this.isAuth.next(true);
