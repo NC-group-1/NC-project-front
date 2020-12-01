@@ -25,6 +25,20 @@ export class ActionService {
         }
       }));
   }
+  getPaginatedActionsWithoutTarget(targetId, pageSize, pageIndex): Observable<ActionPage> {
+    if (!targetId){
+      return this.getPaginatedActions(pageSize, pageIndex);
+    }else {
+      return this.http.get<ActionPage>(apiPath + 'api/actions/compounds/' + targetId + '?page='
+        + (!pageIndex ? '' : pageIndex) + '&size=' + (!pageSize ? '' : pageSize))
+        .pipe(tap(() => {
+        }, e => {
+          if (e.status) {
+            this.router.navigate(['404']);
+          }
+        }));
+    }
+  }
 
   getActionTypes(): Observable<string[]> {
     return this.http.get<string[]>(apiPath + 'api/actions/types')

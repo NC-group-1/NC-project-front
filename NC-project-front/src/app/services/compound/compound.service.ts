@@ -32,8 +32,8 @@ export class CompoundService {
   updateCompound(action: Action): Observable<any>{
     return this.http.put(apiPath + 'compound/update', action);
   }
-  deleteCompound(compoundId: number): void{
-    this.http.delete(apiPath + 'compound/delete/' + compoundId);
+  deleteCompound(compoundId: number): Observable<any>{
+    return this.http.delete(apiPath + 'compound/delete/' + compoundId);
   }
   postActionInCompound(action: ActionOfCompound, id: number): Observable<any>{
     return this.http.post(apiPath + 'compound/actions/' + id, action);
@@ -41,7 +41,7 @@ export class CompoundService {
   removeActionFromCompound(actionId: number, compoundId: number): Observable<any>{
     return this.http.post(apiPath + 'compound/actions/' + compoundId, actionId);
   }
-  changeActionOrder(compoundId: number, actionsId: Action[]): Observable<any>{
-    return this.http.put(apiPath + 'compound/actions/' + compoundId, actionsId);
+  changeActions(compoundId: number, actions: ActionOfCompound[]): Observable<any>{
+    return this.http.put(apiPath + 'compound/actions/' + compoundId, actions);
   }
 }
