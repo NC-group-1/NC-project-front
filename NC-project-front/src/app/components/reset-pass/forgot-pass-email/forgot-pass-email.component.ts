@@ -24,7 +24,7 @@ export class ForgotPassEmailComponent implements OnInit {
 
   sendCode(): void {
     if (!this.form.invalid) {
-      this.passwordService.sendCodeOnEmail({recipients: [this.form.value.email]}).subscribe(
+      this.passwordService.sendCodeOnEmail(this.form.value.email).subscribe(
         value => {
         }, error => {
           this.error = true;
