@@ -16,6 +16,7 @@ import {MyProfileResolverService} from './services/profile/my-profile-resolver.s
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {ListProjectComponent} from './components/list-project/list-project.component';
 import {ActionComponent} from './components/action/action/action.component';
+import {ListDataSetComponent} from "./components/data-set/list-data-set/list-data-setlis/list-data-set.component";
 
 const routes: Routes = [
   {
@@ -83,6 +84,10 @@ const routes: Routes = [
   {
     path: 'manageAction',
     component: ActionComponent
+  },
+  {
+    path: 'listDataSets',
+    component: ListDataSetComponent
   },
   {
     path: '**',

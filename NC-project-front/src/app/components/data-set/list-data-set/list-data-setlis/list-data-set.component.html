@@ -1,0 +1,95 @@
+<p class="header">List of data set</p>
+<form name="dataSetTableForm" [formGroup]="dataSetTableForm">
+  <div class="mat-elevation-z8">
+  <mat-form-field class="search-mat-form-field">
+    <mat-label>Filter</mat-label>
+    <input type="text"
+           placeholder="Filter by Dataset name"
+           aria-label="Filter"
+           matInput
+           (input)="applyFilter()"
+           formControlName="filter">
+  </mat-form-field>
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef (click)="sortData('name')">
+        <div class="mat-icon-text">Dataset name</div>
+        <div *ngIf="dataSetTableForm.value.orderBy === 'name'">
+        <mat-icon *ngIf="dataSetTableForm.value.order === 'DESC'">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="dataSetTableForm.value.order === 'ASC'">keyboard_arrow_up</mat-icon>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let dataSet"> {{dataSet.name}} </td>
+    </ng-container>
+    <ng-container matColumnDef="createdByRole">
+      <th mat-header-cell *matHeaderCellDef (click)="sortData('role')">
+        <div class="mat-icon-text">Creator role</div>
+        <div *ngIf="dataSetTableForm.value.orderBy === 'role'">
+        <mat-icon *ngIf="dataSetTableForm.value.order === 'DESC'">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="dataSetTableForm.value.order === 'ASC'">keyboard_arrow_up</mat-icon>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let dataSet"> {{dataSet.createdByRole}} </td>
+    </ng-container>
+    <ng-container matColumnDef="createdByName">
+      <th mat-header-cell *matHeaderCellDef (click)="sortData('username')">
+        <div class="mat-icon-text">Name</div>
+        <div *ngIf="dataSetTableForm.value.orderBy === 'username'">
+        <mat-icon *ngIf="dataSetTableForm.value.order === 'DESC'">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="dataSetTableForm.value.order === 'ASC'">keyboard_arrow_up</mat-icon>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let dataSet"> {{dataSet.createdByName}} </td>
+    </ng-container>
+    <ng-container matColumnDef="createdBySurname">
+      <th mat-header-cell *matHeaderCellDef (click)="sortData('surname')">
+        <div class="mat-icon-text">Surname</div>
+        <div *ngIf="dataSetTableForm.value.orderBy === 'surname'">
+        <mat-icon *ngIf="dataSetTableForm.value.order === 'DESC'">keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="dataSetTableForm.value.order === 'ASC'">keyboard_arrow_up</mat-icon>
+        </div>
+      </th>
+      <td mat-cell *matCellDef="let dataSet"> {{dataSet.createdBySurname}} </td>
+    </ng-container>
+    <ng-container matColumnDef="details">
+      <th mat-header-cell *matHeaderCellDef>
+        Details
+      </th>
+      <td mat-cell *matCellDef="let dataSet">
+        <div class="example-flex-container">
+          <button mat-icon-button aria-label="Icon button" (click)="openDetails(dataSet)">
+            <mat-icon>more_vert</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>
+        Edit
+      </th>
+      <td mat-cell *matCellDef="let dataSet">
+        <div class="example-flex-container">
+          <button mat-icon-button aria-label="Icon button" (click)="editDataSet(dataSet)">
+            <mat-icon>edit</mat-icon>
+          </button>
+        </div>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="7">No data matching the filter "{{dataSetTableForm.value.filter}}"</td>
+    </tr>
+  </table>
+  <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions"
+                 [length]="length"
+                 [pageSize]="pageSize"
+                 (page)="onPaginationChange($event)" showFirstLastButtons>
+  </mat-paginator>
+</div>
+</form>
+<section>
+  <div class="button-row">
+    <button mat-raised-button color="primary" (click)="createDataSet()">Add data set</button>
+  </div>
+</section>
