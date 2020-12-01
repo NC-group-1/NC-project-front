@@ -144,4 +144,5 @@ export class ListUsersComponent implements OnInit {
     this.order === '' ? this.order = 'DESC' : this.order = '';
     this.reloadUsers();
   }
+
 }

@@ -33,6 +33,7 @@
 
     <ng-container matColumnDef="name">
       <th *matHeaderCellDef mat-header-cell (click)="sortData('name')"> Name </th>
+      <th *matHeaderCellDef mat-header-cell> Name </th>
       <td *matCellDef="let element;let i = index;" mat-cell>
         <p [hidden]="element.edit">{{element.name}}</p>
 

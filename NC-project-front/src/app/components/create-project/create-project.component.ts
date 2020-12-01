@@ -15,7 +15,7 @@ import {AuthenticationService} from "../../services/auth/authentication.service"
 export class CreateProjectComponent implements OnInit {
   form: FormGroup;
   user: UserDataModel;
-  user_id: string;
+  user_id: number;
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -24,20 +24,23 @@ export class CreateProjectComponent implements OnInit {
               private auth: AuthenticationService) {
     // console.log(auth.getRole().toString());
     // console.log(auth.getId());
-    this.user_id = auth.getId();
+    console.log(parseInt(auth.getId(),10));
+    this.user_id = parseInt(auth.getId(),10);
   }
 
   ngOnInit(): void {
     this.form = new FormGroup({
       name: new FormControl(null),
-      link: new FormControl(null),
-      role: new FormControl(null)
+      link: new FormControl(null)
     });
   }
 
   createProject() {
-    this.form.value.user_id = this.user_id;
-    this.httpClientService.postProject(this.form.value)
+    this.httpClientService.postProject({
+      user_id: this.user_id,
+      name: this.form.value.name,
+      link: this.form.value.link
+    })
       .subscribe(
         response => console.log(response),
         error => console.log(error)
