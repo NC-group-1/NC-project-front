@@ -24,15 +24,6 @@ export class HttpClientService {
     ).pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 
-  createUser(name: string, surname: string) {
-    const params = {
-      nameUser: name,
-      surnameUser: surname
-    };
-
-    return this.httpClient.post(this.urlPath, params);
-  }
-
   updateUser(user: UserListModel) {
     return this.httpClient.put(this.urlPath + 'user/update', user);
   }

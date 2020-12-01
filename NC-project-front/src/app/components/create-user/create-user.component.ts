@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClientService} from '../../services/users/http-client.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {ProfileService} from "../../services/profile/profile.service";
 import {AuthenticationService} from "../../services/auth/authentication.service";
 import {UserListModel} from "../../../models/UserListModel";
+import {ResetPasswordService} from "../../services/reset-pass/reset-password.service";
+import {MatSelectChange} from "@angular/material/select";
 
 interface Role {
   role: string;
@@ -35,29 +36,40 @@ export class CreateUserComponent implements OnInit {
   displayedColumns: string[] = ['role', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth'];
   dataSource = this.users;
 
-  constructor(private activatedRoute: ActivatedRoute, private httpClientService: HttpClientService, private router: Router, private auth: AuthenticationService) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private httpClientService: HttpClientService,
+              private router: Router,
+              private auth: AuthenticationService,
+              private passwordService: ResetPasswordService) {
     this.role = '';
-    this.activatedRoute.params.subscribe(param => {
+    this.activatedRoute.params.subscribe(() => {
       this.user = this.activatedRoute.snapshot.data.user;
-      if (auth.getRole().includes('admin')){
+      if (auth.getRole().includes('admin'))
         this.hasCreatingPermission = true;
-      }
     });
   }
 
-  setRole(role: string) {
-    this.role = role;
+  setRole(event: MatSelectChange) {
+    // console.log(event.source.triggerValue);
+    this.role = event.source.triggerValue;
   }
 
-  ngOnInit(): void {}
 
-  createUser(emailUser: string) {
-    this.httpClientService.createUser(emailUser, this.role)
-      .subscribe(
-        response => console.log(response),
-        error => console.log(error)
-      );
-
-    this.router.navigateByUrl('/listUsers');
+  ngOnInit(): void {
   }
+
+  sendCode(email: string): void {
+    this.auth.register({
+      email: email,
+      role: this.role,
+    }).subscribe(() => {
+        this.passwordService.sendCodeOnEmail({recipients:[email]}).subscribe(
+          () => {},
+          error => console.log(error)
+        );
+      }, error => console.log(error)
+    );
+  }
+
+
 }

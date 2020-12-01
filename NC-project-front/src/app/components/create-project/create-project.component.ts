@@ -3,10 +3,8 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {HttpClientService} from '../../services/projects/http-client.service';
 import {FormControl, FormGroup, FormBuilder} from '@angular/forms';
 import {UserDataModel} from "../../../models/UserDataModel";
-import {ProfileService} from "../../services/profile/profile.service";
 import {AuthenticationService} from "../../services/auth/authentication.service";
-import {ProjectModel} from "../../../models/ProjectModel";
-import {UserListModel} from "../../../models/UserListModel";
+
 
 
 @Component({
@@ -17,7 +15,7 @@ import {UserListModel} from "../../../models/UserListModel";
 export class CreateProjectComponent implements OnInit {
   form: FormGroup;
   user: UserDataModel;
-  user_id: number;
+  user_id: string;
 
 
   constructor(private activatedRoute: ActivatedRoute,
@@ -25,7 +23,8 @@ export class CreateProjectComponent implements OnInit {
               private router: Router,
               private auth: AuthenticationService) {
     // console.log(auth.getRole().toString());
-    // this.user_id = auth.getId();
+    // console.log(auth.getId());
+    this.user_id = auth.getId();
   }
 
   ngOnInit(): void {

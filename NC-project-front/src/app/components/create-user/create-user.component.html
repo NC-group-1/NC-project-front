@@ -26,7 +26,7 @@
       <mat-form-field class="example-full-width" style="margin-top: 10px;">
         <mat-label>Role of user</mat-label>
 
-        <mat-select (selectionChange)="setRole($event.value)" formControlName="roleUser" required>
+        <mat-select (selectionChange)="setRole($event)" formControlName="roleUser" required #role>
           <mat-option>--</mat-option>
           <mat-option *ngFor="let user of users" [value]="users">
             {{user.role}}
@@ -110,8 +110,10 @@
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
 
+      <p></p>
+
       <p>
-        <button [disabled]="userFormGroup.invalid" class="w3-button w3-round-xlarge" style="background-color: #0275B1; color: white" (click)="createUser(emailUser.value)">Invite</button>
+        <button [disabled]="userFormGroup.invalid" class="w3-button w3-round-xlarge" style="background-color: #0275B1; color: white" (click)="sendCode(emailUser.value)">Invite</button>
       </p>
     </form>
   </div>

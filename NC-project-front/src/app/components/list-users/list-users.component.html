@@ -1,8 +1,8 @@
-<div class="form" *ngIf="hasSerchingPermission">
+<div class="form" >
   <p class="header">List of users</p>
-  <mat-form-field>
+  <mat-form-field >
     <mat-label>Filter</mat-label>
-    <input #input (keyup)="applyFilter($event)" matInput placeholder="Search">
+    <input [disabled]=hasSearchingPermission #input (keyup)="applyFilter($event)" matInput placeholder="Search">
   </mat-form-field>
 
 

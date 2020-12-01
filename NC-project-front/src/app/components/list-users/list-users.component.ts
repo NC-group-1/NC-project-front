@@ -18,7 +18,7 @@ import {UserModel} from "../../../models/UserModel";
 
 export class ListUsersComponent implements OnInit {
   selectedUser: string;
-  hasSerchingPermission: boolean;
+  hasSearchingPermission: boolean;
   displayedColumns: string[] = ['user_id', 'select', 'name', 'surname', 'email', 'role', 'activated', 'editBtn'];
   responseUser?: UserResponseModel;
   listUsers: UserListModel[];
@@ -41,7 +41,7 @@ export class ListUsersComponent implements OnInit {
     this.activatedRoute.params.subscribe(param => {
       this.user = this.activatedRoute.snapshot.data.user;
       if (!auth.getRole().includes('engineer')){
-        this.hasSerchingPermission = true;
+        this.hasSearchingPermission = true;
       }
     });
   }
