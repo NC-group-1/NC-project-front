@@ -56,7 +56,7 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     CreateUserComponent,
     ListUsersComponent,
     CompoundListComponent,
-    CompoundEditComponent
+    CompoundEditComponent,
   ],
   imports: [
     BrowserModule,

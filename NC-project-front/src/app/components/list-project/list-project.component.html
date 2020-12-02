@@ -1,4 +1,5 @@
-<div class="form">
+<div class="form bg-white">
+
   <p class="header">List of project</p>
   <mat-form-field>
     <mat-label>Filter</mat-label>
@@ -23,7 +24,7 @@
       <ng-container matColumnDef="name">
         <th width="30%" mat-header-cell *matHeaderCellDef (click)="sortData('name')"> Name </th>
         <td mat-cell *matCellDef="let element;let i = index;">
-          <p [hidden]="element.edit">{{element.name}}</p>
+          <p [hidden]="element.edit" (click)="open()">{{element.name}}</p>
 
           <div [hidden]="!element.edit" style="width: 75%">
             <mat-form-field>
@@ -98,6 +99,6 @@
   </mat-paginator>
   <div class="w3-bar">
     <a [routerLink]="['/createProject']" class="w3-button w3-round-xlarge w3-left" style="background-color: #0275B1; color: white">+Add</a>
-    <button class="w3-button w3-round-xlarge w3-right" style="background-color: #0275B1; color: white" (click)="open()">Open</button>
+<!--    <button class="w3-button w3-round-xlarge w3-right" style="background-color: #0275B1; color: white" (click)="open()">Open</button>-->
   </div>
 </div>
