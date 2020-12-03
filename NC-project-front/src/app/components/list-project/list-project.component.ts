@@ -12,7 +12,7 @@ import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
 })
 export class ListProjectComponent implements OnInit{
   selectedProject: string;
-  displayedColumns: string[] = ['project_id', 'radioBtn', 'name', 'link', 'date', 'role', 'archived', 'editBtn'];
+  displayedColumns: string[] = ['project_id', 'name', 'link', 'date', 'role', 'archived', 'editBtn'];
   responseProject?: ProjectResponseModel;
   listProjects: ProjectModel[];
   dataSource: any;
