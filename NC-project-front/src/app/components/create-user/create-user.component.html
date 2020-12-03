@@ -1,14 +1,13 @@
 <!--<div class="form bg-white" >-->
 <div class="bg-white shadow-lg p-5">
 
-  <div cdkDropListGroup class="row actions-container w-100">
+  <div class="example-container">
+    <h2 class="p-0">Invite a new user</h2>
+  </div>
 
-    <div class="col-6 float-left">
-      <div class="example-container">
-        <h2>New user</h2>
-      </div>
-    </div>
+  <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
 
+    <div class="form-group">
     <form [formGroup]="userFormGroup" class="w3-container w-100">
       <div class="col-6 float-left">
         <div class="form-group">
@@ -41,11 +40,10 @@
                   class="btn btn-nc m-3 px-5" style="background-color: #0275B1; color: white">Invite
           </button>
         </p>
-
       </div>
     </form>
 
-    <table [dataSource]="dataSource" class="shadow-lg w-100 float-left w3-centered" mat-table>
+    <table [dataSource]="dataSource" class="w3-centered" mat-table>
 
       <ng-container matColumnDef="role">
         <th *matHeaderCellDef mat-header-cell> Role</th>
@@ -118,6 +116,7 @@
       <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
       <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
     </table>
+    </div>
   </div>
 </div>
 

@@ -1,84 +1,77 @@
 <div class="bg-white shadow-lg p-5">
-  <div cdkDropListGroup class="row actions-container w-100">
 
-    <div class="col-6 float-left">
-      <div class="example-container">
-        <h2>List of users</h2>
-      </div>
-    </div>
+  <div class="example-container">
+    <h2 class="p-0">List of users</h2>
+  </div>
 
-    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortBy($event)" class="shadow-lg w-100">
-      <ng-container matColumnDef="name">
-        <th mat-header-cell mat-sort-header *matHeaderCellDef class="w-35 border-right pointer">
-
-        </th>
-      </ng-container>
-    </table>
-
+  <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
 <!--    <mat-form-field>-->
 <!--      <mat-label>Filter</mat-label>-->
 <!--      <input #input (keyup)="applyFilter($event)" matInput placeholder="Search">-->
 <!--    </mat-form-field>-->
+    <div class="form-group">
+      <label for="inputName">Find users:</label>
+      <input class="form-control float-left col-3 input-sm" id="inputName" type="text" #input (keyup)="applyFilter($event)" matInput placeholder="Search by name and surname...">
+    </div>
 
 
-<!--    <table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>-->
-<!--      <ng-container matColumnDef="user_id">-->
-<!--        <th *matHeaderCellDef [hidden]="true" mat-header-cell></th>-->
-<!--        <td *matCellDef="let element" [hidden]="true" mat-cell><p>{{element.user_id}}</p></td>-->
-<!--      </ng-container>-->
+    <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData(orderBy)">
 
-<!--      <ng-container matColumnDef="select">-->
-<!--        <th *matHeaderCellDef mat-header-cell>-->
-<!--          <mat-checkbox (change)="$event ? masterToggle() : null"-->
-<!--                        [aria-label]="checkboxLabel()"-->
-<!--                        [checked]="selection.hasValue() && isAllSelected()"-->
-<!--                        [indeterminate]="selection.hasValue() && !isAllSelected()"-->
-<!--                        class="w3-margin-left">-->
-<!--          </mat-checkbox>-->
-<!--        </th>-->
-<!--        <td *matCellDef="let row" mat-cell>-->
-<!--          <mat-checkbox (change)="$event ? selection.toggle(row) : null"-->
-<!--                        (click)="$event.stopPropagation()"-->
-<!--                        [aria-label]="checkboxLabel(row)"-->
-<!--                        [checked]="selection.isSelected(row)"-->
-<!--                        class="w3-margin-left">-->
-<!--          </mat-checkbox>-->
-<!--        </td>-->
-<!--      </ng-container>-->
+      <ng-container matColumnDef="user_id" >
+        <th *matHeaderCellDef [hidden]="true" mat-header-cell></th>
+        <td *matCellDef="let element" [hidden]="true" mat-cell><p>{{element.user_id}}</p></td>
+      </ng-container>
 
-<!--      <ng-container matColumnDef="name">-->
+      <ng-container matColumnDef="select">
+        <th *matHeaderCellDef mat-header-cell>
+          <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [aria-label]="checkboxLabel()"
+                        [checked]="selection.hasValue() && isAllSelected()"
+                        [indeterminate]="selection.hasValue() && !isAllSelected()"
+                        class="w3-margin-left">
+          </mat-checkbox>
+        </th>
+        <td *matCellDef="let row" mat-cell>
+          <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                        (click)="$event.stopPropagation()"
+                        [aria-label]="checkboxLabel(row)"
+                        [checked]="selection.isSelected(row)"
+                        class="w3-margin-left">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
 <!--        <th *matHeaderCellDef mat-header-cell (click)="sortData('name')"> Name</th>-->
-<!--        <th *matHeaderCellDef mat-header-cell> Name</th>-->
-<!--        <td *matCellDef="let element;let i = index;" mat-cell>-->
-<!--          <p [hidden]="element.edit">{{element.name}}</p>-->
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Name</th>
+        <td *matCellDef="let element;let i = index;" mat-cell>
+          <p [hidden]="element.edit">{{element.name}}</p>
+          <div [hidden]="!element.edit" style="width: 75%">
+            <div class="input-group w-50">
+              <input #inputName type="text" class="form-control" (change)="updateName(i, inputName.value)" [value]="element.name" placeholder="Element name">
+            </div>
+          </div>
+        </td>
+      </ng-container>
 
-<!--          <div [hidden]="!element.edit" style="width: 75%">-->
-<!--            <mat-form-field>-->
-<!--              <mat-label>Edit</mat-label>-->
-<!--              <input #inputName (change)="updateName(i, inputName.value)" [value]="element.name" matInput-->
-<!--                     placeholder="Element name">-->
-<!--            </mat-form-field>-->
-<!--          </div>-->
-<!--        </td>-->
-<!--      </ng-container>-->
-
-<!--      <ng-container matColumnDef="surname">-->
+      <ng-container matColumnDef="surname">
 <!--        <th *matHeaderCellDef mat-header-cell (click)="sortData('surname')"> Surname</th>-->
-<!--        <td *matCellDef="let element; let i = index;" mat-cell>-->
-<!--          <p [hidden]="element.edit">{{element.surname}}</p>-->
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Surname</th>
+        <td *matCellDef="let element; let i = index;" mat-cell>
+          <p [hidden]="element.edit">{{element.surname}}</p>
 
-<!--          <div [hidden]="!element.edit" style="width: 75%">-->
-<!--            <mat-form-field>-->
-<!--              <mat-label>Edit</mat-label>-->
-<!--              <input #inputLink (change)="updateSurname(i, inputLink.value)" [value]="element.surname" matInput-->
-<!--                     placeholder="Element link">-->
-<!--            </mat-form-field>-->
-<!--          </div>-->
-<!--        </td>-->
-<!--      </ng-container>-->
+          <div [hidden]="!element.edit" style="width: 75%">
+            <div class="input-group w-50">
+              <input #inputSurname type="text" class="form-control" (change)="updateName(i, inputSurname.value)" [value]="element.surname" placeholder="Element name">
+            </div>
+          </div>
+        </td>
+      </ng-container>
 
-<!--      <ng-container matColumnDef="email">-->
+      <ng-container matColumnDef="email">
 <!--        <th *matHeaderCellDef mat-header-cell (click)="sortData('email')"> Email</th>-->
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Email</th>
+        <td *matCellDef="let element" mat-cell> {{element.email}} </td>
 <!--        <td *matCellDef="let element;" mat-cell>-->
 <!--          <p [hidden]="element.edit">{{element.email}}</p>-->
 
@@ -91,36 +84,39 @@
 <!--            </mat-form-field>-->
 <!--          </div>-->
 <!--        </td>-->
-<!--      </ng-container>-->
+      </ng-container>
 
-<!--      <ng-container matColumnDef="role">-->
+      <ng-container matColumnDef="role">
 <!--        <th *matHeaderCellDef mat-header-cell (click)="sortData('role')"> Role</th>-->
-<!--        <td *matCellDef="let element" mat-cell> {{element.role}} </td>-->
-<!--      </ng-container>-->
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Role</th>
+        <td *matCellDef="let element" mat-cell> {{element.role}} </td>
+      </ng-container>
 
-<!--      <ng-container matColumnDef="activated">-->
-<!--        <th *matHeaderCellDef mat-header-cell> Activated</th>-->
-<!--        <td *matCellDef="let element" mat-cell> {{element.activated ? 'Activated' : 'Deactivated'}} </td>-->
-<!--      </ng-container>-->
+      <ng-container matColumnDef="activated">
+        <th *matHeaderCellDef mat-header-cell mat-sort-header> Activated</th>
+        <td *matCellDef="let element" mat-cell> {{element.activated ? 'Activated' : 'Deactivated'}} </td>
+      </ng-container>
 
-<!--      <ng-container matColumnDef="editBtn">-->
-<!--        <th *matHeaderCellDef mat-header-cell> Edit</th>-->
-<!--        <td *matCellDef="let element; let i = index;" mat-cell>-->
-<!--          <button (click)="change(i)"-->
-<!--                  class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white"><i-->
-<!--            class="fa fa-pencil"></i></button>-->
-<!--        </td>-->
-<!--      </ng-container>-->
+      <ng-container matColumnDef="editBtn">
+        <th *matHeaderCellDef mat-header-cell> Edit</th>
+        <td *matCellDef="let element; let i = index;" mat-cell>
+          <button (click)="change(i)" class="w3-button w3-xlarge ml-4 p-0 rounded">
+            <i class="fa fa-pencil"></i></button>
+        </td>
+      </ng-container>
 
-<!--      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>-->
-<!--      <tr *matRowDef="let row; columns: displayedColumns;" mat-row>-->
-<!--        &lt;!&ndash;                (click)="selection.toggle(row)">&ndash;&gt;-->
-<!--      </tr>-->
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row>
+        <!--                (click)="selection.toggle(row)">-->
+      </tr>
 
-<!--      <tr *matNoDataRow class="mat-row">-->
-<!--        <td class="mat-cell" colspan="8">No data matching the filter "{{input.value}}"</td>-->
-<!--      </tr>-->
-<!--    </table>-->
+      <tr *matNoDataRow class="mat-row">
+        <td class="mat-cell" colspan="8">No data matching the filter "{{input.value}}"</td>
+      </tr>
+
+
+    </table>
+  </div>
 
     <mat-paginator (page)="onPaginationChange($event)"
                    [length]="length"
@@ -135,5 +131,5 @@
               style="background-color: #0275B1; margin-top: 10px; color: white">Activate
       </button>
     </div>
-  </div>
+
 </div>

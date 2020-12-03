@@ -23,7 +23,8 @@ export class ListUsersComponent implements OnInit {
   responseUser?: UserResponseModel;
   listUsers: UserListModel[];
   user: UserListModel;
-  dataSource: MatTableDataSource<any>;
+  dataSource: any;
+  nameEditing: boolean;
   length = 0;
   pageSize = 5;
   pageIndex = 0;
@@ -37,6 +38,7 @@ export class ListUsersComponent implements OnInit {
   constructor(private activatedRoute: ActivatedRoute, private httpClientService: HttpClientService, private auth: AuthenticationService) {
     this.selectedUser = '';
     this.listUsers = [];
+
     this.dataSource = new MatTableDataSource();
     this.activatedRoute.params.subscribe(param => {
       this.user = this.activatedRoute.snapshot.data.user;
@@ -140,14 +142,15 @@ export class ListUsersComponent implements OnInit {
     this.reloadUsers();
   }
 
-  // sortData(orderBy: string) {
-  //   this.orderBy = orderBy;
-  //   this.order === '' ? this.order = 'DESC' : this.order = '';
-  //   this.reloadUsers();
+  sortData(orderBy: string) {
+    this.orderBy = orderBy;
+    this.order === '' ? this.order = 'DESC' : this.order = '';
+    this.reloadUsers();
+  }
+
+  // sortBy(event: any): void {
+  //   this.router.navigate([], {relativeTo: this.activatedRoute,
+  //     queryParams: {orderBy: event.active, direction: event.direction}, queryParamsHandling: 'merge'});
   // }
 
-  sortBy(event: any): void {
-    this.router.navigate([], {relativeTo: this.activatedRoute,
-      queryParams: {orderBy: event.active, direction: event.direction}, queryParamsHandling: 'merge'});
-  }
 }

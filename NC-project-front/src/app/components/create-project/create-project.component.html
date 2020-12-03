@@ -1,21 +1,50 @@
-<div class="form">
-  <p class="header">New project</p>
-  <div class="w3-card-4">
-    <div class="w3-container" style="background-color: #F3F3F3">
-      <p class="card-header">Create a new project</p>
-    </div>
-    <form [formGroup]="form" class="w3-container" action="">
-      <p>
-        <label class="w3-text card-header">Name of project <i class="fa fa-list-alt"></i></label>
-        <input class="w3-input w3-border" id="name" formControlName="name" type="text">
-      </p>
-      <p>
-        <label class="w3-text card-header">Unique web-site link <i class="fa fa-link"></i></label>
-        <input class="w3-input w3-border" id="link" formControlName="link" type="text">
-      </p>
-      <p>
-        <button class="w3-button w3-round-xlarge" style="background-color: #0275B1; color: white" (click)="createProject()">Create</button>
-      </p>
+<div class="bg-white shadow-lg p-5">
+
+  <div class="example-container">
+    <h2 class="p-0">Create a new project</h2>
+  </div>
+
+  <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
+
+
+    <form [formGroup]="form" class="w3-container w-100">
+      <div class="col-6 float-left">
+        <div class="form-group">
+          <label for="name">Name of project </label>
+          <input class="form-control" id="name" name="nameProject" type="text">
+        </div>
+
+        <div class="form-group">
+          <label for="link">Link of project </label>
+          <input class="form-control" id="link" name="link" type="text">
+        </div>
+        <p>
+          <button (click)="createProject()" [disabled]="form.invalid"
+                  class="btn btn-nc m-3 px-5" style="background-color: #0275B1; color: white"> Create </button>
+        </p>
+      </div>
     </form>
   </div>
 </div>
+
+<!--<div class="form">-->
+<!--  <p class="header">New project</p>-->
+<!--  <div class="w3-card-4">-->
+<!--    <div class="w3-container" style="background-color: #F3F3F3">-->
+<!--      <p class="card-header">Create a new project</p>-->
+<!--    </div>-->
+<!--    <form [formGroup]="form" class="w3-container" action="">-->
+<!--      <p>-->
+<!--        <label class="w3-text card-header">Name of project <i class="fa fa-list-alt"></i></label>-->
+<!--        <input class="w3-input w3-border" id="name" formControlName="name" type="text">-->
+<!--      </p>-->
+<!--      <p>-->
+<!--        <label class="w3-text card-header">Unique web-site link <i class="fa fa-link"></i></label>-->
+<!--        <input class="w3-input w3-border" id="link" formControlName="link" type="text">-->
+<!--      </p>-->
+<!--      <p>-->
+<!--        <button class="w3-button w3-round-xlarge" style="background-color: #0275B1; color: white" (click)="createProject()">Create</button>-->
+<!--      </p>-->
+<!--    </form>-->
+<!--  </div>-->
+<!--</div>-->
