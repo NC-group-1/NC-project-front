@@ -1,7 +1,12 @@
+<section>
+  <div class="button-row">
+    <button mat-raised-button color="primary" (click)="createDataSet()">Add data set</button>
+  </div>
+</section>
+<div *ngIf="!editing && !creation">
 <p class="header">List of data set</p>
 <form name="dataSetTableForm" [formGroup]="dataSetTableForm">
-  <div class="mat-elevation-z8">
-  <mat-form-field class="search-mat-form-field">
+  <mat-form-field class="mat-form-field">
     <mat-label>Filter</mat-label>
     <input type="text"
            placeholder="Filter by Dataset name"
@@ -10,7 +15,26 @@
            (input)="applyFilter()"
            formControlName="filter">
   </mat-form-field>
+  <div class="mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="select">
+      <th *matHeaderCellDef mat-header-cell>
+        <mat-checkbox (change)="$event ? masterToggle() : null"
+                      [aria-label]="checkboxLabel()"
+                      [checked]="selection.hasValue() && isAllSelected()"
+                      [indeterminate]="selection.hasValue() && !isAllSelected()"
+                      class="w3-margin-left">
+        </mat-checkbox>
+      </th>
+      <td *matCellDef="let row" mat-cell>
+        <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                      (click)="$event.stopPropagation()"
+                      [aria-label]="checkboxLabel(row)"
+                      [checked]="selection.isSelected(row)"
+                      class="w3-margin-left">
+        </mat-checkbox>
+      </td>
+    </ng-container>
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef (click)="sortData('name')">
         <div class="mat-icon-text">Dataset name</div>
@@ -86,10 +110,44 @@
                  [pageSize]="pageSize"
                  (page)="onPaginationChange($event)" showFirstLastButtons>
   </mat-paginator>
+    <div class="button-row">
+    <button mat-raised-button color="warn" (click)="deleteSelected()">Delete selected</button>
+    </div>
 </div>
 </form>
-<section>
-  <div class="button-row">
-    <button mat-raised-button color="primary" (click)="createDataSet()">Add data set</button>
+</div>
+<div *ngIf="editing || creation">
+  <p class="header" *ngIf="creation">Create data set</p>
+  <p class="header" *ngIf="editing">Edit data set</p>
+  <div class="mat-elevation-z8">
+    <form name="manageDataSetForm" [formGroup]="manageDataSetForm" class="create-action-form">
+      <mat-form-field class="manage-mat-form-field">
+        <mat-label>Name of Data Set</mat-label>
+        <input formControlName="name" required matInput placeholder="Type name for data set">
+        <mat-error *ngIf="manageDataSetForm.get('name').errors?.required">
+          Name is <strong>required</strong>!
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="manage-mat-form-field">
+        <mat-label>Description of Data Set</mat-label>
+        <input formControlName="description" type="text" matInput placeholder="Type description for data set">
+      </mat-form-field>
+      <section>
+        <div class="button-row">
+          <button
+                  type="submit"
+                  [disabled]="manageDataSetForm.invalid"
+                  mat-raised-button
+                  color="primary"
+                  (click)="onSubmitButton()">
+            <div *ngIf="editing">Edit</div>
+            <div *ngIf="creation">Add</div>
+          </button>
+          <button mat-raised-button color="warn" (click)="cancelEdit()">
+            Cancel
+          </button>
+        </div>
+      </section>
+    </form>
   </div>
-</section>
+</div>

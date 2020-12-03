@@ -32,7 +32,8 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-setlis/list-data-set.component';
+import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
+import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ListDataSetComponent } from './components/data-set/list-data-set/list-d
     CreateUserComponent,
     ListUsersComponent,
     ListDataSetComponent,
+    DataSetDetailsComponent,
   ],
   imports: [
     BrowserModule,

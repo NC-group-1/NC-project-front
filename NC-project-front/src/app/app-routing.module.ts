@@ -16,7 +16,9 @@ import {MyProfileResolverService} from './services/profile/my-profile-resolver.s
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {ListProjectComponent} from './components/list-project/list-project.component';
 import {ActionComponent} from './components/action/action/action.component';
-import {ListDataSetComponent} from "./components/data-set/list-data-set/list-data-setlis/list-data-set.component";
+import {ListDataSetComponent} from './components/data-set/list-data-set/list-data-set.component';
+import {DataSetDetailsComponent} from "./components/data-set/data-set-details/data-set-details.component";
+import {DataSetResolverService} from "./services/data-set/data-set-resolver.service";
 
 const routes: Routes = [
   {
@@ -86,8 +88,18 @@ const routes: Routes = [
     component: ActionComponent
   },
   {
-    path: 'listDataSets',
-    component: ListDataSetComponent
+    path: 'dataSet',
+    children: [
+      {
+        path: 'list',
+        component: ListDataSetComponent
+      },
+      {
+        path: ':id',
+        component: DataSetDetailsComponent,
+        resolve: {dataSet: DataSetResolverService}
+      }
+    ]
   },
   {
     path: '**',

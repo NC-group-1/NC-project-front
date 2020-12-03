@@ -1,0 +1,99 @@
+<p class="header">
+  <a [routerLink]="['/dataSet/list']">
+    <mat-icon>undo</mat-icon>
+    Back to list
+  </a>
+</p>
+<p class="header">
+  {{dataSet.name}}
+</p>
+<p>
+  Description: {{dataSet.description}}
+</p>
+<p>
+  Created by: {{dataSet.createdByRole}} {{dataSet.createdByName}} {{dataSet.createdBySurname}}
+</p>
+<section>
+  <div class="button-row">
+    <button mat-raised-button color="primary" (click)="createParameter()">Add parameter</button>
+  </div>
+</section>
+<div *ngIf="creation">
+  <h2>Add parameter to dataset</h2>
+  <div class="mat-elevation-z8 add-parameter-form">
+    <form name="parameterForm" [formGroup]="parameterForm">
+      <mat-form-field class="manage-mat-form-field">
+        <mat-label>Key for Parameter</mat-label>
+        <div formGroupName="key">
+          <input type="text"
+                 class="form-control"
+                 placeholder="Pick existing key or type new"
+                 aria-label="Key"
+                 matInput
+                 required
+                 (input)="onKeyInputChange()"
+                 formControlName="key"
+                 [matAutocomplete]="auto" >
+        </div>
+        <mat-hint *ngIf="parameterForm.value.key.id === 0 && parameterForm.value.key.key !== ''">
+          Will be created new parameter key
+        </mat-hint>
+        <mat-hint *ngIf="parameterForm.value.key.id !== 0">
+          Will be used existing parameter key
+        </mat-hint>
+        <mat-error *ngIf="parameterForm.get('key.key').errors?.required">
+          Key is <strong>required</strong>!
+        </mat-error>
+        <mat-error *ngIf="parameterForm.get('key.key').errors?.wrongKey">
+          Key is already exist in this data set!
+        </mat-error>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let key of keys" [value]="key.key"
+                      (click)="this.parameterForm.get('key.id').setValue( key.id)">
+            {{key.key}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field class="manage-mat-form-field">
+        <mat-label>Value of Parameter</mat-label>
+        <input formControlName="value" required matInput placeholder="Type value of parameter">
+        <mat-error *ngIf="parameterForm.get('value').errors?.required">
+          Value is <strong>required</strong>!
+        </mat-error>
+      </mat-form-field>
+      <section>
+        <div class="button-row">
+          <button type="submit"
+                  [disabled]="parameterForm.invalid"
+                  mat-raised-button
+                  color="primary"
+                  (click)="onSubmitButton()">
+            Add
+          </button>
+          <button mat-raised-button color="warn" (click)="cancelCreation()">Cancel</button>
+        </div>
+      </section>
+    </form>
+  </div>
+</div>
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="key">
+      <th mat-header-cell *matHeaderCellDef >
+        Key
+      </th>
+      <td mat-cell *matCellDef="let parameter"> {{parameter.key.key}} </td>
+    </ng-container>
+    <ng-container matColumnDef="value">
+      <th mat-header-cell *matHeaderCellDef >
+        Value
+      </th>
+      <td mat-cell *matCellDef="let parameter"> {{parameter.value}} </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell" colspan="7">This data set is empty</td>
+    </tr>
+  </table>
+</div>
