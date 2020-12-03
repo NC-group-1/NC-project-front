@@ -17,19 +17,21 @@ export class HttpClientService {
 
   getPaginatedProjects(pageSize: number, pageIndex: number, filter: string, orderBy: string, order: string): Observable<ProjectResponseModel>{
     return this.httpClient.get<ProjectResponseModel>(
-      this.urlPath + 'project/get_project_list/' + pageIndex + '/' + pageSize
-      + '?filter=' + filter
+      this.urlPath + 'api/project/list'
+      + '?pageSize=' + pageSize
+      + '&pageIndex=' + pageIndex
+      + '&filter=' + filter
       + '&orderBy=' + orderBy
-      + '&order=' + order
-    ).pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
+      + '&order=' + order)
+      .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 
   postProject(project: ProjectModel) {
-    return this.httpClient.post(this.urlPath + 'project', project);
+    return this.httpClient.post(this.urlPath + 'api/project', project);
   }
 
   updateProject(project: ProjectModel) {
-    return this.httpClient.put(this.urlPath + 'project/update', project);
+    return this.httpClient.put(this.urlPath + 'api/project', project);
   }
 
 

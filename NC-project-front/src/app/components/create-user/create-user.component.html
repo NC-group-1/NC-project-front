@@ -8,119 +8,117 @@
   <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
 
     <div class="form-group">
-    <form [formGroup]="userFormGroup" class="w3-container w-100">
-      <div class="col-6 float-left">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <!--          <input #emailUser #emailref="ngModel" class="form-control" id="email"-->
-          <!--                 name="email" ngModel pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" type="text">-->
-          <!--          <div *ngIf="emailref.errors &&(emailref.touched || emailref.dirty)" class="alert alert-danger">-->
-          <!--            <div [hidden]="!emailref.errors?.pattern">-->
-          <!--              Invalid pattern-->
-          <!--            </div>-->
-          <!--          </div>-->
-          <input #emailUser class="form-control" id="email"
-                 name="email" type="text">
-          <div
-            *ngIf="userFormGroup.controls['emailUser'].hasError('email') && !userFormGroup.controls['emailUser'].hasError('required')">
-            Please enter a valid email address
+      <form [formGroup]="userFormGroup" class="w3-container w-100">
+        <div class="col-6 float-left">
+          <div class="form-group">
+            <label for="email">Email <i aria-hidden="true" class="fa fa-envelope"></i></label>
+            <input #emailUser class="form-control" id="email" name="email" type="text" matInput
+                   formControlName="emailUser" placeholder="Ex. pat@example.com" required>
+            <mat-error
+              *ngIf="userFormGroup.controls['emailUser'].hasError('email') && !userFormGroup.controls['emailUser'].hasError('required')">
+              Please enter a valid email address
+            </mat-error>
+            <mat-error *ngIf="userFormGroup.controls['emailUser'].hasError('required')">
+              Email is <strong>required</strong>
+            </mat-error>
           </div>
+
+          <label>Role <i class="fa fa-briefcase"></i></label>
+          <mat-select class="form-control" (selectionChange)="setRole($event)" formControlName="roleUser" required>
+            <mat-option *ngFor="let user of users" [value]="users">
+              {{user.role}}
+            </mat-option>
+          </mat-select>
+            <mat-error *ngIf="userFormGroup.controls['roleUser'].hasError('required')">Please choose role</mat-error>
+
+          <br>
+
+          <p>
+            <button (click)="sendCode(emailUser.value)" [disabled]="userFormGroup.invalid"
+                    class="btn btn-nc m-3 px-5" style="background-color: #0275B1; color: white">Invite
+            </button>
+          </p>
         </div>
 
-        <label for="inlineFormCustomSelect">Role</label>
-        <select class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-          <option selected>Choose...</option>
-          <option *ngFor="let user of users" value="users">{{user.role}}</option>
-        </select>
+        <table [dataSource]="dataSource" class="w3-centered" mat-table>
 
-        <p></p>
+          <ng-container matColumnDef="role">
+            <th *matHeaderCellDef mat-header-cell> Role</th>
+            <td *matCellDef="let element" mat-cell> {{element.role}}</td>
+          </ng-container>
 
-        <p>
-          <button (click)="sendCode(emailUser.value)" [disabled]="userFormGroup.invalid"
-                  class="btn btn-nc m-3 px-5" style="background-color: #0275B1; color: white">Invite
-          </button>
-        </p>
-      </div>
-    </form>
+          <ng-container matColumnDef="first">
+            <th *matHeaderCellDef mat-header-cell> Add admin</th>
+            <ng-container *matCellDef="let element">
+              <td mat-cell>
+                <ng-container *ngIf="(element.role == 'Admin'); then thenBlock; else elseBlock"></ng-container>
+                <ng-template #thenBlock><i class="fa fa-check w3-text-green w3-text-green"></i></ng-template>
+                <ng-template #elseBlock><i class="fa fa-times w3-text-red"></i></ng-template>
+              </td>
+            </ng-container>
+          </ng-container>
 
-    <table [dataSource]="dataSource" class="w3-centered" mat-table>
+          <ng-container matColumnDef="second">
+            <th *matHeaderCellDef mat-header-cell>Add/Edit/Remove users</th>
+            <ng-container *matCellDef="let element">
+              <td mat-cell>
+                <ng-container *ngIf="(element.role == 'Admin'); then thenBlock; else elseBlock"></ng-container>
+                <ng-template #thenBlock><i class="fa fa-check w3-text-green"></i></ng-template>
+                <ng-template #elseBlock><i class="fa fa-times w3-text-red"></i></ng-template>
+              </td>
+            </ng-container>
+          </ng-container>
 
-      <ng-container matColumnDef="role">
-        <th *matHeaderCellDef mat-header-cell> Role</th>
-        <td *matCellDef="let element" mat-cell> {{element.role}}</td>
-      </ng-container>
+          <ng-container matColumnDef="third">
+            <th *matHeaderCellDef mat-header-cell> Search/Filter users</th>
+            <ng-container *matCellDef="let element">
+              <td mat-cell>
+                <ng-container *ngIf="(element.role == 'Engineer'); then thenBlock; else elseBlock"></ng-container>
+                <ng-template #thenBlock><i class="fa fa-times w3-text-red"></i></ng-template>
+                <ng-template #elseBlock><i class="fa fa-check w3-text-green"></i></ng-template>
+              </td>
+            </ng-container>
+          </ng-container>
 
-      <ng-container matColumnDef="first">
-        <th *matHeaderCellDef mat-header-cell> Add admin</th>
-        <ng-container *matCellDef="let element">
-          <td mat-cell>
-            <ng-container *ngIf="(element.role == 'Admin'); then thenBlock; else elseBlock"></ng-container>
-            <ng-template #thenBlock><i class="fa fa-check w3-text-green w3-text-green"></i></ng-template>
-            <ng-template #elseBlock><i class="fa fa-times w3-text-red"></i></ng-template>
-          </td>
-        </ng-container>
-      </ng-container>
+          <ng-container matColumnDef="fourth">
+            <th *matHeaderCellDef mat-header-cell> View/Edit personal profile</th>
+            <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
+          </ng-container>
 
-      <ng-container matColumnDef="second">
-        <th *matHeaderCellDef mat-header-cell>Add/Edit/Remove users</th>
-        <ng-container *matCellDef="let element">
-          <td mat-cell>
-            <ng-container *ngIf="(element.role == 'Admin'); then thenBlock; else elseBlock"></ng-container>
-            <ng-template #thenBlock><i class="fa fa-check w3-text-green"></i></ng-template>
-            <ng-template #elseBlock><i class="fa fa-times w3-text-red"></i></ng-template>
-          </td>
-        </ng-container>
-      </ng-container>
+          <ng-container matColumnDef="fifth">
+            <th *matHeaderCellDef mat-header-cell> Manage project</th>
+            <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
+          </ng-container>
 
-      <ng-container matColumnDef="third">
-        <th *matHeaderCellDef mat-header-cell> Search/Filter users</th>
-        <ng-container *matCellDef="let element">
-          <td mat-cell>
-            <ng-container *ngIf="(element.role == 'Engineer'); then thenBlock; else elseBlock"></ng-container>
-            <ng-template #thenBlock><i class="fa fa-times w3-text-red"></i></ng-template>
-            <ng-template #elseBlock><i class="fa fa-check w3-text-green"></i></ng-template>
-          </td>
-        </ng-container>
-      </ng-container>
+          <ng-container matColumnDef="sixth">
+            <th *matHeaderCellDef mat-header-cell> Manage test case</th>
+            <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
+          </ng-container>
 
-      <ng-container matColumnDef="fourth">
-        <th *matHeaderCellDef mat-header-cell> View/Edit personal profile</th>
-        <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
-      </ng-container>
+          <ng-container matColumnDef="seventh">
+            <th *matHeaderCellDef mat-header-cell> Manage test scenario</th>
+            <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
+          </ng-container>
 
-      <ng-container matColumnDef="fifth">
-        <th *matHeaderCellDef mat-header-cell> Manage project</th>
-        <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
-      </ng-container>
+          <ng-container matColumnDef="eighth">
+            <th *matHeaderCellDef mat-header-cell> Manage data set</th>
+            <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
+          </ng-container>
 
-      <ng-container matColumnDef="sixth">
-        <th *matHeaderCellDef mat-header-cell> Manage test case</th>
-        <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
-      </ng-container>
+          <ng-container matColumnDef="ninth">
+            <th *matHeaderCellDef mat-header-cell> Send report</th>
+            <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
+          </ng-container>
 
-      <ng-container matColumnDef="seventh">
-        <th *matHeaderCellDef mat-header-cell> Manage test scenario</th>
-        <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
-      </ng-container>
-
-      <ng-container matColumnDef="eighth">
-        <th *matHeaderCellDef mat-header-cell> Manage data set</th>
-        <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
-      </ng-container>
-
-      <ng-container matColumnDef="ninth">
-        <th *matHeaderCellDef mat-header-cell> Send report</th>
-        <td *matCellDef="let element" mat-cell><i class="fa fa-check w3-text-green"></i></td>
-      </ng-container>
-
-      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
-    </table>
+          <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+        </table>
+      </form>
     </div>
   </div>
 </div>
 
-<!--      <form [formGroup]="userFormGroup" class="w3-container">-->
+<!--            <form [formGroup]="userFormGroup" class="w3-container">-->
 <!--        <label class="w3-text ">Email address <i aria-hidden="true" class="fa fa-envelope"></i></label>-->
 <!--        <mat-form-field class="example-full-width" style="margin-top: 10px;">-->
 <!--          <input #emailUser formControlName="emailUser" matInput placeholder="Ex. pat@example.com" type="email">-->

@@ -17,15 +17,17 @@ export class HttpClientService {
 
   getPaginatedUsers(pageSize: number, pageIndex: number, filter: string, orderBy: string, order: string): Observable<UserResponseModel>{
     return this.httpClient.get<UserResponseModel>(
-      this.urlPath + 'user/get_user_list/' + pageIndex + '/' + pageSize
-      + '?filter=' + filter
+      this.urlPath + 'api/users/list'
+      + '?pageSize=' + pageSize
+      + '&pageIndex=' + pageIndex
+      + '&filter=' + filter
       + '&orderBy=' + orderBy
-      + '&order=' + order
-    ).pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
+      + '&order=' + order)
+      .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 
   updateUser(user: UserListModel) {
-    return this.httpClient.put(this.urlPath + 'user/update', user);
+    return this.httpClient.put(this.urlPath + 'api/users/', user);
   }
 
   // getNumberOfUsers( pageSize: number): Observable<number>{

@@ -53,7 +53,6 @@ export class ListUsersComponent implements OnInit {
   }
 
   reloadUsers(): void {
-    console.log(this.orderBy);
     this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order)
       .subscribe(
         response => {
@@ -62,7 +61,6 @@ export class ListUsersComponent implements OnInit {
           this.listUsers = response.list;
           this.dataSource = new MatTableDataSource(this.listUsers);
           this.length = response.size;
-          // console.log(JSON.stringify(this.listUsers));
         },
         error => console.log(error)
       );
@@ -101,9 +99,9 @@ export class ListUsersComponent implements OnInit {
     this.listUsers[index].surname = surname;
   }
 
-  updateEmail(index: number, email: string) {
-    this.listUsers[index].email = email;
-  }
+  // updateEmail(index: number, email: string) {
+  //   this.listUsers[index].email = email;
+  // }
 
   change(index: number) {
     this.listUsers[index].edit = !this.listUsers[index].edit;
@@ -152,5 +150,6 @@ export class ListUsersComponent implements OnInit {
   //   this.router.navigate([], {relativeTo: this.activatedRoute,
   //     queryParams: {orderBy: event.active, direction: event.direction}, queryParamsHandling: 'merge'});
   // }
+
 
 }
