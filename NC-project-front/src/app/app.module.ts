@@ -51,12 +51,12 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     NavbarComponent,
     MainMenuComponent,
     SettingsComponent,
+    CompoundListComponent,
+    CompoundEditComponent,
     CreateProjectComponent,
     ListProjectComponent,
     CreateUserComponent,
-    ListUsersComponent,
-    CompoundListComponent,
-    CompoundEditComponent,
+    ListUsersComponent
   ],
   imports: [
     BrowserModule,
@@ -70,14 +70,14 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
     MatInputModule,
     FormsModule,
     MatTableModule,
+    MatSortModule,
+    DragDropModule,
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
     MatRadioModule,
     MatSelectModule,
-    MatCheckboxModule,
-    MatSortModule,
-    DragDropModule
+    MatCheckboxModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

@@ -1,9 +1,12 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CompoundPage} from '../../../models/CompoundPage';
 import {MatTableDataSource} from '@angular/material/table';
 import {PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
+import {AuthenticationService} from '../../services/auth/authentication.service';
+
+declare var $: any;
 
 @Component({
   selector: 'app-compound-list',
@@ -12,6 +15,7 @@ import {MatSort} from '@angular/material/sort';
 })
 export class CompoundListComponent implements OnInit {
 
+  created: boolean;
   compoundPage: CompoundPage;
   currentPage: number;
   size: number;
@@ -21,6 +25,7 @@ export class CompoundListComponent implements OnInit {
   descriptionSearch = false;
   sort: MatSort;
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {
+    this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
     this.activatedRoute.params.subscribe(value => {
       this.currentPage = value.page;
       this.compoundPage = this.activatedRoute.snapshot.data.compoundPage;
@@ -41,7 +46,7 @@ export class CompoundListComponent implements OnInit {
   }
   clearQuery(): void{
     this.router.navigate([], {relativeTo: this.activatedRoute,
-      queryParams: {name: null, description: null, orderBy: null, direction: null}, queryParamsHandling: 'merge'});
+      queryParams: {name: null, description: null}, queryParamsHandling: 'merge'});
   }
 
   pageParamsChange(event: PageEvent): void {
@@ -72,4 +77,10 @@ export class CompoundListComponent implements OnInit {
     this.router.navigate([], {relativeTo: this.activatedRoute,
       queryParams: {orderBy: event.active, direction: event.direction}, queryParamsHandling: 'merge'});
   }
+
+  // npm i jquery!!!!!
+  closeAlert(): void {
+    $('.alert').alert('close');
+  }
+
 }

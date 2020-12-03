@@ -1,3 +1,9 @@
+<div *ngIf="created" class="alert alert-success alert-dismissible fade show" role="alert">
+  Compound was changed successfully!
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
 <div class="bg-white shadow-lg p-5">
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortBy($event)" class="shadow-lg w-100">
     <ng-container matColumnDef="name">
@@ -6,7 +12,7 @@
 
         <h5 class="float-left" *ngIf="!nameSearch">Name</h5>
         <div *ngIf="nameSearch" class="float-left mt-2">
-          <input type="text" (input)="findName($event)">
+          <input type="text" class="form-control" (input)="findName($event)" (click)="$event.stopPropagation()">
         </div>
 
         <button class="btn btn-outline-secondary bg-nc-trans-hover float-right mr-3 mt-1 ml-3"
@@ -30,7 +36,7 @@
 
         <h5 class="float-left" *ngIf="!descriptionSearch">Description</h5>
         <div *ngIf="descriptionSearch" class="float-left mt-2">
-          <input type="text" (input)="findDescription($event)">
+          <input type="text" class="form-control" (input)="findDescription($event)" (click)="$event.stopPropagation()">
         </div>
 
 
@@ -55,5 +61,5 @@
   </table>
   <mat-paginator [pageSizeOptions]="[10, 20, 30]" pageSize="{{size}}" length="{{compoundPage.size}}"
                  (page)="pageParamsChange($event)" showFirstLastButtons></mat-paginator>
-<button class="btn btn-nc m-3 px-5" routerLink="../edit/">New</button>
+  <button class="btn btn-nc m-3 px-5" routerLink="../new">New</button>
 </div>

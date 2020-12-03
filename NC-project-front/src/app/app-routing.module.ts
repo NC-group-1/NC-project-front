@@ -22,6 +22,7 @@ import {CompoundListResolverService} from './services/compound/compound-list-res
 import {CompoundResolverService} from './services/compound/compound-resolver.service';
 import {ActionPageResolverService} from './services/action/action-page-resolver.service';
 
+
 const routes: Routes = [
   {
     path: '',
