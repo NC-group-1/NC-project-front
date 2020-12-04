@@ -22,6 +22,8 @@ import {ActionPageResolverService} from './services/action/action-page-resolver.
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {ListProjectComponent} from './components/list-project/list-project.component';
 import {ActionComponent} from './components/action/action/action.component';
+import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
+import {TestCaseComponent} from './components/test-case/test-case.component';
 
 
 const routes: Routes = [
@@ -107,6 +109,24 @@ const routes: Routes = [
   {
     path: 'listProject',
     component: ListProjectComponent
+  },
+  {
+    path: 'testScenarios',
+    children: [
+      {
+        path: '',
+        redirectTo: '0',
+        pathMatch: 'full'
+      },
+      {
+        path: ':page',
+        component: TestScenariosComponent
+      }
+    ]
+  },
+  {
+    path: 'testCase',
+    component: TestCaseComponent
   },
   {
     path: 'createUser',
