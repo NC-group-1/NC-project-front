@@ -33,11 +33,8 @@ import { CreateUserComponent } from './components/create-user/create-user.compon
 import { ListUsersComponent } from './components/list-users/list-users.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {MatTableModule} from '@angular/material/table';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
 import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
@@ -76,12 +73,9 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
     MatAutocompleteModule,
     MatInputModule,
     FormsModule,
-    BrowserAnimationsModule,
     MatTableModule,
-    MatPaginatorModule,
     MatSortModule,
     DragDropModule,
-    MatTableModule,
     MatIconModule,
     MatButtonModule,
     MatTooltipModule,
