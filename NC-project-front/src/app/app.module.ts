@@ -24,6 +24,7 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { ListProjectComponent } from './components/list-project/list-project.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { ListUsersComponent } from './components/list-users/list-users.component';
+import { ListTestCaseComponent } from './components/list-test-case/list-test-case.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
@@ -51,6 +52,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ListProjectComponent,
     CreateUserComponent,
     ListUsersComponent,
+    ListTestCaseComponent,
   ],
   imports: [
     BrowserModule,

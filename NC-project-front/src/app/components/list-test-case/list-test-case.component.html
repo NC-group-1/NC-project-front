@@ -1,0 +1,132 @@
+<div class="mr-5">
+    <div class="bg-white shadow-lg px-5 py-2">
+      <div class="example-container">
+        <h2 class="p-0">List of test case</h2>
+      </div>
+      <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
+
+        <div class="form-group">
+          <label for="input">Find test case:</label>
+          <input class="form-control float-left col-3 input-sm" id="input" type="text" #input (keyup)="applyFilter($event)"
+             matInput placeholder="Search by name...">
+        </div>
+
+        <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData(orderBy)">
+          <ng-container matColumnDef="test_case_id">
+            <th *matHeaderCellDef [hidden]="true" mat-header-cell></th>
+            <td *matCellDef="let element" [hidden]="true" mat-cell><p>{{element.test_case_id}}</p></td>
+          </ng-container>
+
+          <ng-container  matColumnDef="select">
+            <th style="padding-top: 1%; width: 7%;" *matHeaderCellDef mat-header-cell>
+              <mat-checkbox (change)="$event ? masterToggle() : null"
+                            [aria-label]="checkboxLabel()"
+                            [checked]="selection.hasValue() && isAllSelected()"
+                            [indeterminate]="selection.hasValue() && !isAllSelected()"
+                            class="w3-margin-left">
+              </mat-checkbox>
+            </th>
+            <td style="padding-top: 1%;" *matCellDef="let row" mat-cell>
+              <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                            (click)="$event.stopPropagation()"
+                            [aria-label]="checkboxLabel(row)"
+                            [checked]="selection.isSelected(row)"
+                            class="w3-margin-left">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="name">
+            <th style="width: 20%;" *matHeaderCellDef mat-header-cell (click)="sortData('name')"> Name </th>
+            <td class="w3-link w3-text-blue" style="max-width:100px; cursor: pointer;"  *matCellDef="let element;let i = index;" [matTooltip]="element.description" mat-cell>
+              <a (click)="change(i)" [hidden]="element.edit">{{element.name}}</a>
+
+              <div [hidden]="!element.edit" style="width: 100%">
+                <mat-form-field>
+                  <mat-label>Edit</mat-label>
+                  <input #inputName (change)="updateName(i, inputName.value)" [value]="element.name" matInput
+                         placeholder="Element name">
+                </mat-form-field>
+              </div>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="creator_id">
+            <th style="width: 15%;" *matHeaderCellDef mat-header-cell (click)="sortData('creator_id')">Creator</th>
+            <td *matCellDef="let element" mat-cell> User{{element.creator_id}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="creation_date">
+            <th style="width: 15%;" *matHeaderCellDef mat-header-cell (click)="sortData('creation_date')">Create</th>
+            <td *matCellDef="let element" mat-cell> {{element.creation_date | date:"dd-MM-yyyy"}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="iterations_amount">
+            <th style="width: 15%;" *matHeaderCellDef mat-header-cell (click)="sortData('iterations_amount')"> Iterations</th>
+            <td style="padding-left: 2%; padding-top: 2%; max-width:35px;" *matCellDef="let element; let i = index;" mat-cell>
+              <p [hidden]="element.edit">{{element.iterations_amount}}</p>
+
+              <div [hidden]="!element.edit" style="width: 70%">
+                <mat-form-field>
+                  <mat-label>Edit</mat-label>
+                  <input #inputIterations  type="number" min="0" (change)="updateIterations(i, inputIterations.value)" [value]="element.iterations_amount" matInput
+                         placeholder="Element iterations_amount">
+                </mat-form-field>
+              </div>
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="recurring_time">
+            <th style="width: 20%;" *matHeaderCellDef mat-header-cell (click)="sortData('recurring_time')"> Recurring time</th>
+            <td style="padding-left: 2%; padding-top: 2%; max-width:35px;" *matCellDef="let element; let i = index;" mat-cell>
+              <p [hidden]="element.edit">{{element.recurring_time}}</p>
+
+              <div [hidden]="!element.edit" style="width: 85%;">
+                <mat-form-field style="color: #0275B1; max-height: 100px;">
+                  <mat-label>Select an option</mat-label>
+                  <mat-select style="color: #0275B1;" [(value)]="element.recurring_time">
+                    <mat-option  style="height:20px;" *ngFor="let rectime of rectimes" [value]="rectime.value" >{{rectime.viewValue}} </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </td>
+          </ng-container>
+
+
+          <ng-container matColumnDef="editBtn">
+            <th style="width: 10%;" style="padding-left: 1.5%; max-width:15px;" *matHeaderCellDef mat-header-cell> Edit</th>
+            <td *matCellDef="let element; let i = index;" mat-cell>
+              <button (click)="change(i)"
+                      class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white"><i class="fa fa-pencil"></i></button>
+            </td>
+          </ng-container>
+
+          <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+          <tr *matRowDef="let row; columns: displayedColumns;"  mat-row>
+      <!--                (click)="selection.toggle(row)">-->
+          </tr>
+
+          <tr *matNoDataRow class="mat-row">
+            <td class="mat-cell" colspan="8">No data matching the filter "{{input.value}}"</td>
+          </tr>
+        </table>
+      </div>
+      <mat-paginator (page)="onPaginationChange($event)"
+                     [length]="length"
+                     [pageSizeOptions]="pageSizeOptions"
+                     [pageSize]="pageSize" showFirstLastButtons>
+      </mat-paginator>
+      <div class="w3-bar">
+        <a  class="btn btn-nc m-3 px-4 w3-left"
+           style="background-color: #0275B1; margin-top: 10px; color: white">New</a>
+        <button [routerLink]="['/createProject']" class="btn btn-nc m-3 px-4 w3-left"
+                style="background-color: #0275B1; margin-top: 10px; color: white"> Run
+        </button>
+        <button (click)="delete()" class="btn btn-nc m-3 px-4 w3-left"
+                style="background-color: #0275B1; margin-top: 10px; color: white"> Delete
+        </button>
+      </div>
+
+    </div>
+</div>
