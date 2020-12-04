@@ -36,6 +36,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
+import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
 
 @NgModule({
   declarations: [
@@ -57,6 +59,8 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     ListProjectComponent,
     CreateUserComponent,
     ListUsersComponent,
+    ListDataSetComponent,
+    DataSetDetailsComponent,
   ],
   imports: [
     BrowserModule,

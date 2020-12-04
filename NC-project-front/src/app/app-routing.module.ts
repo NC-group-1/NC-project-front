@@ -22,6 +22,9 @@ import {ActionPageResolverService} from './services/action/action-page-resolver.
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {ListProjectComponent} from './components/list-project/list-project.component';
 import {ActionComponent} from './components/action/action/action.component';
+import {ListDataSetComponent} from './components/data-set/list-data-set/list-data-set.component';
+import {DataSetDetailsComponent} from "./components/data-set/data-set-details/data-set-details.component";
+import {DataSetResolverService} from "./services/data-set/data-set-resolver.service";
 
 
 const routes: Routes = [
@@ -119,6 +122,20 @@ const routes: Routes = [
   {
     path: 'manageAction',
     component: ActionComponent
+  },
+  {
+    path: 'dataSet',
+    children: [
+      {
+        path: 'list',
+        component: ListDataSetComponent
+      },
+      {
+        path: ':id',
+        component: DataSetDetailsComponent,
+        resolve: {dataSet: DataSetResolverService}
+      }
+    ]
   },
   {
     path: '**',
