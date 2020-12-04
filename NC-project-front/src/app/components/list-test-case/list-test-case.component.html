@@ -5,10 +5,25 @@
       </div>
       <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
 
-        <div class="form-group">
-          <label for="input">Find test case:</label>
-          <input class="form-control float-left col-3 input-sm" id="input" type="text" #input (keyup)="applyFilter($event)"
-             matInput placeholder="Search by name...">
+
+        <div class="row">
+          <div class="col-5">
+            <div class="form-group">
+              <label for="input">Find test case:</label>
+              <input class="form-control float-left col-3 input-sm" id="input" type="text" #input (keyup)="applyFilter($event)"
+                 matInput placeholder="Search by name...">
+            </div>
+          </div>
+          <div class="col-7">
+              <a  class="btn btn-nc m-3 px-3"
+                 style="background-color: #0275B1; margin-top: 10px; color: white">New</a>
+              <button [routerLink]="['/createProject']" class="btn btn-nc m-3 px-3"
+                      style="background-color: #0275B1; margin-top: 10px; color: white"> Run
+              </button>
+              <button (click)="delete()" class="btn btn-nc m-3 px-3"
+                      style="background-color: #0275B1; margin-top: 10px; color: white"> Delete
+              </button>
+          </div>
         </div>
 
         <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData(orderBy)">
@@ -117,16 +132,7 @@
                      [pageSizeOptions]="pageSizeOptions"
                      [pageSize]="pageSize" showFirstLastButtons>
       </mat-paginator>
-      <div class="w3-bar">
-        <a  class="btn btn-nc m-3 px-4 w3-left"
-           style="background-color: #0275B1; margin-top: 10px; color: white">New</a>
-        <button [routerLink]="['/createProject']" class="btn btn-nc m-3 px-4 w3-left"
-                style="background-color: #0275B1; margin-top: 10px; color: white"> Run
-        </button>
-        <button (click)="delete()" class="btn btn-nc m-3 px-4 w3-left"
-                style="background-color: #0275B1; margin-top: 10px; color: white"> Delete
-        </button>
-      </div>
+
 
     </div>
 </div>
