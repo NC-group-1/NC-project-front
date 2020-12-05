@@ -12,9 +12,8 @@
   <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
 
     <div class="form-group">
-      <label for="input">Find project:</label>
-      <input type="text" class="form-control float-left col-3 input-sm" id="input" #input (keyup)="applyFilter($event)"
-             matInput placeholder="Search by name and link...">
+      <label>Find project:</label>
+      <input type="text" class="form-control" style="width:800px" #input (keyup)="applyFilter($event)" placeholder="Search by name and link...">
     </div>
 
     <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData(orderBy)">

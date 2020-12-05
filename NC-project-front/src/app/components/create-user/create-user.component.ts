@@ -11,6 +11,8 @@ interface Role {
   role: string;
 }
 
+declare var $: any;
+
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
@@ -59,18 +61,24 @@ export class CreateUserComponent implements OnInit {
   }
 
   sendCode(email: string): void {
-    this.auth.register({
-      email: email,
-      role: this.role,
-    }).subscribe(() => {
-        this.passwordService.sendCodeOnEmail(email).subscribe(
-          () => {},
-          error => console.log(error)
-        );
-      }, error => console.log(error)
-    );
+      this.auth.register({
+        email: email,
+        role: this.role,
+      }).subscribe(() => {
+          this.passwordService.sendCodeOnEmail(email).subscribe(
+            () => {
+            },
+            error => console.log(error)
+          );
+        }, error => console.log(error)
+      );
+      this.router.navigate(['listUsers'], {queryParams: {created: true}});
   }
 
+
+  closeAlert(): void {
+    $('.alert').alert('close');
+  }
 
   modalShow() {
     this.router.navigateByUrl('/listUsers');

@@ -5,10 +5,10 @@ import {PageEvent} from '@angular/material/paginator';
 import {HttpClientService} from '../../services/users/http-client.service';
 import {UserResponseModel} from '../../../models/UserResponseModel';
 import {UserListModel} from '../../../models/UserListModel';
-import {Sort} from '@angular/material/sort';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthenticationService} from "../../services/auth/authentication.service";
-import {UserModel} from "../../../models/UserModel";
+
+declare var $: any;
 
 @Component({
   selector: 'app-list-project',
@@ -32,13 +32,14 @@ export class ListUsersComponent implements OnInit {
   filter = '';
   orderBy = '';
   order = '';
+  created: boolean;
 
   selection = new SelectionModel<UserListModel>(true, []);
 
   constructor(private activatedRoute: ActivatedRoute, private httpClientService: HttpClientService, private auth: AuthenticationService) {
     this.selectedUser = '';
     this.listUsers = [];
-
+    this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
     this.dataSource = new MatTableDataSource();
     this.activatedRoute.params.subscribe(param => {
       this.user = this.activatedRoute.snapshot.data.user;
@@ -152,4 +153,7 @@ export class ListUsersComponent implements OnInit {
   // }
 
 
+  closeAlert(): void {
+    $('.alert').alert('close');
+  }
 }
