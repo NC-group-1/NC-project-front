@@ -1,3 +1,10 @@
+<div *ngIf="isError" class="alert alert-danger alert-dismissible fade show" role="alert">
+  Please, make sure to fill all the fields
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
 <div class="bg-white shadow-lg p-5">
 
   <div class="example-container">
@@ -6,21 +13,22 @@
 
   <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
 
-
     <form [formGroup]="form" class="w3-container w-100">
       <div class="col-6 float-left">
         <div class="form-group">
-          <label for="name">Name of project </label>
-          <input class="form-control" id="name" name="nameProject" type="text">
+          <label>Name of project </label>
+<!--          <input class="form-control" id="name" name="nameProject" type="text" formControlName="name">-->
+          <input [@invalidForm]="form.controls.name.invalid ? 'invalid': ''" type="text" class="form-control" formControlName="name" [ngModel]="project?.name">
         </div>
 
         <div class="form-group">
-          <label for="link">Link of project </label>
-          <input class="form-control" id="link" name="link" type="text">
+          <label>Link of project </label>
+<!--          <input class="form-control" id="link" name="link" type="text" formControlName="link">-->
+          <input [@invalidForm]="form.controls.link.invalid ? 'invalid': ''" type="text" class="form-control" formControlName="link" [ngModel]="project?.link">
         </div>
         <p>
-          <button (click)="createProject()" [disabled]="form.invalid"
-                  class="btn btn-nc m-3 px-5" style="background-color: #0275B1; color: white"> Create </button>
+          <button (click)="createProject()" class="btn btn-nc m-3 px-5" data-toggle="modal"> Create </button>
+          <button class="btn btn-nc m-3 px-5" data-toggle="modal" data-target="discardModal" (click)="modalShow()">Discard</button>
         </p>
       </div>
     </form>

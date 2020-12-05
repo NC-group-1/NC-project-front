@@ -4,6 +4,9 @@ import {HttpClientService} from '../../services/projects/http-client.service';
 import {ProjectModel} from '../../../models/ProjectModel';
 import {PageEvent} from '@angular/material/paginator';
 import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
+import {ActivatedRoute, Router} from "@angular/router";
+
+declare var $: any;
 
 @Component({
   selector: 'app-list-project',
@@ -23,8 +26,12 @@ export class ListProjectComponent implements OnInit{
   filter = '';
   orderBy = '';
   order = '';
+  created: boolean;
 
-  constructor(private httpClientService: HttpClientService) {
+  constructor(private httpClientService: HttpClientService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
+    this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
     this.selectedProject = '';
     this.listProjects = [];
     this.dataSource = new MatTableDataSource();
@@ -90,5 +97,9 @@ export class ListProjectComponent implements OnInit{
     this.orderBy = orderBy;
     this.order == '' ? this.order = 'DESC' : this.order = '';
     this.reloadProjects();
+  }
+
+  closeAlert(): void {
+    $('.alert').alert('close');
   }
 }

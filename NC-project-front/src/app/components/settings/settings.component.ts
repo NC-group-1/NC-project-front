@@ -21,7 +21,7 @@ export class SettingsComponent implements OnInit {
 
   sendCode(): void {
     this.sent = true;
-    this.passwordService.sendCodeOnEmail({recipients: [this.auth.getUsername()]}).subscribe(
+    this.passwordService.sendCodeOnEmail(this.auth.getUsername()).subscribe(
       value => {
       }, error => {
       });

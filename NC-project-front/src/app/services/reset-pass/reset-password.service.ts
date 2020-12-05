@@ -11,7 +11,7 @@ import {EmailModel} from '../../../models/EmailModel';
 export class ResetPasswordService {
 
   constructor(private http: HttpClient) { }
-  sendCodeOnEmail(email: EmailModel): Observable<any>{
+  sendCodeOnEmail(email: string): Observable<any>{
     return this.http.post(apiPath + 'api/recovery-password', email);
   }
   updatePassword(password: PasswordModel): Observable<any>{

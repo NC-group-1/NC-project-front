@@ -63,7 +63,7 @@ export class CreateUserComponent implements OnInit {
       email: email,
       role: this.role,
     }).subscribe(() => {
-        this.passwordService.sendCodeOnEmail({recipients:[email]}).subscribe(
+        this.passwordService.sendCodeOnEmail(email).subscribe(
           () => {},
           error => console.log(error)
         );
@@ -72,4 +72,7 @@ export class CreateUserComponent implements OnInit {
   }
 
 
+  modalShow() {
+    this.router.navigateByUrl('/listUsers');
+  }
 }
