@@ -1,0 +1,49 @@
+<div class="row">
+  <div class="col-8">
+    <div class="bg-white shadow-lg">
+      <button class="btn btn-success" (click)="showDatasets()">Add Dataset</button>
+    </div>
+  </div>
+  <div class="col mr-5">
+    <div class="bg-white shadow-lg">
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="datasetModal" tabindex="-1" aria-labelledby="datasetModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="datasetModalLabel" data-target="dataset-1 dataset-2 dataset-3">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <mat-accordion class="example-headers-align" multi hideToggle>
+          <mat-expansion-panel *ngFor="let dataset of datasets">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{dataset.name}}
+              </mat-panel-title>
+              <mat-panel-description class="d-inline-block text-right">
+                {{dataset.parameters.length}}
+              </mat-panel-description>
+              <button class="btn btn-outline-success m-0 p-0">
+                <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+              </button>
+            </mat-expansion-panel-header>
+            <p class="font-italic text-secondary">Creator: {{dataset.creator.email}}</p>
+            <p class="font-weight-bold text-success">Description: {{dataset.description}}</p>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

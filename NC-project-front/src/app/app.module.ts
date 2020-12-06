@@ -20,23 +20,26 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { CompoundListComponent } from './components/compound-list/compound-list.component';
+import { CompoundEditComponent } from './components/compound-edit/compound-edit.component';
+import {MatSortModule} from '@angular/material/sort';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { ListProjectComponent } from './components/list-project/list-project.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { ListUsersComponent } from './components/list-users/list-users.component';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatTableModule} from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
-import {MatCheckboxModule} from '@angular/material/checkbox';
-import { CompoundListComponent } from './components/compound-list/compound-list.component';
-import { CompoundEditComponent } from './components/compound-edit/compound-edit.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
-import {MatSortModule} from '@angular/material/sort';
-import {DragDropModule} from '@angular/cdk/drag-drop';
-import { CreateScenarioComponent } from './components/create-scenario/create-scenario.component';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+import {TestCaseComponent} from "./components/test-case/test-case.component";
+import {TestScenariosComponent} from "./components/test-scenarios/test-scenarios.component";
+import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -58,20 +61,22 @@ import { CreateScenarioComponent } from './components/create-scenario/create-sce
     ListProjectComponent,
     CreateUserComponent,
     ListUsersComponent,
-    CreateScenarioComponent,
+    TestCaseComponent,
+    TestScenariosComponent,
+    CreateScenarioComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatPaginatorModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatAutocompleteModule,
     MatInputModule,
     FormsModule,
     MatTableModule,
+    MatPaginatorModule,
     MatSortModule,
     DragDropModule,
     MatIconModule,
@@ -79,7 +84,8 @@ import { CreateScenarioComponent } from './components/create-scenario/create-sce
     MatTooltipModule,
     MatRadioModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatExpansionModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

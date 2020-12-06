@@ -22,6 +22,8 @@ import {CompoundListResolverService} from './services/compound/compound-list-res
 import {CompoundResolverService} from './services/compound/compound-resolver.service';
 import {ActionPageResolverService} from './services/action/action-page-resolver.service';
 import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
+import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
+import {TestCaseComponent} from './components/test-case/test-case.component';
 
 
 const routes: Routes = [
@@ -136,6 +138,24 @@ const routes: Routes = [
   {
     path: 'listProject',
     component: ListProjectComponent
+  },
+  {
+    path: 'testScenarios',
+    children: [
+      {
+        path: '',
+        redirectTo: '0',
+        pathMatch: 'full'
+      },
+      {
+        path: ':page',
+        component: TestScenariosComponent
+      }
+    ]
+  },
+  {
+    path: 'testCase',
+    component: TestCaseComponent
   },
   {
     path: 'createUser',
