@@ -2,7 +2,7 @@
 <div class="bg-white shadow-lg p-5">
 
   <div class="example-container">
-    <h2 class="p-0">Invite a new user</h2>
+    <h2 class="p-0 header">Invite a new user</h2>
   </div>
 
   <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
@@ -34,7 +34,7 @@
 
           <p>
             <button (click)="sendCode(emailUser.value)" [disabled]="userFormGroup.invalid"
-                    class="btn btn-nc m-3 px-5" style="background-color: #0275B1; color: white">Invite </button>
+                    class="btn btn-nc m-3 px-5" >Invite </button>
             <button class="btn btn-nc m-3 px-5" data-toggle="modal" data-target="discardModal" (click)="modalShow()">Discard</button>
           </p>
         </div>

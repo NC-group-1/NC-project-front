@@ -37,7 +37,6 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CreateScenarioComponent } from './components/create-scenario/create-scenario.component';
-import { ListScenarioComponent } from './components/list-scenario/list-scenario.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +59,6 @@ import { ListScenarioComponent } from './components/list-scenario/list-scenario.
     CreateUserComponent,
     ListUsersComponent,
     CreateScenarioComponent,
-    ListScenarioComponent
   ],
   imports: [
     BrowserModule,

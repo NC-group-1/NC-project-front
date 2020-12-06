@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {HttpClientService} from '../../services/projects/http-client.service';
 import {ProjectModel} from '../../../models/ProjectModel';
 import {PageEvent} from '@angular/material/paginator';
 import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
 import {ActivatedRoute, Router} from "@angular/router";
+import {FormGroup} from "@angular/forms";
+import {MatSort} from "@angular/material/sort";
 
 declare var $: any;
 
@@ -27,6 +29,9 @@ export class ListProjectComponent implements OnInit{
   orderBy = '';
   order = '';
   created: boolean;
+  projectForm: FormGroup;
+
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private httpClientService: HttpClientService,
               private router: Router,
@@ -93,11 +98,18 @@ export class ListProjectComponent implements OnInit{
     this.reloadProjects();
   }
 
-  sortData(orderBy: string) {
-    this.orderBy = orderBy;
-    this.order == '' ? this.order = 'DESC' : this.order = '';
+  // sortData(orderBy: string) {
+  //   this.orderBy = orderBy;
+  //   this.order == '' ? this.order = 'DESC' : this.order = '';
+  //   this.reloadProjects();
+  // }
+
+  sortData() {
+    this.projectForm.value.order = this.sort.direction.toUpperCase();
+    this.projectForm.value.orderBy = this.sort.active;
     this.reloadProjects();
   }
+
 
   closeAlert(): void {
     $('.alert').alert('close');

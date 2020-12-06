@@ -9,6 +9,8 @@ import {PageEvent} from '@angular/material/paginator';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CompoundService} from '../../services/compound/compound.service';
 import {state, style, trigger} from '@angular/animations';
+import {MatTableDataSource} from "@angular/material/table";
+import {CompoundPage} from "../../../models/CompoundPage";
 
 declare var $: any;
 
@@ -41,6 +43,10 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   scenarioForm: FormGroup;
   isError = false;
   selectedAction: ActionOfCompound;
+  dataSource: MatTableDataSource<any>;
+  compoundPage: CompoundPage;
+  currentPage: number;
+  nameSearch = false;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -58,6 +64,11 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
         this.compoundActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
       }
     });
+    this.activatedRoute.params.subscribe(value => {
+      this.currentPage = value.page;
+      this.compoundPage = this.activatedRoute.snapshot.data.compoundPage;
+      this.dataSource = new MatTableDataSource<any>(this.compoundPage.list);
+    });
     this.activatedRoute.data.subscribe(() => {
       this.actions = this.activatedRoute.snapshot.data.actionPage;
       this.actionsAsCompActions = this.actions.list.map<ActionOfCompound>(value1 => ({
@@ -73,6 +84,11 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    this.clearQuery();
+  }
+  clearQuery(): void{
+    this.router.navigate([], {relativeTo: this.activatedRoute,
+      queryParams: {name: null, description: null}, queryParamsHandling: 'merge'});
   }
 
   ngAfterViewInit(): void {
@@ -115,7 +131,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           description: this.scenarioForm.value.description,
           actions: this.compoundActions
         }
-      ).subscribe(value => this.router.navigate(['testScenario'], {queryParams: {created: true}}));
+      ).subscribe(() => this.router.navigate(['testScenario'], {queryParams: {created: true}}));
     } else if (!this.emptyInvalid && this.scenarioForm.valid) {
       this.compService.updateCompound(
         {
@@ -125,9 +141,8 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           type: 'COMPOUND'
         }).subscribe(value => {
         this.compService.changeActions(this.compound.id, this.compoundActions).subscribe(
-          value1 => {
+          () => {
             this.router.navigate(['testScenario'], {queryParams: {created: true}});
-          }, error => {
           }
         );
       });
@@ -140,7 +155,14 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     this.router.navigate(['testScenario']);
   }
 
-
+  searchByName(): void {
+    this.clearQuery();
+    this.nameSearch = !this.nameSearch;
+  }
+  findName(event: any): void{
+    this.router.navigate([], {relativeTo: this.activatedRoute,
+      queryParams: {name: event.target.value}, queryParamsHandling: 'merge'});
+  }
 
   pageParamsChange(event: PageEvent): void {
     this.router.navigate([], {
@@ -171,6 +193,11 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     if (action.type === 'COMPOUND'){
       this.router.navigate(['compounds', 'edit', action.id]);
     }
+  }
+
+  sortBy(event: any): void {
+    this.router.navigate([], {relativeTo: this.activatedRoute,
+      queryParams: {orderBy: event.active, direction: event.direction}, queryParamsHandling: 'merge'});
   }
 }
 

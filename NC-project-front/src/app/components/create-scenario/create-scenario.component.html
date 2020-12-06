@@ -5,17 +5,19 @@
   </button>
 </div>
 
-<div class="example-container">
-  <h2 class="p-0">Create/Edit a new Test Scenario</h2>
-</div>
-
 <div class="bg-white shadow-lg p-3">
+  <div class="example-container">
+    <h2 class="p-0">Create/Edit a new Test Scenario</h2>
+  </div>
+
   <div [formGroup]="scenarioForm">
     <label class="m-3 color-nc font-weight-bold"> Name
-      <input [@invalidForm]="scenarioForm.controls.name.invalid ? 'invalid': ''" type="text" class="form-control" formControlName="name" [ngModel]="compound?.name">
+      <input [@invalidForm]="scenarioForm.controls.name.invalid ? 'invalid': ''" type="text" class="form-control"
+             formControlName="name" [ngModel]="compound?.name">
     </label>
     <label class="m-3 color-nc font-weight-bold"> Description
-      <input [@invalidForm]="scenarioForm.controls.description.invalid ? 'invalid': ''" type="text" class="form-control" formControlName="description" [ngModel]="compound?.description">
+      <input [@invalidForm]="scenarioForm.controls.description.invalid ? 'invalid': ''" type="text" class="form-control"
+             formControlName="description" [ngModel]="compound?.description">
     </label>
   </div>
 
@@ -36,30 +38,62 @@
     <div class="col-6 float-left">
       <div class="example-container">
         <h2 class="color-nc font-italic font-weight-bold">List of actions and compound</h2>
-        <div
-          cdkDropList [id]="'cdk-drop-list-1'"
-          [cdkDropListData]="actionsAsCompActions"
-          class="action-list" (cdkDropListDropped)="drop($event)">
-          <div class="action-box"
-               [class]="item.action.type === 'COMPOUND' ? 'border border-success' : ''" *ngFor="let item of actionsAsCompActions" (click)="showActionDetails(item)" cdkDrag>
-            {{item.action.name}}
-          </div>
-        </div>
+
+<!--        <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortBy($event)" class="shadow-lg w-100">-->
+<!--          <ng-container matColumnDef="name">-->
+<!--            <th mat-header-cell mat-sort-header *matHeaderCellDef class="w-35 border-right pointer">-->
+
+
+<!--              <h5 class="float-left" *ngIf="!nameSearch">Name</h5>-->
+<!--              <div *ngIf="nameSearch" class="float-left mt-2">-->
+<!--                <input type="text" class="form-control" (input)="findName($event)" (click)="$event.stopPropagation()">-->
+<!--              </div>-->
+
+<!--              <button class="btn btn-outline-secondary bg-nc-trans-hover float-right mr-3 mt-1 ml-3"-->
+<!--                      (click)="searchByName(); $event.stopPropagation()">-->
+<!--                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor"-->
+<!--                     xmlns="http://www.w3.org/2000/svg">-->
+<!--                  <path fill-rule="evenodd"-->
+<!--                        d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>-->
+<!--                  <path fill-rule="evenodd"-->
+<!--                        d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>-->
+<!--                </svg>-->
+<!--              </button>-->
+<!--            </th>-->
+            <div
+              cdkDropList [id]="'cdk-drop-list-1'"
+              [cdkDropListData]="actionsAsCompActions"
+              class="action-list" (cdkDropListDropped)="drop($event)">
+              <div class="action-box"
+                   [class]="item.action.type === 'COMPOUND' ? 'border border-success' : ''"
+                   *ngFor="let item of actionsAsCompActions" (click)="showActionDetails(item)" cdkDrag>
+                {{item.action.name}}
+              </div>
+            </div>
+<!--          </ng-container>-->
+<!--        </table>-->
       </div>
     </div>
 
   </div>
+
+
   <mat-paginator [pageSizeOptions]="[10, 20, 30]" pageSize="{{size}}" length="{{actions.size}}"
                  (page)="pageParamsChange($event)" showFirstLastButtons></mat-paginator>
 
-  <button type="submit" class="btn btn-nc m-3 px-5 py-3 animation" (click)="submit()">{{creating ? 'Create' : 'Save'}}</button>
-  <button class="btn btn-outline-danger m-3 px-5 py-3" data-toggle="modal" data-target="discardModal" (click)="modalShow()">Discard</button>
+  <button type="submit" class="btn btn-nc m-3 px-5 py-3 animation"
+          (click)="submit()">{{creating ? 'Create' : 'Save'}}</button>
+  <button class="btn btn-outline-danger m-3 px-5 py-3" data-toggle="modal" data-target="discardModal"
+          (click)="modalShow()">Discard
+  </button>
   <button *ngIf="!creating" class="btn btn-outline-danger m-3 px-5 py-3" (click)="modalDelShow()">DELETE</button>
 </div>
 
 
 <div *ngIf="!!selectedAction" class="bg-white mt-4 shadow-lg p-5">
-  <h1><strong class="color-nc">Name: </strong> <a role="button" (click)="navToCompound(selectedAction.action)">{{selectedAction.action.name}}</a></h1>
+  <h1><strong class="color-nc">Name: </strong> <a role="button"
+                                                  (click)="navToCompound(selectedAction.action)">{{selectedAction.action.name}}</a>
+  </h1>
   <h3><strong class="color-nc">Key:</strong> {{selectedAction.key.key}}</h3>
   <h3 class="color-nc">Description:</h3>
   <h4>{{selectedAction.action.description}}</h4>
@@ -79,7 +113,9 @@
         <p>Are you sure you want to discard all changes?</p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-danger" data-dismiss="modal" routerLink="{{creating ? '../' : '../../'}}">Discard</button>
+        <button type="button" class="btn btn-outline-danger" data-dismiss="modal"
+                routerLink="{{creating ? '../' : '../../'}}">Discard
+        </button>
         <button type="button" class="btn btn-outline-primary" (click)="submit()">Save changes</button>
       </div>
     </div>
