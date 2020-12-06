@@ -47,7 +47,7 @@ export class ActionComponent implements OnInit {
     });
     this.manageActionForm = this.formBuilder.group({
       id: new FormControl(null),
-      name: new FormControl(''),
+      name: new FormControl('', Validators.required),
       key: this.formBuilder.group({id: new FormControl(0), key: new FormControl('') }),
       type: new FormControl('', [this.validateActionTypeInput(), Validators.required]),
       description: new FormControl('')
@@ -72,20 +72,6 @@ export class ActionComponent implements OnInit {
     this.actionTableForm.value.order = this.sort.direction.toUpperCase();
     this.actionTableForm.value.orderBy = this.sort.active;
     this.reloadActions();
-    /*
-    if (this.pageIndex !== 0) {
-      this.paginator.firstPage();
-    }
-    if (this.actionTableForm.value.orderBy === orderBy) {
-      this.actionTableForm.value.order === 'ASC' ?
-        this.actionTableForm.value.order = 'DESC' : this.actionTableForm.value.order = 'ASC';
-    } else {
-      this.actionTableForm.value.orderBy = orderBy;
-      this.actionTableForm.value.order = 'ASC';
-    }
-    this.reloadActions();
-
-     */
   }
 
   reloadActions(): void {
