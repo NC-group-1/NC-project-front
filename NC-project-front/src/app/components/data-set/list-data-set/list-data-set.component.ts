@@ -4,10 +4,11 @@ import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {DataSetGeneralInfoDto} from '../../../../models/data-set-general-info-dto';
 import {DataSetService} from '../../../services/data-set/data-set.service';
 import {DataSetGeneralInfoDtoPage} from '../../../../models/data-set-general-info-dto-page';
-import {FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {SelectionModel} from '@angular/cdk/collections';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-list-data-set',
@@ -16,12 +17,12 @@ import {Router} from '@angular/router';
 })
 export class ListDataSetComponent implements OnInit {
   dataSource = new MatTableDataSource<DataSetGeneralInfoDto>();
-  displayedColumns: string[] = ['select', 'name', 'createdByRole', 'createdByName',
-    'createdBySurname', 'details', 'edit'];
+  displayedColumns: string[] = ['select', 'name', 'role', 'username',
+    'surname', 'details', 'edit'];
   length = 0;
-  pageSize = 5;
+  pageSize = 10;
   pageIndex = 0;
-  pageSizeOptions: number[] = [5, 10, 15];
+  pageSizeOptions: number[] = [10, 20, 50, 100];
   dataSetTableForm: FormGroup;
   selection = new SelectionModel<DataSetGeneralInfoDto>(true, []);
 
@@ -30,6 +31,7 @@ export class ListDataSetComponent implements OnInit {
   editing = false;
 
   @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private dataSetService: DataSetService,
               private formBuilder: FormBuilder,
@@ -40,7 +42,7 @@ export class ListDataSetComponent implements OnInit {
       order: new FormControl('ASC')
     });
     this.manageDataSetForm = this.formBuilder.group({
-      name: new FormControl(''),
+      name: new FormControl('', Validators.required),
       description: new FormControl(''),
       id: new FormControl(null),
       createdById: new FormControl(null)
@@ -79,17 +81,9 @@ export class ListDataSetComponent implements OnInit {
     this.reloadDataSets();
   }
 
-  sortData(orderBy: string){
-    if (this.pageIndex !== 0) {
-      this.paginator.firstPage();
-    }
-    if (this.dataSetTableForm.value.orderBy === orderBy) {
-      this.dataSetTableForm.value.order === 'ASC' ?
-        this.dataSetTableForm.value.order = 'DESC' : this.dataSetTableForm.value.order = 'ASC';
-    } else {
-      this.dataSetTableForm.value.orderBy = orderBy;
-      this.dataSetTableForm.value.order = 'ASC';
-    }
+  sortData(): void{
+    this.dataSetTableForm.value.order = this.sort.direction.toUpperCase();
+    this.dataSetTableForm.value.orderBy = this.sort.active;
     this.reloadDataSets();
   }
 

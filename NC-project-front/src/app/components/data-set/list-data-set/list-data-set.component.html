@@ -1,153 +1,157 @@
-<section>
-  <div class="button-row">
-    <button mat-raised-button color="primary" (click)="createDataSet()">Add data set</button>
-  </div>
-</section>
 <div *ngIf="!editing && !creation">
-<p class="header">List of data set</p>
-<form name="dataSetTableForm" [formGroup]="dataSetTableForm">
-  <mat-form-field class="mat-form-field">
-    <mat-label>Filter</mat-label>
-    <input type="text"
-           placeholder="Filter by Dataset name"
-           aria-label="Filter"
-           matInput
-           (input)="applyFilter()"
-           formControlName="filter">
-  </mat-form-field>
-  <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource">
-    <ng-container matColumnDef="select">
-      <th *matHeaderCellDef mat-header-cell>
-        <mat-checkbox (change)="$event ? masterToggle() : null"
-                      [aria-label]="checkboxLabel()"
-                      [checked]="selection.hasValue() && isAllSelected()"
-                      [indeterminate]="selection.hasValue() && !isAllSelected()"
-                      class="w3-margin-left">
-        </mat-checkbox>
-      </th>
-      <td *matCellDef="let row" mat-cell>
-        <mat-checkbox (change)="$event ? selection.toggle(row) : null"
-                      (click)="$event.stopPropagation()"
-                      [aria-label]="checkboxLabel(row)"
-                      [checked]="selection.isSelected(row)"
-                      class="w3-margin-left">
-        </mat-checkbox>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef (click)="sortData('name')">
-        <div class="mat-icon-text">Dataset name</div>
-        <div *ngIf="dataSetTableForm.value.orderBy === 'name'">
-        <mat-icon *ngIf="dataSetTableForm.value.order === 'DESC'">keyboard_arrow_down</mat-icon>
-        <mat-icon *ngIf="dataSetTableForm.value.order === 'ASC'">keyboard_arrow_up</mat-icon>
+  <form [formGroup]="dataSetTableForm" name="dataSetTableForm">
+    <div class="mat-elevation-z8">
+      <div class="row">
+        <div class="col-md-9">
+          <h4 class="header">List of data set</h4>
         </div>
-      </th>
-      <td mat-cell *matCellDef="let dataSet"> {{dataSet.name}} </td>
-    </ng-container>
-    <ng-container matColumnDef="createdByRole">
-      <th mat-header-cell *matHeaderCellDef (click)="sortData('role')">
-        <div class="mat-icon-text">Creator role</div>
-        <div *ngIf="dataSetTableForm.value.orderBy === 'role'">
-        <mat-icon *ngIf="dataSetTableForm.value.order === 'DESC'">keyboard_arrow_down</mat-icon>
-        <mat-icon *ngIf="dataSetTableForm.value.order === 'ASC'">keyboard_arrow_up</mat-icon>
+        <div class="col-md-3">
+          <button (click)="createDataSet()" class="btn btn-primary btn-lg btn-block">Add data set</button>
         </div>
-      </th>
-      <td mat-cell *matCellDef="let dataSet"> {{dataSet.createdByRole}} </td>
-    </ng-container>
-    <ng-container matColumnDef="createdByName">
-      <th mat-header-cell *matHeaderCellDef (click)="sortData('username')">
-        <div class="mat-icon-text">Name</div>
-        <div *ngIf="dataSetTableForm.value.orderBy === 'username'">
-        <mat-icon *ngIf="dataSetTableForm.value.order === 'DESC'">keyboard_arrow_down</mat-icon>
-        <mat-icon *ngIf="dataSetTableForm.value.order === 'ASC'">keyboard_arrow_up</mat-icon>
+      </div>
+      <div class="col-md-12">
+        <div class="mb-3">
+          <label>Filter</label>
+          <input (input)="applyFilter()"
+                 aria-label="Filter"
+                 class="form-control"
+                 formControlName="filter"
+                 placeholder="Filter by Dataset name"
+                 type="text">
         </div>
-      </th>
-      <td mat-cell *matCellDef="let dataSet"> {{dataSet.createdByName}} </td>
-    </ng-container>
-    <ng-container matColumnDef="createdBySurname">
-      <th mat-header-cell *matHeaderCellDef (click)="sortData('surname')">
-        <div class="mat-icon-text">Surname</div>
-        <div *ngIf="dataSetTableForm.value.orderBy === 'surname'">
-        <mat-icon *ngIf="dataSetTableForm.value.order === 'DESC'">keyboard_arrow_down</mat-icon>
-        <mat-icon *ngIf="dataSetTableForm.value.order === 'ASC'">keyboard_arrow_up</mat-icon>
+      </div>
+      <table (matSortChange)="sortData()" [dataSource]="dataSource" mat-table matSort>
+        <ng-container matColumnDef="select">
+          <th *matHeaderCellDef mat-header-cell>
+            <mat-checkbox (change)="$event ? masterToggle() : null"
+                          [aria-label]="checkboxLabel()"
+                          [checked]="selection.hasValue() && isAllSelected()"
+                          [indeterminate]="selection.hasValue() && !isAllSelected()"
+                          class="w3-margin-left">
+            </mat-checkbox>
+          </th>
+          <td *matCellDef="let row" mat-cell>
+            <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                          (click)="$event.stopPropagation()"
+                          [aria-label]="checkboxLabel(row)"
+                          [checked]="selection.isSelected(row)"
+                          class="w3-margin-left">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Dataset name</h4>
+          </th>
+          <td *matCellDef="let dataSet" mat-cell> {{dataSet.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="role">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Creator role</h4>
+          </th>
+          <td *matCellDef="let dataSet" mat-cell> {{dataSet.createdByRole}} </td>
+        </ng-container>
+        <ng-container matColumnDef="username">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Name</h4>
+          </th>
+          <td *matCellDef="let dataSet" mat-cell> {{dataSet.createdByName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="surname">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Surname</h4>
+          </th>
+          <td *matCellDef="let dataSet" mat-cell> {{dataSet.createdBySurname}} </td>
+        </ng-container>
+        <ng-container matColumnDef="details">
+          <th *matHeaderCellDef mat-header-cell>
+            <h4>Details</h4>
+          </th>
+          <td *matCellDef="let dataSet" mat-cell>
+            <div class="example-flex-container">
+              <button (click)="openDetails(dataSet)" aria-label="Icon button" mat-icon-button>
+                <mat-icon>more_vert</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="edit">
+          <th *matHeaderCellDef mat-header-cell>
+            <h4>Edit</h4>
+          </th>
+          <td *matCellDef="let dataSet" mat-cell>
+            <div class="example-flex-container">
+              <button (click)="editDataSet(dataSet)" aria-label="Icon button" mat-icon-button>
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description" mat-row></tr>
+        <tr *matNoDataRow class="mat-row">
+          <td class="mat-cell" colspan="7">No data matching the filter "{{dataSetTableForm.value.filter}}"</td>
+        </tr>
+      </table>
+      <div class="row">
+        <div class="col-md-3">
+          <button (click)="deleteSelected()" class="btn btn-danger btn-lg btn-block">Delete selected</button>
         </div>
-      </th>
-      <td mat-cell *matCellDef="let dataSet"> {{dataSet.createdBySurname}} </td>
-    </ng-container>
-    <ng-container matColumnDef="details">
-      <th mat-header-cell *matHeaderCellDef>
-        Details
-      </th>
-      <td mat-cell *matCellDef="let dataSet">
-        <div class="example-flex-container">
-          <button mat-icon-button aria-label="Icon button" (click)="openDetails(dataSet)">
-            <mat-icon>more_vert</mat-icon>
-          </button>
+        <div class="col-md-9">
+          <mat-paginator #paginator (page)="onPaginationChange($event)"
+                         [length]="length"
+                         [pageSizeOptions]="pageSizeOptions"
+                         [pageSize]="pageSize" showFirstLastButtons>
+          </mat-paginator>
         </div>
-      </td>
-    </ng-container>
-    <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef>
-        Edit
-      </th>
-      <td mat-cell *matCellDef="let dataSet">
-        <div class="example-flex-container">
-          <button mat-icon-button aria-label="Icon button" (click)="editDataSet(dataSet)">
-            <mat-icon>edit</mat-icon>
-          </button>
-        </div>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description"></tr>
-    <tr class="mat-row" *matNoDataRow>
-      <td class="mat-cell" colspan="7">No data matching the filter "{{dataSetTableForm.value.filter}}"</td>
-    </tr>
-  </table>
-  <mat-paginator #paginator [pageSizeOptions]="pageSizeOptions"
-                 [length]="length"
-                 [pageSize]="pageSize"
-                 (page)="onPaginationChange($event)" showFirstLastButtons>
-  </mat-paginator>
-    <div class="button-row">
-    <button mat-raised-button color="warn" (click)="deleteSelected()">Delete selected</button>
+      </div>
     </div>
-</div>
-</form>
+  </form>
 </div>
 <div *ngIf="editing || creation">
-  <p class="header" *ngIf="creation">Create data set</p>
-  <p class="header" *ngIf="editing">Edit data set</p>
   <div class="mat-elevation-z8">
-    <form name="manageDataSetForm" [formGroup]="manageDataSetForm" class="create-action-form">
-      <mat-form-field class="manage-mat-form-field">
-        <mat-label>Name of Data Set</mat-label>
-        <input formControlName="name" required matInput placeholder="Type name for data set">
-        <mat-error *ngIf="manageDataSetForm.get('name').errors?.required">
+    <h4 *ngIf="creation" class="header">Create data set</h4>
+    <h4 *ngIf="editing" class="header">Edit data set</h4>
+    <form [formGroup]="manageDataSetForm" class="create-action-form" name="manageDataSetForm">
+      <div class="mb-3">
+        <label>Name of Data Set</label>
+        <input [ngClass]="{'is-invalid' : manageDataSetForm.get('name').errors?.required,
+                'is-valid' : !manageDataSetForm.get('name').errors?.required}"
+               class="form-control"
+               formControlName="name"
+               placeholder="Type name for data set">
+        <div *ngIf="manageDataSetForm.get('name').errors?.required" class="invalid-feedback">
           Name is <strong>required</strong>!
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="manage-mat-form-field">
-        <mat-label>Description of Data Set</mat-label>
-        <input formControlName="description" type="text" matInput placeholder="Type description for data set">
-      </mat-form-field>
-      <section>
-        <div class="button-row">
-          <button
-                  type="submit"
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>
+          Description of Data Set
+          <span class="text-muted">(Optional)</span>
+        </label>
+        <input class="form-control"
+               formControlName="description"
+               placeholder="Type description for data set"
+               type="text">
+      </div>
+      <hr class="mb-4">
+      <div class="row">
+        <div class="col-md-4">
+          <button (click)="onSubmitButton()"
                   [disabled]="manageDataSetForm.invalid"
-                  mat-raised-button
-                  color="primary"
-                  (click)="onSubmitButton()">
+                  class="btn btn-primary btn-lg btn-block"
+                  type="submit">
             <div *ngIf="editing">Edit</div>
             <div *ngIf="creation">Add</div>
           </button>
-          <button mat-raised-button color="warn" (click)="cancelEdit()">
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <button (click)="cancelEdit()" class="btn btn-danger btn-lg btn-block">
             Cancel
           </button>
         </div>
-      </section>
+      </div>
     </form>
   </div>
 </div>
