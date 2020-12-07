@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CompoundModel} from '../../../models/CompoundModel';
 import {ActionPage} from '../../../models/action-page';
@@ -12,8 +12,9 @@ import {MatTableDataSource} from "@angular/material/table";
 import {CompoundPage} from "../../../models/CompoundPage";
 import {ScenarioService} from "../../services/scenario/scenario.service";
 import {AuthenticationService} from "../../services/auth/authentication.service";
-import {ScenarioResponseModel} from "../../../models/ScenarioResponseModel";
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
+import {fromEvent} from "rxjs";
+import {debounceTime, map} from "rxjs/operators";
 
 declare var $: any;
 
@@ -54,6 +55,8 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   user_id: number;
   project_id: number;
 
+  @ViewChild('search', {static: false}) search: any
+
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
               private compService: CompoundService,
@@ -67,13 +70,13 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       this.size = !value.actionSize ? 10 : value.actionSize;
       this.page = !value.actionPage ? 0 : value.actionPage;
     });
-    this.activatedRoute.params.subscribe(value => {
+    this.activatedRoute.params.subscribe(() => {
       this.compound = this.activatedRoute.snapshot.data.compound;
       if (!!this.compound) {
         this.compoundActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
       }
     });
-    this.activatedRoute.data.subscribe(value => {
+    this.activatedRoute.data.subscribe(() => {
       this.actions = this.activatedRoute.snapshot.data.actionPage;
       this.actionsAsCompActions = this.actions.list.map<ActionOfCompound>(value1 => ({
         action: value1,
@@ -81,7 +84,6 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
         key: value1.key
       }));
     });
-
     this.scenarioForm = new FormGroup({
       name: new FormControl(null, [Validators.required]),
       description: new FormControl(null, [Validators.required])
@@ -95,13 +97,28 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   clearQuery(): void {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: {name: null, description: null}, queryParamsHandling: 'merge'
+      queryParams: {name: null, description: null},
+      queryParamsHandling: 'merge'
     });
   }
 
   ngAfterViewInit(): void {
+    fromEvent(this.search.nativeElement, 'keydown').pipe(
+      debounceTime(550),
+      map(x => x['target']['value'])).subscribe(value => {
+      // this.updateFilter(value);
+    })
     this.changeDetector.detectChanges();
   }
+
+  // updateFilter(val: any) {
+  //   const count = this.compoundActions.length;
+  //   this.actionsAsCompActions = this.compoundActions.filter(value => {
+  //     for (let i = 0; i < count; i++) {
+  //       return !!value.toLocaleLowerCase().trim().match(val.toLocaleLowerCase().trim());
+  //     }
+  //   });
+  // }
 
   adjustOrder(actions: ActionOfCompound[]): void {
     actions.forEach((value, index) => value.orderNum = index + 1);
@@ -113,13 +130,14 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       moveItemInArray(this.compoundActions, event.previousIndex, event.currentIndex);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-
     } else if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer !== event.container) {
-      this.compoundActions.splice(event.previousContainer.data[event.previousIndex], 1);
+      this.compoundActions.splice(event.previousIndex, 1);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer !== event.container) {
       this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
+      this.adjustOrder(this.compoundActions);
     }
     this.adjustOrder(this.compoundActions);
+    // this.updateFilter(this.search.nativeElement.value);
   }
 
   submit(): void {
@@ -154,7 +172,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
 
   delete(): void {
     this.compService.deleteCompound(this.compound.id).subscribe();
-    this.router.navigate(['testScenario']);
+    this.router.navigate(['testScenarios']);
   }
 
   searchByName(): void {
@@ -165,14 +183,16 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   findName(event: any): void {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: {name: event.target.value}, queryParamsHandling: 'merge'
+      queryParams: {name: event.target.value},
+      queryParamsHandling: 'merge'
     });
   }
 
   pageParamsChange(event: PageEvent): void {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: {actionSize: event.pageSize, actionPage: event.pageIndex}, queryParamsHandling: 'merge'
+      queryParams: {actionSize: event.pageSize, actionPage: event.pageIndex},
+      queryParamsHandling: 'merge'
     });
   }
 
@@ -209,13 +229,14 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   sortBy(event: any): void {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
-      queryParams: {orderBy: event.active, direction: event.direction}, queryParamsHandling: 'merge'
+      queryParams: {orderBy: event.active, direction: event.direction},
+      queryParamsHandling: 'merge'
     });
   }
 
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
+  // applyFilter(event: Event) {
+  //   const filterValue = (event.target as HTMLInputElement).value;
+  //   this.dataSource.filter = filterValue.trim().toLowerCase();
+  // }
 }
 
