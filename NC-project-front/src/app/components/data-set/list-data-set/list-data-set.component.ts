@@ -9,6 +9,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {MatSort} from '@angular/material/sort';
+import {AuthenticationService} from "../../../services/auth/authentication.service";
 
 @Component({
   selector: 'app-list-data-set',
@@ -34,6 +35,7 @@ export class ListDataSetComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private dataSetService: DataSetService,
+              private authenticationService: AuthenticationService,
               private formBuilder: FormBuilder,
               private router: Router) {
     this.dataSetTableForm = this.formBuilder.group({
@@ -130,7 +132,7 @@ export class ListDataSetComponent implements OnInit {
 
   createDataSet(): void {
     this.creation = true;
-    this.manageDataSetForm.get('createdById').setValue(86);
+    this.manageDataSetForm.get('createdById').setValue(this.authenticationService.getId());
   }
 
   onSubmitButton(): void {
