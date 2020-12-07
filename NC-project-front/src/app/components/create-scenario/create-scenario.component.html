@@ -8,9 +8,7 @@
 <div class="row">
   <div class="col-8">
     <div class="bg-white shadow-lg p-3">
-      <div class="example-container">
-        <h2 class="p-0 color-nc font-weight-bold">Create/Edit a new Test Scenario</h2>
-      </div>
+        <h2 class="color-nc font-italic font-weight-bold"> Test Scenario</h2>
 
       <div [formGroup]="scenarioForm">
         <label class="m-3 color-nc font-weight-bold"> Name
@@ -27,12 +25,14 @@
       <div cdkDropListGroup class="row actions-container w-100">
 
         <div class="col-6 float-left">
-          <h2 class="color-nc font-italic font-weight-bold">Test Scenario</h2>
+          <h2 class="color-nc font-italic font-weight-bold">Set of Test Scenario</h2>
           <div [@invalidForm]="emptyInvalid ? 'invalid': ''"
                cdkDropList [id]="'cdk-drop-list-0'"
                [cdkDropListData]="compoundActions"
                class="action-list" (cdkDropListDropped)="drop($event)">
-            <div class="action-box" *ngFor="let action of compoundActions" (click)="showActionDetails(action)" cdkDrag>
+            <div class="action-box"
+                 [class]="action.action.type === 'COMPOUND' ? 'border border-success' : ''"
+                 *ngFor="let action of compoundActions" (click)="showActionDetails(action)" cdkDrag>
               {{action.action.name}}
             </div>
           </div>
@@ -40,26 +40,22 @@
 
         <div class="col-6 float-left">
           <div class="example-container">
-            <h2 class="color-nc font-italic font-weight-bold">List of actions and compound</h2>
-              <div class="form-group">
-                <input type="text" class="form-control" (keyup)="applyFilter($event)"
-                       placeholder="Search by name..." #input>
-              </div>
-              <div
-                cdkDropList [id]="'cdk-drop-list-1'"
-                [cdkDropListData]="actionsAsCompActions"
-                class="action-list" (cdkDropListDropped)="drop($event)">
+            <h2 class="color-nc font-italic font-weight-bold">Manage library</h2>
+            <div class="form-group">
+              <input type="text" class="form-control form-control-lg" (keyup)="applyFilter($event)"
+                     placeholder="Search by name..." >
+            </div>
+            <div cdkDropList [id]="'cdk-drop-list-1'"
+                 [cdkDropListData]="actionsAsCompActions"
+                 class="action-list" (cdkDropListDropped)="drop($event)">
 
-                <div class="action-box"
-                     [class]="item.action.type === 'COMPOUND' ? 'border border-success' : ''"
-                     *ngFor="let item of actionsAsCompActions" (click)="showActionDetails(item)" cdkDrag>
-                  {{item.action.name}}
-                </div>
-
+              <div class="action-box"
+                   [class]="item.action.type === 'COMPOUND' ? 'border border-success' : ''"
+                   *ngFor="let item of actionsAsCompActions" (click)="showActionDetails(item)" cdkDrag>
+                {{item.action.name}}
               </div>
-              <tr class="mat-row" *matNoDataRow>
-                <td class="mat-cell" colspan="4">No data matching the filter "{{input.value}}"</td>
-              </tr>
+
+            </div>
           </div>
         </div>
 

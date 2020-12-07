@@ -13,7 +13,7 @@ import {CompoundPage} from "../../../models/CompoundPage";
 import {ScenarioService} from "../../services/scenario/scenario.service";
 import {AuthenticationService} from "../../services/auth/authentication.service";
 import {ScenarioResponseModel} from "../../../models/ScenarioResponseModel";
-import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 
 declare var $: any;
 
@@ -39,7 +39,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   actions: ActionPage;
   compoundActions: ActionOfCompound[];
   actionsAsCompActions: ActionOfCompound[];
-  responseScenario: ScenarioResponseModel;
+  // responseScenario: ScenarioResponseModel;
   size: number;
   page: number;
   creating: boolean;
@@ -113,21 +113,13 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       moveItemInArray(this.compoundActions, event.previousIndex, event.currentIndex);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
     } else if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer !== event.container) {
-      this.compoundActions.splice(event.previousIndex, 1);
+      this.compoundActions.splice(event.previousContainer.data[event.previousIndex], 1);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer !== event.container) {
-      const dataAct = event.previousContainer.data[event.previousIndex];
-      if (dataAct.action.type === 'COMPOUND') {
-        this.compService.getCompoundById(dataAct.action.id).subscribe(value => {
-          this.compoundActions.splice(event.currentIndex, 0, ...value.actions.sort((a, b) => a.orderNum - b.orderNum));
-          this.adjustOrder(this.compoundActions);
-        });
-      } else {
-        this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
-      }
+      this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
     }
     this.adjustOrder(this.compoundActions);
-    console.log(this.compoundActions);
   }
 
   submit(): void {
