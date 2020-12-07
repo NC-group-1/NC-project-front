@@ -1,31 +1,11 @@
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
-table, .mat-form-field {
+table {
   width: 100%;
 }
 
-.button-row {
-  margin: 8px 8px 8px 0;
-  display: table;
-}
-
-section {
-  display: table;
-  margin-left: 2%;
-}
-
-button {
-  margin-right: 10px;
-}
-
-.manage-mat-form-field {
-  width: 96%;
-  margin-left: 2%;
-  margin-right: 2%;
-}
-
-.add-parameter-form {
-  margin-bottom: 10px;
+.mat-elevation-z8 {
+  padding: 10px;
 }
 
 .header {

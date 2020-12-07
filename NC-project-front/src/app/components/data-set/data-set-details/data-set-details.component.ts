@@ -4,7 +4,7 @@ import {DataSetGeneralInfoDto} from '../../../../models/data-set-general-info-dt
 import {MatTableDataSource} from '@angular/material/table';
 import {Parameter} from '../../../../models/parameter';
 import {DataSetService} from '../../../services/data-set/data-set.service';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {ParameterKey} from '../../../../models/parameter-key';
 import {ParameterKeyService} from '../../../services/parameterKey/parameter-key.service';
 import {HttpErrorResponse} from '@angular/common/http';
@@ -33,9 +33,9 @@ export class DataSetDetailsComponent implements OnInit {
     this.parameterForm = this.formBuilder.group({
       key: this.formBuilder.group({
         id: new FormControl(0),
-        key: new FormControl('', this.validateKeyInput())
+        key: new FormControl('', [this.validateKeyInput(), Validators.required])
       }),
-      value: new FormControl(''),
+      value: new FormControl('', Validators.required),
       dataSetId: new FormControl(null)
     });
   }
