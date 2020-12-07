@@ -7,26 +7,28 @@
 <div class="row">
   <div class="col-8">
     <div class="bg-white shadow-lg p-5">
+      <form [formGroup]="projectForm" name="projectForm">
       <div class="example-container">
         <h2 class="p-0 header">List of projects</h2>
       </div>
 
       <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
-        <form [formGroup]="projectForm" name="actionTableForm">
+
           <div class="form-group">
             <label>Find project:</label>
             <input type="text" class="form-control" style="width:800px" #input (keyup)="applyFilter($event)"
                    placeholder="Search by name and link...">
           </div>
 
-          <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData()">
+        <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData()">
+
             <ng-container matColumnDef="project_id">
               <th [hidden]="true" mat-header-cell *matHeaderCellDef></th>
               <td [hidden]="true" mat-cell *matCellDef="let element"><p>{{element.project_id}}</p></td>
             </ng-container>
 
             <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Name</th>
+              <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 25%;"> Name</th>
               <td mat-cell *matCellDef="let element;let i = index;">
                 <p [hidden]="element.edit">
                   <a href="#" class="stretched-link" style="position: relative;" (click)="open()">
@@ -44,7 +46,7 @@
             </ng-container>
 
             <ng-container matColumnDef="link">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Link</th>
+              <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 25%;"> Link</th>
               <td mat-cell *matCellDef="let element;let i = index;">
                 <p [hidden]="element.edit">{{element.link}}</p>
 
@@ -58,7 +60,7 @@
             </ng-container>
 
             <ng-container matColumnDef="date">
-              <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 25%;"> Date</th>
+              <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 25%;"> Date</th>
               <td mat-cell *matCellDef="let element"> {{element.date | date:'short'}} </td>
             </ng-container>
 
@@ -68,7 +70,7 @@
             </ng-container>
 
             <ng-container matColumnDef="archived">
-              <th width="30%" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;"> Archived</th>
+              <th width="30%" mat-header-cell mat-sort-header *matHeaderCellDef style="width: 15%;"> Archived</th>
               <td mat-cell *matCellDef="let element">
                 <p [hidden]="element.edit">{{element.archived ? 'Archived' : 'Not archived'}}</p>
 
@@ -99,7 +101,7 @@
               <td class="mat-cell" colspan="7">No data matching the filter "{{input.value}}"</td>
             </tr>
           </table>
-        </form>
+
       </div>
 
       <mat-paginator [pageSizeOptions]="pageSizeOptions"
@@ -111,7 +113,7 @@
       <div class="w3-bar">
         <a class="btn btn-nc m-3 px-5" routerLink="/createProject">+Add</a>
       </div>
-
+      </form>
     </div>
   </div>
 </div>

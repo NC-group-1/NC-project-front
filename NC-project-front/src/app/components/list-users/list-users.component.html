@@ -8,12 +8,13 @@
 <div class="row">
   <div class="col-8">
     <div class="bg-white shadow-lg p-5">
+      <form [formGroup]="userForm" name="userForm">
       <div class="example-container">
         <h2 class="p-0 header">List of users</h2>
       </div>
 
       <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
-        <form [formGroup]="userForm" name="actionTableForm">
+
           <div class="form-group">
             <label> Find users: </label>
             <input class="form-control" style="width:800px" type="text" #input (keyup)="applyFilter($event)"
@@ -106,7 +107,7 @@
               <td class="mat-cell" colspan="8">No data matching the filter "{{input.value}}"</td>
             </tr>
           </table>
-        </form>
+
       </div>
 
       <mat-paginator (page)="onPaginationChange($event)"
@@ -119,7 +120,7 @@
         <a routerLink="/createUser" class="btn btn-nc m-3 px-5 w3-left"> +Add </a>
         <button (click)="activate()" class="btn btn-nc m-3 px-5 w3-right"> Activate</button>
       </div>
-
+      </form>
     </div>
   </div>
 </div>

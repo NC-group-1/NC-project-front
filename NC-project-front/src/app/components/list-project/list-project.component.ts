@@ -37,12 +37,12 @@ export class ListProjectComponent implements OnInit{
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder) {
-    this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
-    this.selectedProject = '';
     this.projectForm = this.formBuilder.group({
       orderBy: new FormControl('name'),
       order: new FormControl('ASC')
     });
+    this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
+    this.selectedProject = '';
     this.listProjects = [];
     this.dataSource = new MatTableDataSource();
   }
@@ -52,8 +52,7 @@ export class ListProjectComponent implements OnInit{
   }
 
   reloadProjects(): void {
-    console.log(this.orderBy);
-    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex + 1, this.filter, this.projectForm.value.orderBy, this.projectForm.value.orderBy)
+    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex + 1, this.filter, this.projectForm.value.orderBy, this.projectForm.value.order)
       .subscribe(
         response => {
           // console.log(JSON.stringify(response));
@@ -114,9 +113,6 @@ export class ListProjectComponent implements OnInit{
   //   this.order == '' ? this.order = 'DESC' : this.order = '';
   //   this.reloadProjects();
   // }
-
-
-
 
   closeAlert(): void {
     $('.alert').alert('close');
