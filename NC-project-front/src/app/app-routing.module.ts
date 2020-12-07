@@ -24,6 +24,7 @@ import {ListProjectComponent} from './components/list-project/list-project.compo
 import {ActionComponent} from './components/action/action/action.component';
 import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
 import {TestCaseComponent} from './components/test-case/test-case.component';
+import {TestScenarioResolverService} from './services/scenario/test-scenario-resolver.service';
 
 
 const routes: Routes = [
@@ -120,13 +121,24 @@ const routes: Routes = [
       },
       {
         path: ':page',
-        component: TestScenariosComponent
+        component: TestScenariosComponent,
+        resolve: {testScenarios: TestScenarioResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       }
     ]
   },
   {
     path: 'testCase',
-    component: TestCaseComponent
+    children: [
+      {
+        path: 'new/:testScenarioId',
+        component: TestCaseComponent,
+      },
+      {
+        path: ':testCaseId',
+        component: TestCaseComponent
+      }
+    ]
   },
   {
     path: 'createUser',

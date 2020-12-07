@@ -37,7 +37,6 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatTableModule} from '@angular/material/table';
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
-import { TestCasesComponent } from './components/test-cases/test-cases.component';
 import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 
@@ -62,7 +61,6 @@ import {MatExpansionModule} from '@angular/material/expansion';
     CreateUserComponent,
     ListUsersComponent,
     TestScenariosComponent,
-    TestCasesComponent,
     TestCaseComponent,
   ],
     imports: [

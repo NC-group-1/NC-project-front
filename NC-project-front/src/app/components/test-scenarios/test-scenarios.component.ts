@@ -1,17 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {CompoundPage} from '../../../models/CompoundPage';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
 import {PageEvent} from '@angular/material/paginator';
 import {ActivatedRoute, Router} from '@angular/router';
-
-interface TScenario {
-  id: number;
-  name: string;
-  user: {id: number, email: string};
-  description: string;
-  active: boolean;
-}
+import {PageModel} from '../../../models/PageModel';
+import {ScenarioModel} from '../../../models/TestScenario';
 
 @Component({
   selector: 'app-test-case',
@@ -21,26 +14,30 @@ interface TScenario {
 export class TestScenariosComponent implements OnInit {
 
   currentPage: number;
-  selectedScenario: TScenario;
+  selectedScenario: { test_scenario_id: number, name: string, description: string, creatorName: string };
   size: number;
   dataSource: MatTableDataSource<any>;
-  searchColumns = {columns:  ['name', 'creator', 'description'], selected: ''};
+  searchColumns = {columns:  ['name', 'creatorName', 'description'], selected: ''};
   sort: MatSort;
-  testCases = [
-    {id: 1, name: 'Name 1', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true},
-    {id: 2, name: 'Name 2', user: {id: 13, email: 'clayn130@gmail.com'}, description: 'Description 1', active: false},
-    {id: 3, name: 'Name 3', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: false},
-    {id: 4, name: 'Name 4', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true}];
+  testScenariosPage: PageModel<any>;
+  // testScenarios = [
+  //   {id: 1, name: 'Name 1', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true},
+  //   {id: 2, name: 'Name 2', user: {id: 13, email: 'clayn130@gmail.com'}, description: 'Description 1', active: false},
+  //   {id: 3, name: 'Name 3', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: false},
+  //   {id: 4, name: 'Name 4', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true}];
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.params.subscribe(value => {
+      this.testScenariosPage = this.activatedRoute.snapshot.data.testScenarios;
+      console.log(this.testScenariosPage);
       this.currentPage = value.page;
-      this.dataSource = new MatTableDataSource<any>(this.testCases);
+      this.dataSource = new MatTableDataSource<any>(this.testScenariosPage.list);
+    });
+    this.activatedRoute.data.subscribe(value => {
+      this.testScenariosPage = this.activatedRoute.snapshot.data.testScenarios;
+      this.dataSource = new MatTableDataSource<any>(this.testScenariosPage.list);
     });
     this.activatedRoute.queryParams.subscribe(value => {
       this.size = !value.size ? 10 : value.size;
-    });
-    this.activatedRoute.data.subscribe(value => {
-      this.dataSource = new MatTableDataSource<any>(this.testCases);
     });
     this.dataSource.sort = this.sort;
   }

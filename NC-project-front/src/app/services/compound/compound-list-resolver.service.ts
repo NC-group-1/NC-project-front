@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {CompoundPage} from '../../../models/CompoundPage';
 import {Observable} from 'rxjs';
 import {CompoundService} from './compound.service';
+import {PageModel} from '../../../models/PageModel';
+import {CompoundModel} from '../../../models/CompoundModel';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CompoundListResolverService implements Resolve<CompoundPage>{
+export class CompoundListResolverService implements Resolve<PageModel<CompoundModel>>{
 
   constructor(private compService: CompoundService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<CompoundPage> | Promise<CompoundPage> | CompoundPage {
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<PageModel<CompoundModel>>
+    | Promise<PageModel<CompoundModel>> | PageModel<CompoundModel> {
     return this.compService.getCompoundPage(route.paramMap.get('page'),
       route.queryParamMap.get('size'),
       route.queryParamMap.get('name'),

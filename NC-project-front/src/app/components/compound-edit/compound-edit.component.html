@@ -22,7 +22,7 @@
         <div class="col-6 float-left">
           <h2 class="color-nc font-italic font-weight-bold">Compound's actions</h2>
           <div [@invalidForm]="emptyInvalid ? 'invalid': ''"
-               cdkDropList [id]="'cdk-drop-list-0'"
+               [attr.cdkDropList]="true" [id]="'cdk-drop-list-0'"
                [cdkDropListData]="compoundActions"
                class="action-list" (cdkDropListDropped)="drop($event)">
             <div class="action-box" *ngFor="let action of compoundActions" (click)="showActionDetails(action)" cdkDrag>
@@ -35,7 +35,7 @@
           <div class="example-container">
             <h2 class="color-nc font-italic font-weight-bold">List of actions</h2>
             <div
-              cdkDropList [id]="'cdk-drop-list-1'"
+              [attr.cdkDropList]="true" [id]="'cdk-drop-list-1'"
               [cdkDropListData]="actionsAsCompActions"
               class="action-list" (cdkDropListDropped)="drop($event)">
               <div class="action-box"
