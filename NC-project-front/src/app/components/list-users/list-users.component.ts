@@ -5,8 +5,10 @@ import {PageEvent} from '@angular/material/paginator';
 import {HttpClientService} from '../../services/users/http-client.service';
 import {UserResponseModel} from '../../../models/UserResponseModel';
 import {UserListModel} from '../../../models/UserListModel';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {AuthenticationService} from "../../services/auth/authentication.service";
+import {MatSort} from "@angular/material/sort";
+import {FormBuilder, FormControl} from "@angular/forms";
 
 declare var $: any;
 
@@ -33,12 +35,22 @@ export class ListUsersComponent implements OnInit {
   orderBy = '';
   order = '';
   created: boolean;
+  userForm: any;
 
   selection = new SelectionModel<UserListModel>(true, []);
 
-  constructor(private activatedRoute: ActivatedRoute, private httpClientService: HttpClientService, private auth: AuthenticationService) {
+  @ViewChild(MatSort) sort: MatSort;
+
+  constructor(private activatedRoute: ActivatedRoute,
+              private httpClientService: HttpClientService,
+              private auth: AuthenticationService,
+              private formBuilder: FormBuilder) {
     this.selectedUser = '';
     this.listUsers = [];
+    this.userForm = this.formBuilder.group({
+      orderBy: new FormControl('name'),
+      order: new FormControl('ASC')
+    });
     this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
     this.dataSource = new MatTableDataSource();
     this.activatedRoute.params.subscribe(param => {
@@ -54,7 +66,7 @@ export class ListUsersComponent implements OnInit {
   }
 
   reloadUsers(): void {
-    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order)
+    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex + 1, this.filter, this.userForm.value.orderBy, this.userForm.value.order)
       .subscribe(
         response => {
           // console.log(JSON.stringify(response));
@@ -67,15 +79,16 @@ export class ListUsersComponent implements OnInit {
       );
   }
 
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  // }
-
 
   applyFilter(event: Event) {
     this.filter = (event.target as HTMLInputElement).value;
     // this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.reloadUsers();
+  }
+
+  sortData(): void{
+    this.userForm.value.order = this.sort.direction.toUpperCase();
+    this.userForm.value.orderBy = this.sort.active;
     this.reloadUsers();
   }
 
@@ -103,6 +116,7 @@ export class ListUsersComponent implements OnInit {
   // updateEmail(index: number, email: string) {
   //   this.listUsers[index].email = email;
   // }
+
 
   change(index: number) {
     this.listUsers[index].edit = !this.listUsers[index].edit;
@@ -141,17 +155,11 @@ export class ListUsersComponent implements OnInit {
     this.reloadUsers();
   }
 
-  sortData(orderBy: string) {
-    this.orderBy = orderBy;
-    this.order === '' ? this.order = 'DESC' : this.order = '';
-    this.reloadUsers();
-  }
-
-  // sortBy(event: any): void {
-  //   this.router.navigate([], {relativeTo: this.activatedRoute,
-  //     queryParams: {orderBy: event.active, direction: event.direction}, queryParamsHandling: 'merge'});
+  // sortData(orderBy: string) {
+  //   this.orderBy = orderBy;
+  //   this.order === '' ? this.order = 'DESC' : this.order = '';
+  //   this.reloadUsers();
   // }
-
 
   closeAlert(): void {
     $('.alert').alert('close');

@@ -5,115 +5,121 @@
   </button>
 </div>
 
-<div class="bg-white shadow-lg p-5">
-  <div class="example-container">
-    <h2 class="p-0 header">List of users</h2>
-  </div>
+<div class="row">
+  <div class="col-8">
+    <div class="bg-white shadow-lg p-5">
+      <div class="example-container">
+        <h2 class="p-0 header">List of users</h2>
+      </div>
 
-  <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
+      <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
+        <form [formGroup]="userForm" name="actionTableForm">
+          <div class="form-group">
+            <label> Find users: </label>
+            <input class="form-control" style="width:800px" type="text" #input (keyup)="applyFilter($event)"
+                   placeholder="Search by name and surname...">
+          </div>
+          <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData()">
+            <ng-container matColumnDef="user_id">
+              <th *matHeaderCellDef [hidden]="true" mat-header-cell></th>
+              <td *matCellDef="let element" [hidden]="true" mat-cell><p>{{element.user_id}}</p></td>
+            </ng-container>
 
-    <div class="form-group">
-      <label> Find users: </label>
-      <input class="form-control" style="width:800px" type="text" #input (keyup)="applyFilter($event)" placeholder="Search by name and surname...">
+            <ng-container matColumnDef="select">
+              <th *matHeaderCellDef mat-header-cell style="width: 5%;">
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                              [aria-label]="checkboxLabel()"
+                              [checked]="selection.hasValue() && isAllSelected()"
+                              [indeterminate]="selection.hasValue() && !isAllSelected()"
+                              class="w3-margin-left">
+                </mat-checkbox>
+              </th>
+              <td *matCellDef="let row" mat-cell>
+                <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                              (click)="$event.stopPropagation()"
+                              [aria-label]="checkboxLabel(row)"
+                              [checked]="selection.isSelected(row)"
+                              class="w3-margin-left">
+                </mat-checkbox>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 20%;"> Name</th>
+              <td *matCellDef="let element;let i = index;" mat-cell>
+                <p [hidden]="element.edit">{{element.name}}</p>
+
+                <div [hidden]="!element.edit">
+                  <div class="input-group w-50">
+                    <input #inputName type="text" class="form-control" (change)="updateName(i, inputName.value)"
+                           [value]="element.name">
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="surname">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 20%;"> Surname</th>
+              <td *matCellDef="let element; let i = index;" mat-cell>
+                <p [hidden]="element.edit">{{element.surname}}</p>
+
+                <div [hidden]="!element.edit">
+                  <div class="input-group w-50">
+                    <input #inputSurname type="text" class="form-control"
+                           (change)="updateSurname(i, inputSurname.value)"
+                           [value]="element.surname">
+                  </div>
+                </div>
+
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="email">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 25%;"> Email</th>
+              <td *matCellDef="let element" mat-cell> {{element.email}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+              <!--        <th *matHeaderCellDef mat-header-cell (click)="sortData('role')"> Role</th>-->
+              <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 15%;"> Role</th>
+              <td *matCellDef="let element" mat-cell> {{element.role}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="activated">
+              <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 10%;"> Activated</th>
+              <td *matCellDef="let element" mat-cell> {{element.activated ? 'Activated' : 'Deactivated'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="editBtn">
+              <th *matHeaderCellDef mat-header-cell></th>
+              <td *matCellDef="let element; let i = index;" mat-cell style="width: 10%;">
+                <button (click)="change(i)" class="w3-button w3-xlarge ml-4 p-0 rounded">
+                  <i class="fa fa-pencil"></i></button>
+              </td>
+            </ng-container>
+
+            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+            <tr *matRowDef="let row; columns: displayedColumns;" mat-row>
+            </tr>
+
+            <tr *matNoDataRow class="mat-row">
+              <td class="mat-cell" colspan="8">No data matching the filter "{{input.value}}"</td>
+            </tr>
+          </table>
+        </form>
+      </div>
+
+      <mat-paginator (page)="onPaginationChange($event)"
+                     [length]="length"
+                     [pageSizeOptions]="pageSizeOptions"
+                     [pageSize]="pageSize" showFirstLastButtons>
+      </mat-paginator>
+
+      <div class="w3-bar">
+        <a routerLink="/createUser" class="btn btn-nc m-3 px-5 w3-left"> +Add </a>
+        <button (click)="activate()" class="btn btn-nc m-3 px-5 w3-right"> Activate</button>
+      </div>
+
     </div>
-
-    <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData(orderBy)">
-        <ng-container matColumnDef="user_id">
-          <th *matHeaderCellDef [hidden]="true" mat-header-cell></th>
-          <td *matCellDef="let element" [hidden]="true" mat-cell><p>{{element.user_id}}</p></td>
-        </ng-container>
-
-        <ng-container matColumnDef="select">
-          <th *matHeaderCellDef mat-header-cell style="width: 5%;">
-            <mat-checkbox (change)="$event ? masterToggle() : null"
-                          [aria-label]="checkboxLabel()"
-                          [checked]="selection.hasValue() && isAllSelected()"
-                          [indeterminate]="selection.hasValue() && !isAllSelected()"
-                          class="w3-margin-left">
-            </mat-checkbox>
-          </th>
-          <td *matCellDef="let row" mat-cell>
-            <mat-checkbox (change)="$event ? selection.toggle(row) : null"
-                          (click)="$event.stopPropagation()"
-                          [aria-label]="checkboxLabel(row)"
-                          [checked]="selection.isSelected(row)"
-                          class="w3-margin-left">
-            </mat-checkbox>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="name" >
-          <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 20%;"> Name </th>
-          <td *matCellDef="let element;let i = index;" mat-cell>
-            <p [hidden]="element.edit">{{element.name}}</p>
-
-            <div [hidden]="!element.edit">
-              <div class="input-group w-50">
-                <input #inputName type="text" class="form-control" (change)="updateName(i, inputName.value)"
-                       [value]="element.name">
-              </div>
-            </div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="surname" >
-          <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 20%;"> Surname </th>
-          <td *matCellDef="let element; let i = index;" mat-cell>
-            <p [hidden]="element.edit">{{element.surname}}</p>
-
-            <div [hidden]="!element.edit">
-              <div class="input-group w-50" >
-                <input #inputSurname type="text" class="form-control" (change)="updateSurname(i, inputSurname.value)"
-                       [value]="element.surname">
-              </div>
-            </div>
-
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="email">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 25%;"> Email </th>
-          <td *matCellDef="let element" mat-cell> {{element.email}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="role">
-          <!--        <th *matHeaderCellDef mat-header-cell (click)="sortData('role')"> Role</th>-->
-          <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 15%;"> Role </th>
-          <td *matCellDef="let element" mat-cell> {{element.role}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="activated">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 10%;"> Activated </th>
-          <td *matCellDef="let element" mat-cell> {{element.activated ? 'Activated' : 'Deactivated'}} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="editBtn">
-          <th *matHeaderCellDef mat-header-cell></th>
-          <td *matCellDef="let element; let i = index;" mat-cell style="width: 10%;">
-            <button (click)="change(i)" class="w3-button w3-xlarge ml-4 p-0 rounded">
-              <i class="fa fa-pencil"></i></button>
-          </td>
-        </ng-container>
-
-        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-        <tr *matRowDef="let row; columns: displayedColumns;" mat-row>
-        </tr>
-
-        <tr *matNoDataRow class="mat-row">
-          <td class="mat-cell" colspan="8">No data matching the filter "{{input.value}}"</td>
-        </tr>
-    </table>
   </div>
-
-  <mat-paginator (page)="onPaginationChange($event)"
-                 [length]="length"
-                 [pageSizeOptions]="pageSizeOptions"
-                 [pageSize]="pageSize" showFirstLastButtons>
-  </mat-paginator>
-
-  <div class="w3-bar">
-    <a routerLink="/createUser" class="btn btn-nc m-3 px-5 w3-left"> +Add </a>
-    <button (click)="activate()" class="btn btn-nc m-3 px-5 w3-right"> Activate </button>
-  </div>
-
 </div>

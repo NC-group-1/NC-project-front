@@ -79,35 +79,6 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'testScenario',
-    canActivate: [LoginActivateGuard],
-    children: [
-      {
-        path: '',
-        redirectTo: '0',
-        pathMatch: 'full'
-      },
-      {
-        path: 'edit/:testScenarioId',
-        component: CreateScenarioComponent,
-        resolve: {compound: CompoundResolverService, actionPage: ActionPageResolverService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
-      },
-      {
-        path: 'new',
-        component: CreateScenarioComponent,
-        resolve: {actionPage: ActionPageResolverService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
-      },
-      {
-        path: ':page',
-        component: CreateScenarioComponent,
-        resolve: {compoundPage: CompoundListResolverService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
-      }
-    ]
-  },
-  {
     path: 'signup',
     component: SignupComponent
   },
@@ -148,9 +119,15 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
+        path: 'new',
+        component: CreateScenarioComponent,
+        resolve: {actionPage: ActionPageResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
         path: ':page',
         component: TestScenariosComponent
-      }
+      },
     ]
   },
   {

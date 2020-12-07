@@ -5,7 +5,7 @@ import {ProjectModel} from '../../../models/ProjectModel';
 import {PageEvent} from '@angular/material/paginator';
 import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
 import {ActivatedRoute, Router} from "@angular/router";
-import {FormGroup} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {MatSort} from "@angular/material/sort";
 
 declare var $: any;
@@ -35,9 +35,14 @@ export class ListProjectComponent implements OnInit{
 
   constructor(private httpClientService: HttpClientService,
               private router: Router,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              private formBuilder: FormBuilder) {
     this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
     this.selectedProject = '';
+    this.projectForm = this.formBuilder.group({
+      orderBy: new FormControl('name'),
+      order: new FormControl('ASC')
+    });
     this.listProjects = [];
     this.dataSource = new MatTableDataSource();
   }
@@ -48,7 +53,7 @@ export class ListProjectComponent implements OnInit{
 
   reloadProjects(): void {
     console.log(this.orderBy);
-    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order)
+    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex + 1, this.filter, this.projectForm.value.orderBy, this.projectForm.value.orderBy)
       .subscribe(
         response => {
           // console.log(JSON.stringify(response));
@@ -65,6 +70,12 @@ export class ListProjectComponent implements OnInit{
 
   applyFilter(event: Event) {
     this.filter = (event.target as HTMLInputElement).value;
+    this.reloadProjects();
+  }
+
+  sortData() {
+    this.projectForm.value.order = this.sort.direction.toUpperCase();
+    this.projectForm.value.orderBy = this.sort.active;
     this.reloadProjects();
   }
 
@@ -104,11 +115,7 @@ export class ListProjectComponent implements OnInit{
   //   this.reloadProjects();
   // }
 
-  sortData() {
-    this.projectForm.value.order = this.sort.direction.toUpperCase();
-    this.projectForm.value.orderBy = this.sort.active;
-    this.reloadProjects();
-  }
+
 
 
   closeAlert(): void {

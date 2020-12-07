@@ -1,9 +1,9 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CompoundModel} from '../../../models/CompoundModel';
 import {ActionPage} from '../../../models/action-page';
 import {Action} from '../../../models/action';
-import {CdkDragDrop, moveItemInArray, transferArrayItem, copyArrayItem} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {ActionOfCompound} from '../../../models/ActionOfCompound';
 import {PageEvent} from '@angular/material/paginator';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
@@ -45,7 +45,7 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
               private compService: CompoundService,
-              private changeDetector: ChangeDetectorRef ) {
+              private changeDetector: ChangeDetectorRef) {
     this.compoundActions = [];
     this.creating = this.router.url.startsWith('/compounds/new');
     this.activatedRoute.queryParams.subscribe(value => {
@@ -135,11 +135,11 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
       this.isError = true;
     }
   }
-  delete(): void{
+
+  delete(): void {
     this.compService.deleteCompound(this.compound.id).subscribe();
     this.router.navigate(['compounds']);
   }
-
 
 
   pageParamsChange(event: PageEvent): void {
@@ -148,17 +148,23 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
       queryParams: {actionSize: event.pageSize, actionPage: event.pageIndex}, queryParamsHandling: 'merge'
     });
   }
-  popoverToggle(): boolean{
+
+  popoverToggle(): boolean {
     $('[data-toggle="popover"]').popover();
-    $(document).on('click', () => { $('.popover').popover('dispose'); });
+    $(document).on('click', () => {
+      $('.popover').popover('dispose');
+    });
     return false;
   }
+
   modalShow(): void {
     $('#discardModal').modal('show');
   }
+
   closeAlert(): void {
     $('.alert').alert('close');
   }
+
   modalDelShow(): void {
     $('#deleteModal').modal('show');
   }
@@ -168,7 +174,7 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
   }
 
   navToCompound(action: Action): void {
-    if (action.type === 'COMPOUND'){
+    if (action.type === 'COMPOUND') {
       this.router.navigate(['compounds', 'edit', action.id]);
     }
   }
