@@ -1,116 +1,176 @@
-<div class="mat-elevation-z8">
-  <table mat-table [dataSource]="actionTableDS">
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Name</th>
-      <td mat-cell *matCellDef="let action"> {{action.name}} </td>
-    </ng-container>
-    <ng-container matColumnDef="key">
-      <th mat-header-cell *matHeaderCellDef>Key</th>
-      <td mat-cell *matCellDef="let action"> {{action.key?.key}} </td>
-    </ng-container>
-    <ng-container matColumnDef="edit">
-      <th mat-header-cell *matHeaderCellDef>
-        Edit
-      </th>
-      <td mat-cell *matCellDef="let action">
-        <div class="example-flex-container">
-        <button mat-icon-button aria-label="Icon button" (click)="editAction(action)">
-          <mat-icon>edit</mat-icon>
-        </button>
+<div *ngIf="!editing && !creation">
+  <form [formGroup]="actionTableForm" name="actionTableForm">
+    <div class="mat-elevation-z8">
+      <div class="row">
+        <div class="col-md-9">
+          <h4 class="header">List of actions</h4>
         </div>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description"></tr>
-  </table>
-  <mat-paginator [pageSizeOptions]="pageSizeOptions"
-                 [length]="length"
-                 [pageSize]="pageSize"
-                 (page)="onPaginationChange($event)" showFirstLastButtons>
-  </mat-paginator>
-</div>
-<section>
-  <div class="button-row">
-    <button mat-raised-button color="primary" (click)="createAction()">Add action</button>
-  </div>
-</section>
-<div *ngIf="editing || creation">
-  <h1 *ngIf="creation">Create action</h1>
-  <h1 *ngIf="editing">Edit action</h1>
-  <div class="mat-elevation-z8">
-  <form name="manageActionForm" [formGroup]="manageActionForm" class="create-action-form">
-    <mat-form-field class="create-action-full-width">
-      <mat-label>Name of Action</mat-label>
-      <input formControlName="name" required matInput placeholder="Type name for action">
-      <mat-error *ngIf="manageActionForm.get('name').errors?.required">
-        Name is <strong>required</strong>!
-      </mat-error>
-    </mat-form-field>
-    <mat-form-field class="create-action-full-width">
-      <mat-label>Key for Action</mat-label>
-      <div formGroupName="key">
-      <input type="text"
-             class="form-control"
-             placeholder="Pick existing key or type new"
-             aria-label="Key"
-             matInput
-             (input)="onKeyInputChange()"
-             formControlName="key"
-             [matAutocomplete]="auto" >
+        <div class="col-md-3">
+          <button (click)="createAction()" class="btn btn-primary btn-lg btn-block">Add action</button>
+        </div>
       </div>
-      <mat-hint *ngIf="manageActionForm.value.key.id === 0 && manageActionForm.value.key.key === ''">
-        Action will be without parameter key
-      </mat-hint>
-      <mat-hint *ngIf="manageActionForm.value.key.id === 0 && manageActionForm.value.key.key !== ''">
-        Will be created new parameter key
-      </mat-hint>
-      <mat-hint *ngIf="manageActionForm.value.key.id !== 0">
-        Will be used existing parameter key
-      </mat-hint>
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option *ngFor="let key of keys" [value]="key.key"
-                    (click)="this.manageActionForm.get('key.id').setValue( key.id)">
-          {{key.key}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <mat-form-field class="create-action-full-width">
-      <mat-label>Action type</mat-label>
-      <input type="text"
-             class="form-control"
-             placeholder="Search and pick one action type from list"
-             aria-label="Action type"
-             required
-             matInput
-             (input)="onTypeInputChanges()"
-             formControlName="type"
-             [matAutocomplete]="autoAction" >
-      <mat-error *ngIf="manageActionForm.get('type').errors?.wrongType || manageActionForm.get('type').errors?.required">
-        Please pick one action type from list!
-      </mat-error>
-      <mat-autocomplete #autoAction="matAutocomplete">
-        <mat-option *ngFor="let type of filteredActionTypes" [value]="type">
-          {{type}}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-    <mat-form-field class="create-action-full-width">
-      <mat-label>Description of Action</mat-label>
-      <input formControlName="description" type="text" matInput placeholder="Type description for action">
-    </mat-form-field>
-    <section>
-    <div class="button-row">
-      <button type="submit"
-              [disabled]="manageActionForm.invalid"
-              mat-raised-button
-              color="primary"
-              (click)="onSubmitButton()">
-        <div *ngIf="editing">Edit</div>
-        <div *ngIf="creation">Add</div>
-      </button>
-      <button mat-raised-button color="warn" (click)="cancelEdit()">Cancel</button>
+      <div class="col-md-12">
+        <div class="mb-3">
+          <label>Filter by Action {{actionTableForm.value.filterTable}}</label>
+          <input (input)="applyFilter()" aria-label="Filter"
+                 class="form-control"
+                 formControlName="filter"
+                 placeholder="Type filter string"
+                 type="text">
+        </div>
+      </div>
+      <table (matSortChange)="sortData()" [dataSource]="actionTableDS" mat-table matSort>
+        <mat-radio-group (change)="applyFilter()" aria-label="Select an option" formControlName="filterTable">
+          <ng-container matColumnDef="name-radio">
+            <th *matHeaderCellDef mat-header-cell>
+              <mat-radio-button value="name"></mat-radio-button>
+            </th>
+          </ng-container>
+          <ng-container matColumnDef="key-radio">
+            <th *matHeaderCellDef mat-header-cell>
+              <mat-radio-button value="key"></mat-radio-button>
+            </th>
+          </ng-container>
+          <ng-container matColumnDef="label-radio">
+            <th *matHeaderCellDef mat-header-cell>
+              <h4>filter options</h4>
+            </th>
+          </ng-container>
+        </mat-radio-group>
+        <ng-container matColumnDef="name">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Name</h4>
+          </th>
+          <td *matCellDef="let action" mat-cell> {{action.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="key">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Key</h4>
+          </th>
+          <td *matCellDef="let action" mat-cell> {{action.key?.key}} </td>
+        </ng-container>
+        <ng-container matColumnDef="edit">
+          <th *matHeaderCellDef mat-header-cell>
+            <h4>Edit</h4>
+          </th>
+          <td *matCellDef="let action" mat-cell>
+            <div class="example-flex-container">
+              <button (click)="editAction(action)" aria-label="Icon button" mat-icon-button>
+                <mat-icon>edit</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
+        <tr *matHeaderRowDef="['name-radio', 'key-radio', 'label-radio']" mat-header-row></tr>
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description" mat-row></tr>
+        <tr *matNoDataRow class="mat-row">
+          <td class="mat-cell" colspan="7">No data matching the filter "{{actionTableForm.value.filter}}"</td>
+        </tr>
+      </table>
+      <mat-paginator #paginator (page)="onPaginationChange($event)"
+                     [length]="length"
+                     [pageSizeOptions]="pageSizeOptions"
+                     [pageSize]="pageSize" showFirstLastButtons>
+      </mat-paginator>
     </div>
-    </section>
   </form>
+</div>
+<div *ngIf="editing || creation">
+  <div class="mat-elevation-z8">
+    <h4 *ngIf="creation" class="header">Create action</h4>
+    <h4 *ngIf="editing" class="header">Edit action</h4>
+    <form [formGroup]="manageActionForm" class="" name="manageActionForm">
+      <div class="mb-3">
+        <label>Name of Action</label>
+        <input [ngClass]="{'is-invalid' : manageActionForm.get('name').errors?.required,
+             'is-valid' : !manageActionForm.get('name').errors?.required}"
+               class="form-control"
+               formControlName="name"
+               placeholder="Type name for action">
+        <div *ngIf="manageActionForm.get('name').errors?.required" class="invalid-feedback">
+          Name is <strong>required</strong>!
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>
+          Key for Action
+          <span class="text-muted">(Optional)</span>
+        </label>
+        <div formGroupName="key">
+          <input (input)="onKeyInputChange()"
+                 [matAutocomplete]="auto"
+                 aria-label="Key"
+                 class="form-control custom-select"
+                 formControlName="key"
+                 placeholder="Pick existing key or type new"
+                 type="text">
+        </div>
+        <small *ngIf="manageActionForm.value.key.id === 0 && manageActionForm.value.key.key === ''" class="text-muted">
+          Action will be without parameter key
+        </small>
+        <small *ngIf="manageActionForm.value.key.id === 0 && manageActionForm.value.key.key !== ''" class="text-muted">
+          Will be created new parameter key
+        </small>
+        <small *ngIf="manageActionForm.value.key.id !== 0" class="text-muted">
+          Will be used existing parameter key
+        </small>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option (click)="this.manageActionForm.get('key.id').setValue( key.id)" *ngFor="let key of keys"
+                      [value]="key.key">
+            {{key.key}}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <div class="mb-3">
+        <label>Action type</label>
+        <input (input)="onTypeInputChanges()"
+               [matAutocomplete]="autoAction"
+               [ngClass]="{'is-invalid' : manageActionForm.get('type').errors?.required
+                  || manageActionForm.get('type').errors?.wrongType,
+                  'is-valid' : !manageActionForm.get('type').errors?.required
+                  && !manageActionForm.get('type').errors?.wrongType}"
+               aria-label="Action type"
+               class="form-control custom-select"
+               formControlName="type"
+               placeholder="Search and pick one action type from list"
+               type="text">
+        <div *ngIf="manageActionForm.get('type').errors?.wrongType || manageActionForm.get('type').errors?.required"
+             class="invalid-feedback">
+          Please pick one action type from list!
+        </div>
+        <mat-autocomplete #autoAction="matAutocomplete">
+          <mat-option *ngFor="let type of filteredActionTypes" [value]="type">
+            {{type}}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <div class="mb-3">
+        <label>
+          Description of Action
+          <span class="text-muted">(Optional)</span>
+        </label>
+        <input class="form-control"
+               formControlName="description"
+               placeholder="Type description for action"
+               type="text">
+      </div>
+      <hr class="mb-4">
+      <div class="row">
+        <div class="col-md-4">
+          <button (click)="onSubmitButton()"
+                  [disabled]="manageActionForm.invalid"
+                  class="btn btn-primary btn-lg btn-block"
+                  type="submit">
+            <div *ngIf="editing">Edit</div>
+            <div *ngIf="creation">Add</div>
+          </button>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <button (click)="cancelEdit()" class="btn btn-danger btn-lg btn-block">Cancel</button>
+        </div>
+      </div>
+    </form>
   </div>
 </div>

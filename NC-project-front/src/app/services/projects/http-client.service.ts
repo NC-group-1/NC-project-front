@@ -5,19 +5,22 @@ import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
 import {tap} from 'rxjs/operators';
+import {apiPath} from '../../../../globals';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpClientService {
 
-  private urlPath = 'http://localhost:8081/';
-
   constructor(private httpClient: HttpClient, private router: Router) {}
 
-  getPaginatedProjects(pageSize: number, pageIndex: number, filter: string, orderBy: string, order: string): Observable<ProjectResponseModel>{
+  getPaginatedProjects(pageSize: number,
+                       pageIndex: number,
+                       filter: string,
+                       orderBy: string,
+                       order: string): Observable<ProjectResponseModel>{
     return this.httpClient.get<ProjectResponseModel>(
-      this.urlPath + 'project/get_project_list/' + pageIndex + '/' + pageSize
+      apiPath + 'project/get_project_list/' + pageIndex + '/' + pageSize
       + '?filter=' + filter
       + '&orderBy=' + orderBy
       + '&order=' + order
@@ -25,11 +28,11 @@ export class HttpClientService {
   }
 
   postProject(project: ProjectModel) {
-    return this.httpClient.post(this.urlPath + 'project', project);
+    return this.httpClient.post(apiPath + 'project', project);
   }
 
   updateProject(project: ProjectModel) {
-    return this.httpClient.post(this.urlPath + 'project/update', project);
+    return this.httpClient.post(apiPath + 'project/update', project);
   }
 
 }

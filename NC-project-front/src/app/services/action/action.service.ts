@@ -15,15 +15,27 @@ export class ActionService {
   constructor(private http: HttpClient, private router: Router) {
   }
 
+  getPaginatedActionsWithFilter(page: number,
+                                size: number,
+                                filter: string,
+                                filterTable: string,
+                                orderBy: string,
+                                order: string): Observable<ActionPage> {
+    return this.http.get<ActionPage>(
+      apiPath + 'api/actions'
+      + '?page=' + page
+      + '&size=' + size
+      + '&filter=' + filter
+      + '&filterTable=' + filterTable
+      + '&orderBy=' + orderBy
+      + '&order=' + order)
+      .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
+  }
+
   getPaginatedActions(pageSize, pageIndex): Observable<ActionPage> {
-    return this.http.get<ActionPage>(apiPath + 'api/actions?page='
+    return this.http.get<ActionPage>(apiPath + 'api/actions/oldPage?page='
       + (!pageIndex ? '' : pageIndex) + '&size=' + (!pageSize ? '' : pageSize))
-      .pipe(tap(() => {
-      }, e => {
-        if (e.status) {
-          this.router.navigate(['404']);
-        }
-      }));
+      .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
   getPaginatedActionsWithoutTarget(targetId, pageSize, pageIndex): Observable<ActionPage> {
     if (!targetId){
@@ -31,23 +43,13 @@ export class ActionService {
     }else {
       return this.http.get<ActionPage>(apiPath + 'api/actions/compounds/' + targetId + '?page='
         + (!pageIndex ? '' : pageIndex) + '&size=' + (!pageSize ? '' : pageSize))
-        .pipe(tap(() => {
-        }, e => {
-          if (e.status) {
-            this.router.navigate(['404']);
-          }
-        }));
+        .pipe(tap(() => {}, e => {if (e.status) {this.router.navigate(['404']); } }));
     }
   }
 
   getActionTypes(): Observable<string[]> {
     return this.http.get<string[]>(apiPath + 'api/actions/types')
-      .pipe(tap(() => {
-      }, e => {
-        if (e.status) {
-          this.router.navigate(['404']);
-        }
-      }));
+      .pipe(tap(() => {}, e => {if (e.status) {this.router.navigate(['404']); } }));
   }
 
   updateAction(action: Action): Observable<any> {
