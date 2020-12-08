@@ -103,11 +103,11 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    fromEvent(this.search.nativeElement, 'keydown').pipe(
-      debounceTime(550),
-      map(x => x['target']['value'])).subscribe(value => {
+    // fromEvent(this.search.nativeElement, 'keydown').pipe(
+    //   debounceTime(550),
+    //   map(x => x['target']['value'])).subscribe(value => {
       // this.updateFilter(value);
-    })
+    // })
     this.changeDetector.detectChanges();
   }
 
@@ -125,7 +125,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   drop(event: CdkDragDrop<any[]>) {
-    console.log(event);
+    // console.log(event);
     if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer === event.container) {
       moveItemInArray(this.compoundActions, event.previousIndex, event.currentIndex);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer === event.container) {
@@ -222,7 +222,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
 
   navToCompound(action: Action): void {
     if (action.type === 'COMPOUND') {
-      this.router.navigate(['compounds', 'edit', action.id]);
+      this.router.navigate(['testScenarios', 'edit', action.id]);
     }
   }
 

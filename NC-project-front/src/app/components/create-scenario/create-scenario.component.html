@@ -40,16 +40,17 @@
 
         <div class="col-6 float-left">
           <div class="example-container">
-            <h2 class="color-nc font-italic font-weight-bold">Manage library</h2>
+            <h2 class="color-nc font-italic font-weight-bold" *ngIf="!nameSearch">Manage library</h2>
 <!--            <div class="form-group">-->
 <!--              <input type="text" class="form-control form-control-lg" (keyup)="applyFilter($event)"-->
 <!--                     placeholder="Search by name..." >-->
 <!--            </div>-->
+
             <div cdkDropList [id]="'cdk-drop-list-1'"
                  [cdkDropListData]="actionsAsCompActions"
                  class="action-list" (cdkDropListDropped)="drop($event)">
 
-              <input #search id="search" type="text" class="form-control form-control-lg" placeholder="Search by name..." (keyup)="findName($event)">
+              <input #search id="search" type="text" class="form-control form-control-lg" placeholder="Search by name...">
 
               <div class="action-box"
                    [class]="item.action.type === 'COMPOUND' ? 'border border-success' : ''"
