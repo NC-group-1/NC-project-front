@@ -5,16 +5,11 @@ import {MatTableDataSource} from '@angular/material/table';
 import {testActions, testDatasets} from './testData';
 import {flatten} from '@angular/compiler';
 import {MatSelectChange} from '@angular/material/select';
+import {ActionOfCompound} from '../../../models/ActionOfCompound';
+import {Dataset} from '../../../models/Dataset';
+import {ActionInstanceModel} from '../../../models/ActionInstanceModel';
 
 declare var $: any;
-
-interface Dataset {
-  id: number;
-  name: string;
-  description: string;
-  creator: { id: number; email: string };
-  parameters: ({ id?: number; value?: any; key: string })[];
-}
 
 @Component({
   selector: 'app-test-case',
@@ -26,6 +21,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   datasets = testDatasets;
   actions = testActions;
+  actions1: any;
   selectedDatasets: Dataset[] = [];
   columns = ['name', 'key', 'dataset', 'value'];
   autocompleteOptions: string[];
@@ -37,6 +33,14 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.params.subscribe(value => {
+      this.actions1 = this.activatedRoute.snapshot.data.testScenario.actions.map(value1 =>
+        ({
+          action: value1.action,
+          orderNum: value1.orderNum,
+          dataset: null,
+          key: null,
+          value: null
+      }));
     });
     this.activatedRoute.queryParams.subscribe(value => {
       this.dsPage = !value.dsPage ? 0 : value.dsPage;

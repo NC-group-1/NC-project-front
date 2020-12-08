@@ -14,7 +14,7 @@ import {ScenarioModel} from '../../../models/TestScenario';
 export class TestScenariosComponent implements OnInit {
 
   currentPage: number;
-  selectedScenario: { test_scenario_id: number, name: string, description: string, creatorName: string };
+  selectedScenario: { test_scenario_id: number, name: string, description: string, creatorName: string, active: boolean};
   size: number;
   dataSource: MatTableDataSource<any>;
   searchColumns = {columns:  ['name', 'creatorName', 'description'], selected: ''};
@@ -28,7 +28,6 @@ export class TestScenariosComponent implements OnInit {
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
     this.activatedRoute.params.subscribe(value => {
       this.testScenariosPage = this.activatedRoute.snapshot.data.testScenarios;
-      console.log(this.testScenariosPage);
       this.currentPage = value.page;
       this.dataSource = new MatTableDataSource<any>(this.testScenariosPage.list);
     });
