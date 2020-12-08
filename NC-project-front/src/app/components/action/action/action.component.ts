@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Action} from '../../../../models/action';
 import {ActionService} from '../../../services/action/action.service';
-import {PageEvent} from '@angular/material/paginator';
-import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn} from '@angular/forms';
+import {MatPaginator, PageEvent} from '@angular/material/paginator';
+import {AbstractControl, FormBuilder, FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {ParameterKey} from '../../../../models/parameter-key';
 import {ParameterKeyService} from '../../../services/parameterKey/parameter-key.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ActionPage} from '../../../../models/action-page';
+import {MatSort} from '@angular/material/sort';
 
 @Component({
   selector: 'app-action',
@@ -16,13 +17,17 @@ import {ActionPage} from '../../../../models/action-page';
 })
 export class ActionComponent implements OnInit {
 
-  actions: Action[];
+  // actions: Action[];
   actionTableDS = new MatTableDataSource<Action>();
   displayedColumns: string[] = ['name', 'key', 'edit'];
   length = 0;
-  pageSize = 5;
+  pageSize = 10;
   pageIndex = 0;
-  pageSizeOptions: number[] = [5, 10, 15];
+  pageSizeOptions: number[] = [10, 20, 50, 100];
+  actionTableForm: FormGroup;
+
+  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   creation = false;
   editing = false;
@@ -34,11 +39,17 @@ export class ActionComponent implements OnInit {
   constructor(private actionService: ActionService,
               private parameterKeyService: ParameterKeyService,
               private formBuilder: FormBuilder) {
+    this.actionTableForm = this.formBuilder.group({
+      filter: new FormControl(''),
+      filterTable: new FormControl('name'),
+      orderBy: new FormControl('name'),
+      order: new FormControl('ASC')
+    });
     this.manageActionForm = this.formBuilder.group({
       id: new FormControl(null),
-      name: new FormControl(''),
+      name: new FormControl('', Validators.required),
       key: this.formBuilder.group({id: new FormControl(0), key: new FormControl('') }),
-      type: new FormControl('', this.validateActionTypeInput()),
+      type: new FormControl('', [this.validateActionTypeInput(), Validators.required]),
       description: new FormControl('')
     });
   }
@@ -49,13 +60,34 @@ export class ActionComponent implements OnInit {
     this.reloadActions();
   }
 
+  applyFilter() {
+    if (this.pageIndex !== 0) {
+      this.paginator.firstPage();
+    }
+    this.reloadActions();
+  }
+
+  sortData(): void{
+    console.log(this.sort);
+    this.actionTableForm.value.order = this.sort.direction.toUpperCase();
+    this.actionTableForm.value.orderBy = this.sort.active;
+    this.reloadActions();
+  }
+
   reloadActions(): void {
-    this.actionService.getPaginatedActions(this.pageSize, this.pageIndex)
-        .subscribe((data: ActionPage) => {
-      this.actionTableDS.data = data.list;
-      this.actions = data.list;
-      this.length = data.size;
-    });
+    this.actionService.getPaginatedActionsWithFilter(
+      this.pageIndex,
+      this.pageSize,
+      this.actionTableForm.value.filter,
+      this.actionTableForm.value.filterTable,
+      this.actionTableForm.value.orderBy,
+      this.actionTableForm.value.order)
+      .subscribe( (data: ActionPage) => {
+          this.actionTableDS.data = data.list;
+          this.length = data.size;
+        },
+        error => console.log(error)
+      );
   }
 
   reloadActionTypes(): void {
@@ -143,6 +175,8 @@ export class ActionComponent implements OnInit {
       description: '',
       key: {id: 0, key: '' }
     });
+    this.manageActionForm.get('name').enable();
+    this.manageActionForm.get('type').enable();
     this.reloadKeys();
     console.log(this.manageActionForm.value);
   }
@@ -160,6 +194,8 @@ export class ActionComponent implements OnInit {
       this.manageActionForm.get('key.key').setValue(action.key.key);
       this.manageActionForm.get('key.id').setValue(action.key.id);
     }
+    this.manageActionForm.get('name').disable();
+    this.manageActionForm.get('type').disable();
   }
 
   createAction(): void {

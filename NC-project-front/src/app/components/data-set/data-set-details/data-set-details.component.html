@@ -1,0 +1,111 @@
+<h4 class="header">
+  <a [routerLink]="['/dataSet/list']">
+    <mat-icon>undo</mat-icon>
+    Back to list
+  </a>
+</h4>
+<div class="row">
+  <div class="col-md-9">
+    <h4 class="header">
+      {{dataSet.name}}
+    </h4>
+    <p>
+      Description: {{dataSet.description}}
+    </p>
+    <p>
+      Created by: {{dataSet.createdByRole}} {{dataSet.createdByName}} {{dataSet.createdBySurname}}
+    </p>
+  </div>
+  <div class="col-md-3">
+    <button (click)="createParameter()" class="btn btn-primary btn-lg btn-block">Add parameter</button>
+  </div>
+</div>
+<div *ngIf="creation">
+  <div class="mat-elevation-z8">
+    <h4 class="header">Add parameter to dataset</h4>
+    <form [formGroup]="parameterForm" name="parameterForm">
+      <div class="mb-3">
+        <label>Key for Parameter</label>
+        <div formGroupName="key">
+          <input (input)="onKeyInputChange()"
+                 [matAutocomplete]="auto"
+                 [ngClass]="{'is-invalid' : parameterForm.get('key.key').errors?.required
+                  || parameterForm.get('key.key').errors?.wrongKey,
+                  'is-valid' : !parameterForm.get('key.key').errors?.required
+                  && !parameterForm.get('key.key').errors?.wrongKey}"
+                 aria-label="Key"
+                 class="form-control custom-select"
+                 formControlName="key"
+                 placeholder="Pick existing key or type new"
+                 type="text">
+          <small *ngIf="parameterForm.value.key.id === 0 && parameterForm.value.key.key !== ''">
+            Will be created new parameter key
+          </small>
+          <small *ngIf="parameterForm.value.key.id !== 0 && !parameterForm.get('key.key').errors?.wrongKey">
+            Will be used existing parameter key
+          </small>
+          <div *ngIf="parameterForm.get('key.key').errors?.required" class="invalid-feedback">
+            Key is <strong>required</strong>!
+          </div>
+          <div *ngIf="parameterForm.get('key.key').errors?.wrongKey" class="invalid-feedback">
+            Key is already exist in this data set!
+          </div>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option (click)="this.parameterForm.get('key.id').setValue( key.id)" *ngFor="let key of keys"
+                        [value]="key.key">
+              {{key.key}}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label>Value of Parameter</label>
+        <input [ngClass]="{'is-invalid' : parameterForm.get('value').errors?.required,
+                  'is-valid' : !parameterForm.get('value').errors?.required}"
+               class="form-control"
+               formControlName="value"
+               placeholder="Type value of parameter">
+        <div *ngIf="parameterForm.get('value').errors?.required" class="invalid-feedback">
+          Value is <strong>required</strong>!
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-4">
+          <button (click)="onSubmitButton()"
+                  [disabled]="parameterForm.invalid"
+                  class="btn btn-primary btn-lg btn-block"
+                  type="submit">
+            Add
+          </button>
+        </div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+          <button (click)="cancelCreation()" class="btn btn-danger btn-lg btn-block">Cancel</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<hr>
+<div class="mat-elevation-z8">
+  <table [dataSource]="dataSource" mat-table>
+    <ng-container matColumnDef="key">
+      <th *matHeaderCellDef mat-header-cell>
+        <h4>Key</h4>
+      </th>
+      <td *matCellDef="let parameter" mat-cell> {{parameter.key.key}} </td>
+    </ng-container>
+    <ng-container matColumnDef="value">
+      <th *matHeaderCellDef mat-header-cell>
+        <h4>Value</h4>
+      </th>
+      <td *matCellDef="let parameter" mat-cell> {{parameter.value}} </td>
+    </ng-container>
+    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description" mat-row></tr>
+    <tr *matNoDataRow class="mat-row">
+      <td class="mat-cell" colspan="7">This data set is empty</td>
+    </tr>
+  </table>
+</div>

@@ -30,12 +30,14 @@ import { CreateUserComponent } from './components/create-user/create-user.compon
 import { ListUsersComponent } from './components/list-users/list-users.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatTableModule} from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MatTableModule} from '@angular/material/table';
+import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
+import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
 import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -60,32 +62,34 @@ import {MatExpansionModule} from '@angular/material/expansion';
     ListProjectComponent,
     CreateUserComponent,
     ListUsersComponent,
+    ListDataSetComponent,
+    DataSetDetailsComponent,
     TestScenariosComponent,
     TestCaseComponent,
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        MatPaginatorModule,
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatAutocompleteModule,
-        MatInputModule,
-        FormsModule,
-        BrowserAnimationsModule,
-        MatPaginatorModule,
-        MatSortModule,
-        DragDropModule,
-        MatTableModule,
-        MatIconModule,
-        MatButtonModule,
-        MatTooltipModule,
-        MatRadioModule,
-        MatSelectModule,
-        MatCheckboxModule,
-        MatExpansionModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MatPaginatorModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatAutocompleteModule,
+    MatInputModule,
+    FormsModule,
+    MatPaginatorModule,
+    MatSortModule,
+    DragDropModule,
+    MatTableModule,
+    MatIconModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatRadioModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatExpansionModule
+  ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     // useValue: { appearance: 'fill' },
