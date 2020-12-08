@@ -22,9 +22,6 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CompoundListComponent } from './components/compound-list/compound-list.component';
 import { CompoundEditComponent } from './components/compound-edit/compound-edit.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
@@ -36,6 +33,11 @@ import {MatInputModule} from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatTableModule} from '@angular/material/table';
+import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
+import { TestCaseComponent } from './components/test-case/test-case.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
 import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
 
@@ -59,29 +61,34 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
     ListProjectComponent,
     CreateUserComponent,
     ListUsersComponent,
+    TestScenariosComponent,
+    TestCaseComponent,
     ListDataSetComponent,
-    DataSetDetailsComponent,
+    DataSetDetailsComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatPaginatorModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    FormsModule,
-    MatTableModule,
-    MatSortModule,
-    DragDropModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTooltipModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatCheckboxModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        MatPaginatorModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        FormsModule,
+        BrowserAnimationsModule,
+        MatPaginatorModule,
+        MatSortModule,
+        DragDropModule,
+        MatTableModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatExpansionModule
+    ],
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

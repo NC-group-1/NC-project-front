@@ -1,10 +1,10 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {CompoundPage} from '../../../models/CompoundPage';
 import {MatTableDataSource} from '@angular/material/table';
 import {PageEvent} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
-import {AuthenticationService} from '../../services/auth/authentication.service';
+import {PageModel} from '../../../models/PageModel';
+import {CompoundModel} from '../../../models/CompoundModel';
 
 declare var $: any;
 
@@ -16,7 +16,7 @@ declare var $: any;
 export class CompoundListComponent implements OnInit {
 
   created: boolean;
-  compoundPage: CompoundPage;
+  compoundPage: PageModel<CompoundModel>;
   currentPage: number;
   size: number;
   dataSource: MatTableDataSource<any>;
