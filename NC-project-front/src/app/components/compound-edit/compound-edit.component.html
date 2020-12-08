@@ -23,12 +23,11 @@
 
         <div class="col-6 float-left">
           <h2 class="color-nc font-italic font-weight-bold">Compound's actions</h2>
-          <div (cdkDropListDropped)="drop($event)"
-               [@invalidForm]="emptyInvalid ? 'invalid': ''" [cdkDropListData]="compoundActions"
-               [id]="'cdk-drop-list-0'"
-               cdkDropList class="action-list">
-            <div (click)="showActionDetails(action)" *ngFor="let action of compoundActions" cdkDrag
-                 class="action-box">
+          <div [@invalidForm]="emptyInvalid ? 'invalid': ''"
+               [attr.cdkDropList]="true" [id]="'cdk-drop-list-0'"
+               [cdkDropListData]="compoundActions"
+               class="action-list" (cdkDropListDropped)="drop($event)">
+            <div class="action-box" *ngFor="let action of compoundActions" (click)="showActionDetails(action)" cdkDrag>
               {{action.action.name}}
             </div>
           </div>
@@ -38,12 +37,12 @@
           <div class="example-container">
             <h2 class="color-nc font-italic font-weight-bold">List of actions</h2>
             <div
-              (cdkDropListDropped)="drop($event)" [cdkDropListData]="actionsAsCompActions"
-              [id]="'cdk-drop-list-1'"
-              cdkDropList class="action-list">
-              <div (click)="showActionDetails(item)"
-                   *ngFor="let item of actionsAsCompActions"
-                   [class]="item.action.type === 'COMPOUND' ? 'border border-success' : ''" cdkDrag class="action-box">
+              [attr.cdkDropList]="true" [id]="'cdk-drop-list-1'"
+              [cdkDropListData]="actionsAsCompActions"
+              class="action-list" (cdkDropListDropped)="drop($event)">
+              <div class="action-box"
+                   [class]="item.action.type === 'COMPOUND' ? 'border border-success' : ''"
+                   *ngFor="let item of actionsAsCompActions" (click)="showActionDetails(item)" cdkDrag>
                 {{item.action.name}}
               </div>
             </div>

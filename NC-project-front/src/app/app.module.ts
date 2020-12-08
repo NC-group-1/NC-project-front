@@ -30,16 +30,16 @@ import { CreateUserComponent } from './components/create-user/create-user.compon
 import { ListUsersComponent } from './components/list-users/list-users.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {MatTableModule} from '@angular/material/table';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {TestCaseComponent} from "./components/test-case/test-case.component";
-import {TestScenariosComponent} from "./components/test-scenarios/test-scenarios.component";
 import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
-import {MatExpansionModule} from "@angular/material/expansion";
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatTableModule} from '@angular/material/table';
+import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
+import { TestCaseComponent } from './components/test-case/test-case.component';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
