@@ -15,7 +15,11 @@ export class HttpClientService {
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
-  getPaginatedProjects(pageSize: number, pageIndex: number, filter: string, orderBy: string, order: string): Observable<ProjectResponseModel>{
+  getPaginatedProjects(pageSize: number,
+                       pageIndex: number,
+                       filter: string,
+                       orderBy: string,
+                       order: string): Observable<ProjectResponseModel>{
     return this.httpClient.get<ProjectResponseModel>(
       this.urlPath + 'api/project/list'
       + '?pageSize=' + pageSize

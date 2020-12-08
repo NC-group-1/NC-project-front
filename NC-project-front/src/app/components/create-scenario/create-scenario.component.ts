@@ -15,6 +15,7 @@ import {AuthenticationService} from "../../services/auth/authentication.service"
 import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag-drop";
 import {fromEvent} from "rxjs";
 import {debounceTime, map} from "rxjs/operators";
+import {ScenarioModel} from "../../../models/TestScenario";
 
 declare var $: any;
 
@@ -38,6 +39,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
 
   compound: CompoundModel;
   actions: ActionPage;
+  scenario: ScenarioModel;
   compoundActions: ActionOfCompound[];
   actionsAsCompActions: ActionOfCompound[];
   // responseScenario: ScenarioResponseModel;
@@ -147,18 +149,25 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
         {
           name: this.scenarioForm.value.name,
           description: this.scenarioForm.value.description,
-          user_id: this.user_id,
-          actions: this.compoundActions
+          user: {
+            userId: this.user_id
+          },
+          actions: this.compoundActions,
+          // project: {
+          //   projectId: this.project_id
+          // }
         }
       ).subscribe(() => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
     } else if (!this.emptyInvalid && this.scenarioForm.valid) {
-      this.compService.updateCompound(
+      this.scenarioService.updateScenario(
         {
-          id: this.compound.id,
+          id: this.scenario.id,
           name: this.scenarioForm.value.name,
           description: this.scenarioForm.value.description,
-          type: 'COMPOUND'
-        }).subscribe(value => {
+          user: {
+            userId: this.user_id
+          },
+        }).subscribe(() => {
         this.compService.changeActions(this.compound.id, this.compoundActions).subscribe(
           () => {
             this.router.navigate(['testScenarios'], {queryParams: {created: true}});
@@ -224,14 +233,6 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     if (action.type === 'COMPOUND') {
       this.router.navigate(['testScenarios', 'edit', action.id]);
     }
-  }
-
-  sortBy(event: any): void {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: {orderBy: event.active, direction: event.direction},
-      queryParamsHandling: 'merge'
-    });
   }
 
   // applyFilter(event: Event) {
