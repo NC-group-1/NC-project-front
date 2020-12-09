@@ -23,7 +23,6 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { CompoundListComponent } from './components/compound-list/compound-list.component';
 import { CompoundEditComponent } from './components/compound-edit/compound-edit.component';
 import {MatSortModule} from '@angular/material/sort';
-import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { ListProjectComponent } from './components/list-project/list-project.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
@@ -40,6 +39,8 @@ import {MatTableModule} from '@angular/material/table';
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
 import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {CdkDragDrop} from "@angular/cdk/drag-drop/drag-events";
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [

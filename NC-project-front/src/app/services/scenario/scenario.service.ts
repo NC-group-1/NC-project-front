@@ -27,13 +27,13 @@ export class ScenarioService {
                        order: string,
                        projectId: string): Observable<PageModel<ScenarioModel>> {
     return this.http.get<PageModel<ScenarioModel>>(
-      apiPath + 'test_scenario/get_list'
+      apiPath + 'api/test-scenario/list/' + (!projectId ? '0' : projectId)
       + '?pageSize=' + (!pageSize ? '' : pageSize)
       + '&pageIndex=' + (!pageIndex ? '' : pageIndex + 1)
       + '&filter=' + (!filter ? '' : filter)
       + '&orderBy=' + (!orderBy ? '' : orderBy)
       + '&order=' + (!order ? '' : order)
-      + '&projectId=' + (!projectId ? '0' : projectId))
+      )
       .pipe(tap(() => {
       }, e => {
         if (e.status) {
@@ -47,7 +47,11 @@ export class ScenarioService {
   }
 
   updateScenario(testScenario: ScenarioModel): Observable<any> {
-    return this.http.put(apiPath + 'api/test-scenario/update', testScenario);
+    return this.http.put(apiPath + 'api/test-scenario', testScenario);
+  }
+
+  deleteScenario(testScenarioId: number): Observable<any> {
+    return this.http.delete(apiPath + 'api/test-scenario' + testScenarioId);
   }
 
 }

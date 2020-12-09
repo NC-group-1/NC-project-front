@@ -1,12 +1,13 @@
 import {UserModel} from './UserModel';
 
 export class ProjectModel{
-  projectId?: number;
+  id?: number;
   name?: string;
   link?: string;
   date?: Date;
   role?: string;
-  user: UserModel;
+  // user_id?: number;
+  user?: UserModel;
   archived?: boolean;
   edit?: boolean;
 }

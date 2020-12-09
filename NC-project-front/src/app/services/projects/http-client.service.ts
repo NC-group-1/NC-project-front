@@ -31,6 +31,7 @@ export class HttpClientService {
   }
 
   postProject(project: ProjectModel) {
+    console.log(project);
     return this.httpClient.post(this.urlPath + 'api/project', project);
   }
 

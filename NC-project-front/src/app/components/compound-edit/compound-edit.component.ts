@@ -126,7 +126,7 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
         }).subscribe(value => {
         this.compService.changeActions(this.compound.id, this.compoundActions).subscribe(
           value1 => {
-            this.router.navigate(['compounds'], {queryParams: {created: true}});
+            this.router.navigate(['cus'], {queryParams: {created: true}});
           }, error => {
           }
         );

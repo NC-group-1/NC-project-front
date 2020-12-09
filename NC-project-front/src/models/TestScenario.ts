@@ -7,7 +7,7 @@ export class ScenarioModel{
   id?: number;
   name: string;
   description: string;
-  user?: UserDataModel;
-  project?: ProjectModel;
-  actions?: ActionOfCompound[];
+  user? : UserDataModel;
+  project? : ProjectModel;
+  action_compound_id?: number[];
 }

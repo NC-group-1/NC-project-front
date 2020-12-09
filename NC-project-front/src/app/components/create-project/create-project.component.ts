@@ -15,9 +15,9 @@ declare var $: any;
 })
 export class CreateProjectComponent implements OnInit {
   form: FormGroup;
-  user: UserDataModel;
   project: ProjectModel;
   role: string;
+  userId: number;
   isError = false;
   creating = false;
 
@@ -29,7 +29,8 @@ export class CreateProjectComponent implements OnInit {
     // console.log(auth.getId());
     this.creating = this.router.url.startsWith('/createProject');
     console.log(parseInt(auth.getId(), 10));
-    this.role = auth.getRole();
+    // this.role = auth.getRole();
+    this.userId = parseInt(auth.getId(), 10);
     this.form = new FormGroup({
       name: new FormControl(null, [Validators.required]),
       link: new FormControl(null, [Validators.required])
@@ -44,9 +45,7 @@ export class CreateProjectComponent implements OnInit {
       this.httpClientService.postProject({
         name: this.form.value.name,
         link: this.form.value.link,
-        user: {
-          role: this.role
-        }
+        user_id: this.userId
       })
         .subscribe(() => this.router.navigate(['listProject'], {queryParams: {created: true}}));
     } else this.isError = true;

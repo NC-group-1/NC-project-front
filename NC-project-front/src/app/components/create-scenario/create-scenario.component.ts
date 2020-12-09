@@ -16,6 +16,7 @@ import {CdkDragDrop, moveItemInArray, transferArrayItem} from "@angular/cdk/drag
 import {fromEvent} from "rxjs";
 import {debounceTime, map} from "rxjs/operators";
 import {ScenarioModel} from "../../../models/TestScenario";
+import {ScenarioResponseModel} from "../../../models/ScenarioResponseModel";
 
 declare var $: any;
 
@@ -41,8 +42,9 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   actions: ActionPage;
   scenario: ScenarioModel;
   compoundActions: ActionOfCompound[];
+  actionsAsCompActionsFiltered: ActionOfCompound[];
   actionsAsCompActions: ActionOfCompound[];
-  // responseScenario: ScenarioResponseModel;
+  compoundActionsDto: ActionOfCompound[];
   size: number;
   page: number;
   creating: boolean;
@@ -50,14 +52,13 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   scenarioForm: FormGroup;
   isError = false;
   selectedAction: ActionOfCompound;
-  dataSource: MatTableDataSource<any>;
   compoundPage: CompoundPage;
   currentPage: number;
   nameSearch = false;
-  user_id: number;
-  project_id: number;
+  userId: number;
+  projectId: number;
 
-  @ViewChild('search', {static: false}) search: any
+  @ViewChild('search', {static: false}) search: any;
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -65,12 +66,25 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
               private scenarioService: ScenarioService,
               private changeDetector: ChangeDetectorRef,
               private auth: AuthenticationService) {
+    // console.log(auth.getId());
+    this.userId = parseInt(auth.getId(), 10);
+  }
+
+  ngOnInit(): void {
+    this.clearQuery();
     this.compoundActions = [];
+    this.compoundActionsDto = [];
     this.creating = this.router.url.startsWith('/testScenarios/new');
-    this.user_id = parseInt(auth.getId(), 10);
     this.activatedRoute.queryParams.subscribe(value => {
       this.size = !value.actionSize ? 10 : value.actionSize;
       this.page = !value.actionPage ? 0 : value.actionPage;
+      //this.projectId = !value.projectId ? 0 : value.projectId;
+    });
+    this.activatedRoute.params.subscribe(() => {
+      this.compound = this.activatedRoute.snapshot.data.compound;
+      if (!!this.compound) {
+        this.compoundActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
+      }
     });
     this.activatedRoute.params.subscribe(() => {
       this.compound = this.activatedRoute.snapshot.data.compound;
@@ -90,10 +104,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       name: new FormControl(null, [Validators.required]),
       description: new FormControl(null, [Validators.required])
     });
-  }
-
-  ngOnInit(): void {
-    this.clearQuery();
+    this.actionsAsCompActionsFiltered = this.actionsAsCompActions;
   }
 
   clearQuery(): void {
@@ -105,19 +116,27 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // fromEvent(this.search.nativeElement, 'keydown').pipe(
-    //   debounceTime(550),
-    //   map(x => x['target']['value'])).subscribe(value => {
-      // this.updateFilter(value);
-    // })
+    fromEvent(this.search.nativeElement, 'keydown').pipe(
+      debounceTime(550),
+      map(x => x['target']['value'])).subscribe(value => {
+    this.updateFilter(value);
+    })
     this.changeDetector.detectChanges();
   }
 
-  // updateFilter(val: any) {
+  updateFilter(val: any) {
+    this.actionsAsCompActionsFiltered = [];
+    this.actionsAsCompActionsFiltered = this.actionsAsCompActions.filter(item => {
+        return !!item.action.name.toLocaleLowerCase().trim().match(val.toLocaleLowerCase().trim());
+    });
+  }
+
+  // pdateFilter(val: any) {
   //   const count = this.compoundActions.length;
-  //   this.actionsAsCompActions = this.compoundActions.filter(value => {
+  //   this.actionsAsCompActions = [];
+  //   this.actionsAsCompActions = this.compoundActions.filter(item => {
   //     for (let i = 0; i < count; i++) {
-  //       return !!value.toLocaleLowerCase().trim().match(val.toLocaleLowerCase().trim());
+  //       return !!item.toLocaleLowerCase().trim().match(val.toLocaleLowerCase().trim());
   //     }
   //   });
   // }
@@ -126,53 +145,72 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     actions.forEach((value, index) => value.orderNum = index + 1);
   }
 
-  drop(event: CdkDragDrop<any[]>) {
+  drop(event: CdkDragDrop<any[]>): void {
     // console.log(event);
     if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer === event.container) {
       moveItemInArray(this.compoundActions, event.previousIndex, event.currentIndex);
+      moveItemInArray(this.compoundActionsDto, event.previousIndex, event.currentIndex);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer !== event.container) {
       this.compoundActions.splice(event.previousIndex, 1);
-    } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer !== event.container) {
+      this.compoundActionsDto.splice(event.previousIndex, 1);
+    } else  {
       this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
-      this.adjustOrder(this.compoundActions);
+      this.compoundActionsDto.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
+    }
+    if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer !== event.container) {
+      const dataAct = event.previousContainer.data[event.previousIndex];
+      if (dataAct.action.type === 'COMPOUND') {
+        this.compService.getCompoundById(dataAct.action.id).subscribe(value => {
+          this.compoundActions.forEach(val => this.compoundActionsDto.push(Object.assign({}, val)));
+          this.compoundActionsDto.splice(event.currentIndex, 0, ...value.actions.sort((a, b) => a.orderNum - b.orderNum));
+        });
+      }
     }
     this.adjustOrder(this.compoundActions);
-    // this.updateFilter(this.search.nativeElement.value);
+    this.updateFilter(this.search.nativeElement.value);
   }
 
   submit(): void {
-    this.emptyInvalid = this.compoundActions.length === 0;
+    this.emptyInvalid = this.compoundActionsDto.length === 0;
     if (this.creating && !this.emptyInvalid && this.scenarioForm.valid) {
+      let actions_id = [];
+      this.compoundActionsDto.forEach(
+        element => actions_id.push(element.action.id)
+      );
+
       this.scenarioService.createTestScenario(
         {
           name: this.scenarioForm.value.name,
           description: this.scenarioForm.value.description,
           user: {
-            userId: this.user_id
+            id: this.userId
           },
-          actions: this.compoundActions,
-          // project: {
-          //   projectId: this.project_id
-          // }
+          project: {
+            id: this.projectId
+          },
+          action_compound_id: actions_id
         }
       ).subscribe(() => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
     } else if (!this.emptyInvalid && this.scenarioForm.valid) {
+      let actions_id = [];
+      this.compoundActionsDto.forEach(
+        element => actions_id.push(element.action.id)
+      );
       this.scenarioService.updateScenario(
         {
-          id: this.scenario.id,
           name: this.scenarioForm.value.name,
           description: this.scenarioForm.value.description,
           user: {
-            userId: this.user_id
+            id: this.userId
           },
+          project: {
+            id: this.projectId
+          },
+          action_compound_id: actions_id
         }).subscribe(() => {
-        this.compService.changeActions(this.compound.id, this.compoundActions).subscribe(
-          () => {
-            this.router.navigate(['testScenarios'], {queryParams: {created: true}});
-          }
-        );
+            this.router.navigate(['testScenarios'], {queryParams: {created: true}})
       });
     } else {
       this.isError = true;
@@ -180,22 +218,22 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   delete(): void {
-    this.compService.deleteCompound(this.compound.id).subscribe();
+    this.scenarioService.deleteScenario(this.scenario.id).subscribe();
     this.router.navigate(['testScenarios']);
   }
 
-  searchByName(): void {
-    this.clearQuery();
-    this.nameSearch = !this.nameSearch;
-  }
+  // searchByName(): void {
+  //   this.clearQuery();
+  //   this.nameSearch = !this.nameSearch;
+  // }
 
-  findName(event: any): void {
-    this.router.navigate([], {
-      relativeTo: this.activatedRoute,
-      queryParams: {name: event.target.value},
-      queryParamsHandling: 'merge'
-    });
-  }
+  // findName(event: any): void {
+  //   this.router.navigate([], {
+  //     relativeTo: this.activatedRoute,
+  //     queryParams: {name: event.target.value},
+  //     queryParamsHandling: 'merge'
+  //   });
+  // }
 
   pageParamsChange(event: PageEvent): void {
     this.router.navigate([], {
@@ -205,13 +243,13 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     });
   }
 
-  popoverToggle(): boolean {
-    $('[data-toggle="popover"]').popover();
-    $(document).on('click', () => {
-      $('.popover').popover('dispose');
-    });
-    return false;
-  }
+  // popoverToggle(): boolean {
+  //   $('[data-toggle="popover"]').popover();
+  //   $(document).on('click', () => {
+  //     $('.popover').popover('dispose');
+  //   });
+  //   return false;
+  // }
 
   modalShow(): void {
     $('#discardModal').modal('show');
@@ -235,9 +273,5 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     }
   }
 
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  // }
 }
 
