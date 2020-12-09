@@ -114,6 +114,10 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
   submit(): void {
     this.emptyInvalid = this.compoundActions.length === 0;
     if (this.creating && !this.emptyInvalid && this.compoundForm.valid) {
+      this.compoundActions.map(
+        (value, index, array) => value.action.type === 'COMPOUND'
+          ? this.compoundActions.splice(index, 1, ...value.compoundActions) : value);
+      this.adjustOrder(this.compoundActions);
       this.compService.createCompound(
         {
           name: this.compoundForm.value.name,
@@ -181,7 +185,7 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
     this.selectedAction = action;
     if (action.action.type === 'COMPOUND') {
       this.getCompoundActions(action.action).subscribe(value => {
-        this.selectedCompoundActions = value.actions;
+        this.selectedCompoundActions = value.actions.sort((a, b) => a.orderNum - b.orderNum);
       });
     }else {
       this.selectedCompoundActions = [];
@@ -197,6 +201,5 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
   changeCompoundActionKey(event: any, action: ActionOfCompound, id: number) {
     this.compoundActions.find(compound => compound.action.id === id).compoundActions
       .find(cAction => action.orderNum === cAction.orderNum).key.key = event;
-    console.log(this.compoundActions);
   }
 }

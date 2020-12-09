@@ -15,6 +15,7 @@ export class TestCaseService {
 
   constructor(private http: HttpClient) { }
   createTestCase(testCase: TestCaseModel): Observable<any>{
+    console.log(testCase);
     return this.http.post(apiPath + 'api/test-case', testCase);
   }
 

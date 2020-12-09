@@ -3,8 +3,10 @@ import {Dataset} from './Dataset';
 import {ParameterKey} from './parameter-key';
 
 export class ActionInstanceModel{
+  id?: number;
   action: Action;
   orderNum: number;
-  dataset: Dataset;
-  key?: ParameterKey;
+  datasetId: number;
+  parameterKey?: ParameterKey;
+  value?: any;
 }

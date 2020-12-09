@@ -7,6 +7,7 @@ import {apiPath} from '../../../../globals';
 import {DataSetGeneralInfoDtoPage} from '../../../models/data-set-general-info-dto-page';
 import {DataSetGeneralInfoDto} from '../../../models/data-set-general-info-dto';
 import {Parameter} from '../../../models/parameter';
+import {PageModel} from '../../../models/PageModel';
 
 @Injectable({
   providedIn: 'root'
@@ -15,18 +16,14 @@ export class DataSetService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  getPaginatedDataSets(page: number,
-                       size: number,
-                       filter: string,
-                       orderBy: string,
-                       order: string): Observable<DataSetGeneralInfoDtoPage>{
-    return this.http.get<DataSetGeneralInfoDtoPage>(
+  getPaginatedDataSets(page, size, filter: string, orderBy: string, order: string): Observable<DataSetGeneralInfoDtoPage>{
+    return this.http.get<PageModel<DataSetGeneralInfoDto>>(
       apiPath + 'api/datasets'
-      + '?page=' + page
-      + '&size=' + size
-      + '&filter=' + filter
-      + '&orderBy=' + orderBy
-      + '&order=' + order
+      + '?page=' + (!page ? '' : page)
+      + '&size=' + (!size ? '' : size)
+      + '&filter=' + (!filter ? '' : filter)
+      + '&orderBy=' + (!orderBy ? '' : orderBy)
+      + '&order=' + (!order ? '' : order)
     ).pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 

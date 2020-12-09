@@ -26,8 +26,12 @@ export class TestScenariosComponent implements OnInit {
   //   {id: 3, name: 'Name 3', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: false},
   //   {id: 4, name: 'Name 4', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true}];
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  }
+
+  ngOnInit(): void {
     this.activatedRoute.params.subscribe(value => {
       this.testScenariosPage = this.activatedRoute.snapshot.data.testScenarios;
+      console.log(this.testScenariosPage);
       this.currentPage = value.page;
       this.dataSource = new MatTableDataSource<any>(this.testScenariosPage.list);
     });
@@ -39,9 +43,6 @@ export class TestScenariosComponent implements OnInit {
       this.size = !value.size ? 10 : value.size;
     });
     this.dataSource.sort = this.sort;
-  }
-
-  ngOnInit(): void {
   }
 
   pageParamsChange(event: PageEvent): void {
