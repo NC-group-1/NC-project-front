@@ -22,9 +22,9 @@ export class ScenarioService {
                        order: string,
                        projectId: string): Observable<PageModel<ScenarioModel>> {
     return this.http.get<PageModel<ScenarioModel>>(
-      apiPath + 'test_scenario/get_list'
+      apiPath + 'api/test-scenario/list'
       + '?pageSize=' + (!pageSize ? '' : pageSize)
-      + '&pageIndex=' + (!pageIndex ? '' : pageIndex + 1)
+      + '&pageIndex=' + (!pageIndex ? '' : pageIndex)
       + '&filter=' + (!filter ? '' : filter)
       + '&orderBy=' + (!orderBy ? '' : orderBy)
       + '&order=' + (!order ? '' : order)
@@ -37,20 +37,13 @@ export class ScenarioService {
       }));
   }
 
-  createTestScenario(scenario: ScenarioModel): Observable<any> {
-    return this.http.post(apiPath + 'api/test-scenario', scenario);
-  }
-
-  getScenarioById(scenarioId): Observable<ScenarioModel> {
-    return this.http.get<ScenarioModel>(apiPath + 'api/test-scenario/' + scenarioId);
-  }
-
-  updateCompound(testScenario: ScenarioModel): Observable<any> {
-    return this.http.put(apiPath + 'api/test-scenario/update', testScenario);
-  }
-
-  deleteCompound(scenarioId: number): Observable<any> {
-    return this.http.delete(apiPath + 'api/test-scenario/delete/' + scenarioId);
+  getTestScenarioById(scenarioId): Observable<ScenarioModel>{
+    return this.http.get<ScenarioModel>(apiPath + 'api/test-scenario/' + scenarioId).pipe(tap(() => {
+    }, e => {
+      if (e.status) {
+        this.router.navigate(['404']);
+      }
+    }));
   }
 
 }

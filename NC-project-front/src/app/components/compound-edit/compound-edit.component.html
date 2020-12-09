@@ -9,33 +9,39 @@
     <div class="bg-white shadow-lg p-3">
       <div [formGroup]="compoundForm">
         <label class="m-3 color-nc font-weight-bold"> Name
-          <input [@invalidForm]="compoundForm.controls.name.invalid ? 'invalid': ''" type="text" class="form-control"
+          <input [@invalidForm]="compoundForm.controls.name.invalid ? 'invalid': ''"
+                 [attr.disabled]="!creating ? '' : null" type="text" class="form-control"
                  formControlName="name" [ngModel]="compound?.name">
         </label>
         <label class="m-3 color-nc font-weight-bold"> Description
-          <input [@invalidForm]="compoundForm.controls.description.invalid ? 'invalid': ''" type="text"
+          <input [@invalidForm]="compoundForm.controls.description.invalid ? 'invalid': ''"
+                 [attr.disabled]="!creating ? '' : null" type="text"
                  class="form-control" formControlName="description" [ngModel]="compound?.description">
         </label>
       </div>
       <div cdkDropListGroup class="row actions-container w-100">
 
-        <div class="col-6 float-left">
+        <div class="float-left" [class]="creating ? 'col-6' : 'col'">
           <h2 class="color-nc font-italic font-weight-bold">Compound's actions</h2>
           <div [@invalidForm]="emptyInvalid ? 'invalid': ''"
-               [attr.cdkDropList]="true" [id]="'cdk-drop-list-0'"
+               cdkDropList [id]="'cdk-drop-list-0'"
                [cdkDropListData]="compoundActions"
                class="action-list" (cdkDropListDropped)="drop($event)">
-            <div class="action-box" *ngFor="let action of compoundActions" (click)="showActionDetails(action)" cdkDrag>
+            <div (click)="showActionDetails(action)" *ngFor="let action of compoundActions"
+                 [ngClass]="{ pointer: !creating }"
+                 [class]="action.action.type === 'COMPOUND' ? 'border border-success' : ''"
+                 [cdkDragDisabled]="!creating"
+                 cdkDrag class="action-box">
               {{action.action.name}}
             </div>
           </div>
         </div>
 
-        <div class="col-6 float-left">
+        <div class="col-6 float-left" *ngIf="creating">
           <div class="example-container">
             <h2 class="color-nc font-italic font-weight-bold">List of actions</h2>
             <div
-              [attr.cdkDropList]="true" [id]="'cdk-drop-list-1'"
+              cdkDropList [id]="'cdk-drop-list-1'"
               [cdkDropListData]="actionsAsCompActions"
               class="action-list" (cdkDropListDropped)="drop($event)">
               <div class="action-box"
@@ -60,15 +66,25 @@
       <button *ngIf="!creating" class="btn btn-outline-danger m-3 px-5 py-3" (click)="modalDelShow()">DELETE</button>
     </div>
   </div>
-  <div class="col mr-5">
-    <div *ngIf="!!selectedAction" class="bg-white shadow-lg p-5">
-      <h1>
-        <strong class="color-nc">Action name: </strong>
-        <a role="button" (click)="navToCompound(selectedAction.action)">{{selectedAction.action.name}}</a>
-      </h1>
-      <h3><strong class="color-nc">Key:</strong> {{selectedAction.key.key}}</h3>
-      <h3 class="color-nc">Description:</h3>
-      <h4>{{selectedAction.action.description}}</h4>
+  <div class="col">
+    <div class="position-fixed pre-scrollable mr-5">
+      <div *ngIf="!!selectedAction" class="bg-white shadow-lg py-3 px-5">
+        <h1>
+          <strong class="color-nc">Action name: </strong>
+          <a role="button" (click)="navToCompound(selectedAction.action)">{{selectedAction.action.name}}</a>
+        </h1>
+        <h3 *ngIf="!selectedCompoundActions"><strong class="color-nc">Key:</strong> {{selectedAction.key.key}}</h3>
+        <h3 class="color-nc">Description:</h3>
+        <h4>{{selectedAction.action.description}}</h4>
+        <div *ngIf="!!selectedCompoundActions">
+          <div class="row" *ngFor="let action of selectedCompoundActions">
+            <div class="col border">{{action.action.name}}</div>
+            <input class="m-0 p-0 col border" matInput placeholder="Key"
+                   [(ngModel)]="action.key.key" (ngModelChange)="changeCompoundActionKey($event, action, selectedAction.action.id)">
+            <!--          <div >{{action.key.key || action.action.key.key}}</div>-->
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
