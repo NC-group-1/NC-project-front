@@ -34,13 +34,14 @@ import {MatTableModule} from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
 import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
 import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
+import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +67,8 @@ import {MatExpansionModule} from '@angular/material/expansion';
     DataSetDetailsComponent,
     TestScenariosComponent,
     TestCaseComponent,
+    ListDataSetComponent,
+    DataSetDetailsComponent
   ],
   imports: [
     BrowserModule,
