@@ -40,8 +40,7 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
 import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
-import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -58,8 +57,8 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
     MainMenuComponent,
     SettingsComponent,
     CompoundListComponent,
-    CompoundEditComponent,
     CreateProjectComponent,
+    CompoundEditComponent,
     ListProjectComponent,
     CreateUserComponent,
     ListUsersComponent,
@@ -75,7 +74,6 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MatPaginatorModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatAutocompleteModule,
