@@ -17,7 +17,7 @@
 
           <div class="form-group">
             <label> Find users: </label>
-            <input class="form-control" style="width:800px" type="text" #input (keyup)="applyFilter($event)"
+            <input class="form-control" style="width:400px" type="text" #input (keyup)="applyFilter($event)"
                    placeholder="Search by name and surname...">
           </div>
           <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData()">

@@ -53,5 +53,4 @@ export class ScenarioService {
   deleteScenario(testScenarioId: number): Observable<any> {
     return this.http.delete(apiPath + 'api/test-scenario' + testScenarioId);
   }
-
 }

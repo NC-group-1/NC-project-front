@@ -1,13 +1,13 @@
 <div class="row">
   <div class="col-8">
-<div *ngIf="isError" class="alert alert-danger alert-dismissible fade show" role="alert">
-  Please, make sure to fill all the fields
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+    <div *ngIf="isError" class="alert alert-danger alert-dismissible fade show" role="alert">
+      Please, make sure to fill all the fields
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
     <div class="bg-white shadow-lg p-3">
-        <h2 class="color-nc font-italic font-weight-bold"> Test Scenario</h2>
+      <h2 class="color-nc font-italic font-weight-bold"> Test Scenario</h2>
 
       <div [formGroup]="scenarioForm">
         <label class="m-3 color-nc font-weight-bold"> Name
@@ -40,16 +40,11 @@
         <div class="col-6 float-left">
           <div class="example-container">
             <h2 class="color-nc font-italic font-weight-bold" *ngIf="!nameSearch">Manage library</h2>
-<!--            <div class="form-group">-->
-<!--              <input type="text" class="form-control form-control-lg" (keyup)="applyFilter($event)"-->
-<!--                     placeholder="Search by name..." >-->
-<!--            </div>-->
-
+            <input #search id="search" type="text" class="form-control form-control-lg" placeholder="Search by name...">
+            <br/>
             <div cdkDropList [id]="'cdk-drop-list-1'"
                  [cdkDropListData]="actionsAsCompActionsFiltered"
                  class="action-list" (cdkDropListDropped)="drop($event)">
-
-              <input #search id="search" type="text" class="form-control form-control-lg" placeholder="Search by name...">
 
               <div class="action-box"
                    [class]="item.action.type === 'COMPOUND' ? 'border border-success' : ''"

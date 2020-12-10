@@ -6,6 +6,7 @@ import {AuthenticationService} from "../../services/auth/authentication.service"
 import {UserListModel} from "../../../models/UserListModel";
 import {ResetPasswordService} from "../../services/reset-pass/reset-password.service";
 import {MatSelectChange} from "@angular/material/select";
+import {state, style, trigger} from "@angular/animations";
 
 interface Role {
   role: string;
@@ -16,7 +17,18 @@ declare var $: any;
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.scss']
+  styleUrls: ['./create-user.component.scss'],
+  animations: [
+    trigger('invalidForm', [
+      state('invalid', style({
+        animation: 'shake 0.82s cubic-bezier(.36,.07,.19,.97) both',
+        transform: 'translate3d(0, 0, 0)',
+        perspective: '1000px',
+        border: '2px solid #dc3545'
+      })),
+      state('', style({}))
+    ])
+  ],
 })
 export class CreateUserComponent implements OnInit {
 
