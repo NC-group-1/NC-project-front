@@ -9,5 +9,5 @@ export class ScenarioModel{
   description: string;
   user? : UserDataModel;
   project? : ProjectModel;
-  action_compound_id?: number[];
+  listActionCompoundId?: number[];
 }

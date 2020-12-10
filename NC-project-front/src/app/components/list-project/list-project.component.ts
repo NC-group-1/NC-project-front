@@ -7,6 +7,7 @@ import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
 import {ActivatedRoute, Router} from "@angular/router";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {MatSort} from "@angular/material/sort";
+import {UserDataModel} from "../../../models/UserDataModel";
 
 declare var $: any;
 
@@ -15,7 +16,7 @@ declare var $: any;
   templateUrl: './list-project.component.html',
   styleUrls: ['./list-project.component.scss']
 })
-export class ListProjectComponent implements OnInit{
+export class ListProjectComponent implements OnInit {
   selectedProject: string;
   displayedColumns: string[] = ['project_id', 'name', 'link', 'date', 'role', 'archived', 'editBtn'];
   responseProject?: ProjectResponseModel;
@@ -37,6 +38,9 @@ export class ListProjectComponent implements OnInit{
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder) {
+  }
+
+  ngOnInit(): void {
     this.projectForm = this.formBuilder.group({
       orderBy: new FormControl('name'),
       order: new FormControl('ASC')
@@ -45,9 +49,6 @@ export class ListProjectComponent implements OnInit{
     this.selectedProject = '';
     this.listProjects = [];
     this.dataSource = new MatTableDataSource();
-  }
-
-  ngOnInit(): void {
     this.reloadProjects();
   }
 
@@ -93,7 +94,7 @@ export class ListProjectComponent implements OnInit{
   change(index: number) {
     this.listProjects[index].edit = !this.listProjects[index].edit;
 
-    if(!this.listProjects[index].edit) {
+    if (!this.listProjects[index].edit) {
       this.httpClientService.updateProject(this.listProjects[index])
         .subscribe(
           response => console.log(response),

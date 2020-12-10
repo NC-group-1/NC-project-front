@@ -166,12 +166,12 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           name: this.scenarioForm.value.name,
           description: this.scenarioForm.value.description,
           user: {
-            userId: this.userId
+            id: this.userId
           },
           project: {
             id: this.projectId
           },
-          action_compound_id: actions_id
+          listActionCompoundId: actions_id
         }
       ).subscribe(() => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
     } else if (!this.emptyInvalid && this.scenarioForm.valid) {
@@ -185,12 +185,12 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           name: this.scenarioForm.value.name,
           description: this.scenarioForm.value.description,
           user: {
-            userId: this.userId
+            id: this.userId
           },
           project: {
             id: this.projectId
           },
-          action_compound_id: actions_id
+          listActionCompoundId: actions_id
         }).subscribe(() => {
             this.router.navigate(['testScenarios'], {queryParams: {created: true}})
       });

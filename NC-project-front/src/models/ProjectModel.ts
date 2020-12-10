@@ -6,7 +6,6 @@ export class ProjectModel{
   link?: string;
   date?: Date;
   role?: string;
-  // user_id?: number;
   user?: UserDataModel;
   archived?: boolean;
   edit?: boolean;

@@ -56,11 +56,11 @@ export class CreateProjectComponent implements OnInit {
       this.httpClientService.postProject({
         name: this.form.value.name,
         link: this.form.value.link,
-        // user_id: this.userId,
         user: {
-          userId: this.userId
+          id: this.userId
         },
-      }).subscribe(() => this.router.navigate(['listProject'], {queryParams: {created: true}}));
+      }).subscribe(() => this.router.navigate(['listProject'],
+        {queryParams: {created: true}}));
     } else this.isError = true;
   }
 

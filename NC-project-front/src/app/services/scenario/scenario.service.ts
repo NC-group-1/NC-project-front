@@ -27,7 +27,7 @@ export class ScenarioService {
                        order: string,
                        projectId: string): Observable<PageModel<ScenarioModel>> {
     return this.http.get<PageModel<ScenarioModel>>(
-      apiPath + 'api/test-scenario/list/' + (!projectId ? '0' : projectId)
+      apiPath + 'api/ncp/test-scenario/list/' + (!projectId ? '0' : projectId)
       + '?pageSize=' + (!pageSize ? '' : pageSize)
       + '&pageIndex=' + (!pageIndex ? '' : pageIndex + 1)
       + '&filter=' + (!filter ? '' : filter)
@@ -43,14 +43,14 @@ export class ScenarioService {
   }
 
   createTestScenario(scenario: ScenarioModel): Observable<any> {
-    return this.http.post(apiPath + 'api/test-scenario', scenario);
+    return this.http.post(apiPath + 'api/ncp/test-scenario', scenario);
   }
 
   updateScenario(testScenario: ScenarioModel): Observable<any> {
-    return this.http.put(apiPath + 'api/test-scenario', testScenario);
+    return this.http.put(apiPath + 'api/ncp/test-scenario', testScenario);
   }
 
   deleteScenario(testScenarioId: number): Observable<any> {
-    return this.http.delete(apiPath + 'api/test-scenario' + testScenarioId);
+    return this.http.delete(apiPath + 'api/ncp/test-scenario' + testScenarioId);
   }
 }
