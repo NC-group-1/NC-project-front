@@ -25,6 +25,9 @@ import {CreateScenarioComponent} from "./components/create-scenario/create-scena
 import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
 import {TestCaseComponent} from './components/test-case/test-case.component';
 import {TestScenarioResolverService} from './services/scenario/test-scenario-resolver.service';
+import {ListDataSetComponent} from './components/data-set/list-data-set/list-data-set.component';
+import {DataSetDetailsComponent} from "./components/data-set/data-set-details/data-set-details.component";
+import {DataSetResolverService} from "./services/data-set/data-set-resolver.service";
 
 
 const routes: Routes = [
@@ -165,6 +168,20 @@ const routes: Routes = [
   {
     path: 'manageAction',
     component: ActionComponent
+  },
+  {
+    path: 'dataSet',
+    children: [
+      {
+        path: 'list',
+        component: ListDataSetComponent
+      },
+      {
+        path: ':id',
+        component: DataSetDetailsComponent,
+        resolve: {dataSet: DataSetResolverService}
+      }
+    ]
   },
   {
     path: '**',

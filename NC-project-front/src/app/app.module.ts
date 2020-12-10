@@ -31,7 +31,6 @@ import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/mater
 import {MatInputModule} from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -39,8 +38,10 @@ import {MatTableModule} from '@angular/material/table';
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
 import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {CdkDragDrop} from "@angular/cdk/drag-drop/drag-events";
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
+import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
+import {MatPaginatorModule} from "@angular/material/paginator";
 
 @NgModule({
   declarations: [
@@ -64,7 +65,9 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
     ListUsersComponent,
     TestCaseComponent,
     TestScenariosComponent,
-    CreateScenarioComponent
+    CreateScenarioComponent,
+    ListDataSetComponent,
+    DataSetDetailsComponent
   ],
   imports: [
     BrowserModule,
