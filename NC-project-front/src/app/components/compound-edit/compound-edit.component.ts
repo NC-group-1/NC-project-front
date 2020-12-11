@@ -9,6 +9,7 @@ import {PageEvent} from '@angular/material/paginator';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CompoundService} from '../../services/compound/compound.service';
 import {state, style, trigger} from '@angular/animations';
+import {Observable} from 'rxjs';
 
 declare var $: any;
 
@@ -41,6 +42,7 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
   compoundForm: FormGroup;
   isError = false;
   selectedAction: ActionOfCompound;
+  selectedCompoundActions: ActionOfCompound[];
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
@@ -84,7 +86,6 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
   }
 
   drop(event: CdkDragDrop<any[]>): void {
-    console.log(event);
     if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer === event.container) {
       moveItemInArray(this.compoundActions, event.previousIndex, event.currentIndex);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer === event.container) {
@@ -93,22 +94,30 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
       this.compoundActions.splice(event.previousIndex, 1);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer !== event.container) {
       const dataAct = event.previousContainer.data[event.previousIndex];
-      if (dataAct.action.type === 'COMPOUND') {
+      if (dataAct.action.type === 'COMPOUND'){
         this.compService.getCompoundById(dataAct.action.id).subscribe(value => {
-          this.compoundActions.splice(event.currentIndex, 0, ...value.actions.sort((a, b) => a.orderNum - b.orderNum));
+          dataAct.compoundActions = value.actions.sort((a, b) => a.orderNum - b.orderNum);
+          this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
           this.adjustOrder(this.compoundActions);
         });
-      } else {
+      }else {
         this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
+        this.adjustOrder(this.compoundActions);
       }
     }
-    this.adjustOrder(this.compoundActions);
-    console.log(this.compoundActions);
+  }
+
+  getCompoundActions(action: Action): Observable<CompoundModel> {
+    return this.compService.getCompoundById(action.id);
   }
 
   submit(): void {
     this.emptyInvalid = this.compoundActions.length === 0;
     if (this.creating && !this.emptyInvalid && this.compoundForm.valid) {
+      this.compoundActions.map(
+        (value, index, array) => value.action.type === 'COMPOUND'
+          ? this.compoundActions.splice(index, 1, ...value.compoundActions) : value);
+      this.adjustOrder(this.compoundActions);
       this.compService.createCompound(
         {
           name: this.compoundForm.value.name,
@@ -116,31 +125,32 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
           actions: this.compoundActions
         }
       ).subscribe(value => this.router.navigate(['compounds'], {queryParams: {created: true}}));
-    } else if (!this.emptyInvalid && this.compoundForm.valid) {
-      this.compService.updateCompound(
-        {
-          id: this.compound.id,
-          name: this.compoundForm.value.name,
-          description: this.compoundForm.value.description,
-          type: 'COMPOUND'
-        }).subscribe(value => {
-        this.compService.changeActions(this.compound.id, this.compoundActions).subscribe(
-          value1 => {
-            this.router.navigate(['cus'], {queryParams: {created: true}});
-          }, error => {
-          }
-        );
-      });
-    } else {
+    }
+      // else if (!this.emptyInvalid && this.compoundForm.valid) {
+      //   this.compService.updateCompound(
+      //     {
+      //       id: this.compound.id,
+      //       name: this.compoundForm.value.name,
+      //       description: this.compoundForm.value.description,
+      //       type: 'COMPOUND'
+      //     }).subscribe(value => {
+      //     this.compService.changeActions(this.compound.id, this.compoundActions).subscribe(
+      //       value1 => {
+      //         this.router.navigate(['compounds'], {queryParams: {created: true}});
+      //       }, error => {
+      //       }
+      //     );
+      //   });
+    // }
+    else {
       this.isError = true;
     }
   }
-
   delete(): void {
-    this.compService.deleteCompound(this.compound.id).subscribe();
-    this.router.navigate(['compounds']);
+    this.compService.deleteCompound(this.compound.id).subscribe(value => {
+      this.router.navigate(['compounds']);
+    });
   }
-
 
   pageParamsChange(event: PageEvent): void {
     this.router.navigate([], {
@@ -171,11 +181,23 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
 
   showActionDetails(action: ActionOfCompound): void {
     this.selectedAction = action;
+    if (action.action.type === 'COMPOUND') {
+      this.getCompoundActions(action.action).subscribe(value => {
+        this.selectedCompoundActions = value.actions.sort((a, b) => a.orderNum - b.orderNum);
+      });
+    }else {
+      this.selectedCompoundActions = [];
+    }
   }
 
   navToCompound(action: Action): void {
     if (action.type === 'COMPOUND') {
       this.router.navigate(['compounds', 'edit', action.id]);
     }
+  }
+
+  changeCompoundActionKey(event: any, action: ActionOfCompound, id: number) {
+    this.compoundActions.find(compound => compound.action.id === id).compoundActions
+      .find(cAction => action.orderNum === cAction.orderNum).key.key = event;
   }
 }

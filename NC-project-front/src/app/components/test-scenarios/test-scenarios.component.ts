@@ -5,6 +5,8 @@ import {PageEvent} from '@angular/material/paginator';
 import {ActivatedRoute, Router} from '@angular/router';
 import {PageModel} from '../../../models/PageModel';
 import {ScenarioModel} from '../../../models/TestScenario';
+import {ScenarioService} from '../../services/scenario/scenario.service';
+declare var $: any;
 
 @Component({
   selector: 'app-test-case',
@@ -14,42 +16,53 @@ import {ScenarioModel} from '../../../models/TestScenario';
 export class TestScenariosComponent implements OnInit {
 
   currentPage: number;
-  selectedScenario: {
-    active: any;
-    test_scenario_id: number, name: string, description: string, creatorName: string };
+  selectedScenario: { testScenarioId: number, name: string, description: string, creatorName: string, active: boolean};
   size: number;
   dataSource: MatTableDataSource<any>;
   searchColumns = {columns:  ['name', 'creatorName', 'description'], selected: ''};
   sort: MatSort;
+  length: number;
+  testScenarios: ScenarioModel[];
+  created: boolean;
   testScenariosPage: PageModel<any>;
   // testScenarios = [
   //   {id: 1, name: 'Name 1', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true},
   //   {id: 2, name: 'Name 2', user: {id: 13, email: 'clayn130@gmail.com'}, description: 'Description 1', active: false},
   //   {id: 3, name: 'Name 3', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: false},
   //   {id: 4, name: 'Name 4', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true}];
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private scService: ScenarioService) {
   }
 
   ngOnInit(): void {
-    this.activatedRoute.params.subscribe(value => {
-      this.testScenariosPage = this.activatedRoute.snapshot.data.testScenarios;
-      console.log(this.testScenariosPage);
-      this.currentPage = value.page;
-      this.dataSource = new MatTableDataSource<any>(this.testScenariosPage.list);
-    });
     this.activatedRoute.data.subscribe(value => {
-      this.testScenariosPage = this.activatedRoute.snapshot.data.testScenarios;
-      this.dataSource = new MatTableDataSource<any>(this.testScenariosPage.list);
+      this.testScenarios = this.activatedRoute.snapshot.data.testScenarios.list;
+      this.length = this.activatedRoute.snapshot.data.testScenarios.size;
+      this.dataSource = new MatTableDataSource<any>(this.testScenarios);
     });
     this.activatedRoute.queryParams.subscribe(value => {
+      this.currentPage = !value.page ? 0 : value.page;
       this.size = !value.size ? 10 : value.size;
     });
     this.dataSource.sort = this.sort;
   }
 
+  deleteScenario(){
+    const testScenarioId = this.selectedScenario.testScenarioId;
+    this.scService.deleteScenario(testScenarioId).subscribe(value => {
+      console.log(this.selectedScenario.testScenarioId);
+      const delEl = this.testScenarios.find(sc => sc.testScenarioId === testScenarioId);
+      console.log(delEl);
+      this.testScenarios.splice(this.testScenarios.indexOf(delEl), 1);
+      console.log(this.testScenarios);
+      this.selectedScenario = null;
+      this.length -= 1;
+      this.dataSource = new MatTableDataSource<any>(this.testScenarios);
+    });
+  }
+
   pageParamsChange(event: PageEvent): void {
-    this.router.navigate(['testScenarios', event.pageIndex], {
-      queryParams: {size: event.pageSize}, queryParamsHandling: 'merge'});
+    this.router.navigate([], {relativeTo: this.activatedRoute,
+      queryParams: {size: event.pageSize, page: event.pageIndex}, queryParamsHandling: 'merge'});
   }
 
   clearQuery(): void{
@@ -68,5 +81,9 @@ export class TestScenariosComponent implements OnInit {
   sortBy(event: any): void {
     this.router.navigate([], {relativeTo: this.activatedRoute,
       queryParams: {orderBy: event.active, direction: event.direction}, queryParamsHandling: 'merge'});
+  }
+
+  closeAlert() {
+    $('.alert').alert('close');
   }
 }

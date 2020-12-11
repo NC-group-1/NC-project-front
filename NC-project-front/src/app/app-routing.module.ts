@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 import {CreateUserComponent} from './components/create-user/create-user.component';
 import {ListUsersComponent} from './components/list-users/list-users.component';
 import {MainPageComponent} from './components/main-page/main-page.component';
@@ -24,10 +24,13 @@ import {ActionPageResolverService} from './services/action/action-page-resolver.
 import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
 import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
 import {TestCaseComponent} from './components/test-case/test-case.component';
+import {TestScenarioListResolverService} from './services/scenario/test-scenario-list-resolver.service';
 import {TestScenarioResolverService} from './services/scenario/test-scenario-resolver.service';
 import {ListDataSetComponent} from './components/data-set/list-data-set/list-data-set.component';
-import {DataSetDetailsComponent} from "./components/data-set/data-set-details/data-set-details.component";
-import {DataSetResolverService} from "./services/data-set/data-set-resolver.service";
+import {DataSetDetailsComponent} from './components/data-set/data-set-details/data-set-details.component';
+import {DataSetResolverService} from './services/data-set/data-set-resolver.service';
+import {DataSetListResolverServiceService} from './services/data-set/data-set-list-resolver-service.service';
+
 
 
 const routes: Routes = [
@@ -129,9 +132,9 @@ const routes: Routes = [
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       },
       {
-        path: ':page',
+        path: ':projectId',
         component: TestScenariosComponent,
-        resolve: {testScenarios: TestScenarioResolverService},
+        resolve: {testScenarios: TestScenarioListResolverService},
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       }
     ]
@@ -142,6 +145,8 @@ const routes: Routes = [
       {
         path: 'new/:testScenarioId',
         component: TestCaseComponent,
+        resolve: {testScenario: TestScenarioResolverService, dataSets: DataSetListResolverServiceService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       },
       {
         path: ':testCaseId',
@@ -187,9 +192,11 @@ const routes: Routes = [
     path: '**',
     component: PageNotFoundComponent
   }
-  ];
+];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

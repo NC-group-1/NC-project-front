@@ -87,6 +87,6 @@ body {
   padding: 20px;
 }
 .pointer{
-  cursor: pointer
+  cursor: pointer !important;
 }
 
