@@ -10,4 +10,5 @@ export class ScenarioModel{
   user? : UserDataModel;
   project? : ProjectModel;
   listActionCompoundId?: number[];
+  actions: ActionOfCompound[];
 }

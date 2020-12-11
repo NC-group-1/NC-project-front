@@ -21,7 +21,7 @@ import {CompoundEditComponent} from './components/compound-edit/compound-edit.co
 import {CompoundListResolverService} from './services/compound/compound-list-resolver.service';
 import {CompoundResolverService} from './services/compound/compound-resolver.service';
 import {ActionPageResolverService} from './services/action/action-page-resolver.service';
-import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
+import {CreateScenarioComponent} from './components/create-scenario/create-scenario.component';
 import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
 import {TestCaseComponent} from './components/test-case/test-case.component';
 import {TestScenarioListResolverService} from './services/scenario/test-scenario-list-resolver.service';
@@ -126,7 +126,7 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: 'new',
+        path: 'new/:projectId',
         component: CreateScenarioComponent,
         resolve: {actionPage: ActionPageResolverService},
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'

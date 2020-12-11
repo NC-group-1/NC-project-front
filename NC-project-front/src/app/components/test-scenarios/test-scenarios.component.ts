@@ -24,13 +24,15 @@ export class TestScenariosComponent implements OnInit {
   length: number;
   testScenarios: ScenarioModel[];
   created: boolean;
+  projectId: any;
   testScenariosPage: PageModel<any>;
   // testScenarios = [
   //   {id: 1, name: 'Name 1', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true},
   //   {id: 2, name: 'Name 2', user: {id: 13, email: 'clayn130@gmail.com'}, description: 'Description 1', active: false},
   //   {id: 3, name: 'Name 3', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: false},
   //   {id: 4, name: 'Name 4', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true}];
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private scService: ScenarioService) {
+  constructor(private router: Router, public activatedRoute: ActivatedRoute, private scService: ScenarioService) {
+
   }
 
   ngOnInit(): void {

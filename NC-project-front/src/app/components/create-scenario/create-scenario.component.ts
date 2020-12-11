@@ -75,9 +75,9 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     this.activatedRoute.queryParams.subscribe(value => {
       this.size = !value.actionSize ? 10 : value.actionSize;
       this.page = !value.actionPage ? 0 : value.actionPage;
-      this.projectId = !value.projectId ? 0 : value.projectId;
     });
     this.activatedRoute.params.subscribe(() => {
+      this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'),10);
       this.compound = this.activatedRoute.snapshot.data.compound;
       if (!!this.compound) {
         this.compoundActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
@@ -171,7 +171,8 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           project: {
             projectId: this.projectId
           },
-          listActionCompoundId: actions_id
+          listActionCompoundId: actions_id,
+          actions: this.compoundActions
         }
       ).subscribe(() => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
     } else if (!this.emptyInvalid && this.scenarioForm.valid) {
@@ -181,7 +182,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       );
       this.scenarioService.updateScenario(
         {
-          id: this.scenario.id,
+          testScenarioId: this.scenario.testScenarioId,
           name: this.scenarioForm.value.name,
           description: this.scenarioForm.value.description,
           user: {
@@ -190,7 +191,8 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           project: {
             projectId: this.projectId
           },
-          listActionCompoundId: actions_id
+          listActionCompoundId: actions_id,
+          actions: this.compoundActions
         }).subscribe(() => {
             this.router.navigate(['testScenarios'], {queryParams: {created: true}})
       });
@@ -200,7 +202,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   delete(): void {
-    this.scenarioService.deleteScenario(this.scenario.id).subscribe();
+    this.scenarioService.deleteScenario(this.scenario.testScenarioId).subscribe();
     this.router.navigate(['testScenarios']);
   }
 
