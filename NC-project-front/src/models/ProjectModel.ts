@@ -1,7 +1,7 @@
 import {UserDataModel} from "./UserDataModel";
 
 export class ProjectModel{
-  id?: number;
+  projectId?: number;
   name?: string;
   link?: string;
   date?: Date;

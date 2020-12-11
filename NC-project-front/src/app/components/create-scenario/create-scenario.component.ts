@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CompoundModel} from '../../../models/CompoundModel';
 import {ActionPage} from '../../../models/action-page';
@@ -75,7 +75,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     this.activatedRoute.queryParams.subscribe(value => {
       this.size = !value.actionSize ? 10 : value.actionSize;
       this.page = !value.actionPage ? 0 : value.actionPage;
-      //this.projectId = !value.projectId ? 0 : value.projectId;
+      this.projectId = !value.projectId ? 0 : value.projectId;
     });
     this.activatedRoute.params.subscribe(() => {
       this.compound = this.activatedRoute.snapshot.data.compound;
@@ -169,7 +169,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
             id: this.userId
           },
           project: {
-            id: this.projectId
+            projectId: this.projectId
           },
           listActionCompoundId: actions_id
         }
@@ -188,7 +188,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
             id: this.userId
           },
           project: {
-            id: this.projectId
+            projectId: this.projectId
           },
           listActionCompoundId: actions_id
         }).subscribe(() => {
