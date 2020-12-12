@@ -9,7 +9,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {MatSort} from '@angular/material/sort';
-import {AuthenticationService} from "../../../services/auth/authentication.service";
+import {AuthenticationService} from '../../../services/auth/authentication.service';
 
 @Component({
   selector: 'app-list-data-set',
@@ -17,6 +17,8 @@ import {AuthenticationService} from "../../../services/auth/authentication.servi
   styleUrls: ['./list-data-set.component.css']
 })
 export class ListDataSetComponent implements OnInit {
+  errorMessage = '';
+  okMessage = '';
   dataSource = new MatTableDataSource<DataSetGeneralInfoDto>();
   displayedColumns: string[] = ['select', 'name', 'role', 'username',
     'surname', 'details', 'edit'];
@@ -65,9 +67,10 @@ export class ListDataSetComponent implements OnInit {
       .subscribe( (data: DataSetGeneralInfoDtoPage) => {
           this.dataSource.data = data.list;
           this.length = data.size;
-        },
-        error => console.log(error)
-      );
+        }, (error: HttpErrorResponse) => {
+          console.log(error);
+          this.errorMessage = 'Can not load data sets';
+        });
   }
 
   onPaginationChange(pageEvent: PageEvent): void {
@@ -114,8 +117,10 @@ export class ListDataSetComponent implements OnInit {
         this.dataSetService.deleteDataSet(value.id).subscribe((result) => {
           this.reloadDataSets();
           console.log(result);
+          this.okMessage = 'Data set deleted';
         }, (error: HttpErrorResponse) => {
           console.log(error);
+          this.errorMessage = 'Can not delete data set';
         });
         }
       );
@@ -151,10 +156,12 @@ export class ListDataSetComponent implements OnInit {
 
   private saveCreatedDataSet(): void{
     this.dataSetService.createDataSet(this.manageDataSetForm.value).subscribe((result) => {
-      this.reloadDataSets();
+      // this.reloadDataSets();
+      this.openDetails(result);
       console.log(result);
     }, (error: HttpErrorResponse) => {
       console.log(error);
+      this.errorMessage = 'Can not create data set';
     });
   }
 
@@ -162,8 +169,10 @@ export class ListDataSetComponent implements OnInit {
     this.dataSetService.updateDataSet(this.manageDataSetForm.value).subscribe((result) => {
       this.reloadDataSets();
       console.log(result);
+      this.okMessage = 'Dataset edited';
     }, (error: HttpErrorResponse) => {
       console.log(error);
+      this.errorMessage = 'Can not delete data set';
     });
   }
 
@@ -180,5 +189,13 @@ export class ListDataSetComponent implements OnInit {
 
   openDetails(dataSet: DataSetGeneralInfoDto): void {
     this.router.navigate(['dataSet/' + dataSet.id]);
+  }
+
+  closeErrorAlert(): void {
+    this.errorMessage = '';
+  }
+
+  closeOkAlert(): void {
+    this.okMessage = '';
   }
 }
