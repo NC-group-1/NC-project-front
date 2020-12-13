@@ -40,7 +40,9 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
 import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {WebSocketService} from './services/webSocket/web-socket.service';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -69,34 +71,35 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     ListDataSetComponent,
     DataSetDetailsComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    FormsModule,
-    MatPaginatorModule,
-    MatSortModule,
-    DragDropModule,
-    MatTableModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTooltipModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatExpansionModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        FormsModule,
+        MatPaginatorModule,
+        MatSortModule,
+        DragDropModule,
+        MatTableModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatExpansionModule,
+        MatProgressBarModule
+    ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     // useValue: { appearance: 'fill' },
     useClass: AuthorizationInterceptor,
     multi: true,
-  }],
+  }, WebSocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

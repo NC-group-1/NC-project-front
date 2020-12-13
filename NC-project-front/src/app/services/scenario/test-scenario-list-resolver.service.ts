@@ -16,10 +16,10 @@ export class TestScenarioListResolverService implements Resolve<PageModel<Scenar
     | Promise<PageModel<ScenarioModel>> | PageModel<ScenarioModel> {
     return this.tsService.getPaginatedScenario(
       route.queryParamMap.get('size'),
-      route.paramMap.get('page'),
+      route.queryParamMap.get('page'),
       route.queryParamMap.get('searchValue'),
       route.queryParamMap.get('orderBy'),
       route.queryParamMap.get('direction'),
-      route.queryParamMap.get(''));
+      route.paramMap.get('projectId'));
   }
 }

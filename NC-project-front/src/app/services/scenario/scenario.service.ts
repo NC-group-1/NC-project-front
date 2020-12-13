@@ -22,13 +22,13 @@ export class ScenarioService {
                        order: string,
                        projectId: string): Observable<PageModel<ScenarioModel>> {
     return this.http.get<PageModel<ScenarioModel>>(
-      apiPath + 'api/test-scenario/list'
+      apiPath + 'api/ncp/test-scenario/list/' + projectId
       + '?pageSize=' + (!pageSize ? '' : pageSize)
       + '&pageIndex=' + (!pageIndex ? '' : pageIndex)
       + '&filter=' + (!filter ? '' : filter)
       + '&orderBy=' + (!orderBy ? '' : orderBy)
       + '&order=' + (!order ? '' : order)
-      + '&projectId=' + (!projectId ? '0' : projectId))
+      )
       .pipe(tap(() => {
       }, e => {
         if (e.status) {
@@ -38,12 +38,15 @@ export class ScenarioService {
   }
 
   getTestScenarioById(scenarioId): Observable<ScenarioModel>{
-    return this.http.get<ScenarioModel>(apiPath + 'api/test-scenario/' + scenarioId).pipe(tap(() => {
+    return this.http.get<ScenarioModel>(apiPath + 'api/ncp/test-scenario/' + scenarioId).pipe(tap(() => {
     }, e => {
       if (e.status) {
         this.router.navigate(['404']);
       }
     }));
+  }
+  deleteScenario(testScenarioId): Observable<any>{
+    return this.http.delete(apiPath + 'api/ncp/test-scenario/' + testScenarioId);
   }
 
 }

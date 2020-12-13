@@ -2,7 +2,6 @@ import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MatTableDataSource} from '@angular/material/table';
-import {testActions, testDatasets} from './testData';
 import {flatten} from '@angular/compiler';
 import {MatSelectChange} from '@angular/material/select';
 import {ActionOfCompound} from '../../../models/ActionOfCompound';
@@ -163,7 +162,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       actions: this.actions,
       creatorId: parseInt(this.auth.getId(), 10),
       role: this.auth.getRole(),
-      test_scenario_id: parseInt(this.activatedRoute.snapshot.paramMap.get('testScenarioId'), 10)
-    }).subscribe();
+      testScenarioId: parseInt(this.activatedRoute.snapshot.paramMap.get('testScenarioId'), 10)
+    }).subscribe(value => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
   }
 }

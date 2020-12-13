@@ -126,7 +126,7 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: ':page',
+        path: ':projectId',
         component: TestScenariosComponent,
         resolve: {testScenarios: TestScenarioListResolverService},
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
