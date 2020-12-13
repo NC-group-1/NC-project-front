@@ -33,24 +33,6 @@
         </div>
       </div>
       <table (matSortChange)="sortData()" [dataSource]="dataSource" mat-table matSort>
-        <ng-container matColumnDef="select">
-          <th *matHeaderCellDef mat-header-cell>
-            <mat-checkbox (change)="$event ? masterToggle() : null"
-                          [aria-label]="checkboxLabel()"
-                          [checked]="selection.hasValue() && isAllSelected()"
-                          [indeterminate]="selection.hasValue() && !isAllSelected()"
-                          class="w3-margin-left">
-            </mat-checkbox>
-          </th>
-          <td *matCellDef="let row" mat-cell>
-            <mat-checkbox (change)="$event ? selection.toggle(row) : null"
-                          (click)="$event.stopPropagation()"
-                          [aria-label]="checkboxLabel(row)"
-                          [checked]="selection.isSelected(row)"
-                          class="w3-margin-left">
-            </mat-checkbox>
-          </td>
-        </ng-container>
         <ng-container matColumnDef="name">
           <th *matHeaderCellDef mat-header-cell mat-sort-header>
             <h4>Dataset name</h4>
@@ -99,24 +81,29 @@
             </div>
           </td>
         </ng-container>
+        <ng-container matColumnDef="delete">
+          <th *matHeaderCellDef mat-header-cell>
+            <h4>Delete</h4>
+          </th>
+          <td *matCellDef="let dataSet" mat-cell>
+            <div class="example-flex-container">
+              <button (click)="deleteDataSet(dataSet)" aria-label="Icon button" mat-icon-button>
+                <mat-icon>delete</mat-icon>
+              </button>
+            </div>
+          </td>
+        </ng-container>
         <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
         <tr *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description" mat-row></tr>
         <tr *matNoDataRow class="mat-row">
           <td class="mat-cell" colspan="7">No data matching the filter "{{dataSetTableForm.value.filter}}"</td>
         </tr>
       </table>
-      <div class="row">
-        <div class="col-md-3">
-          <button (click)="deleteSelected()" class="btn btn-danger btn-lg btn-block">Delete selected</button>
-        </div>
-        <div class="col-md-9">
-          <mat-paginator #paginator (page)="onPaginationChange($event)"
-                         [length]="length"
-                         [pageSizeOptions]="pageSizeOptions"
-                         [pageSize]="pageSize" showFirstLastButtons>
-          </mat-paginator>
-        </div>
-      </div>
+      <mat-paginator #paginator (page)="onPaginationChange($event)"
+                     [length]="length"
+                     [pageSizeOptions]="pageSizeOptions"
+                     [pageSize]="pageSize" showFirstLastButtons>
+      </mat-paginator>
     </div>
   </form>
 </div>

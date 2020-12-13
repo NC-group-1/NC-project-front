@@ -15,11 +15,13 @@ import {HttpErrorResponse} from '@angular/common/http';
   styleUrls: ['./data-set-details.component.css']
 })
 export class DataSetDetailsComponent implements OnInit {
-
-  displayedColumns: string[] = ['key', 'value'];
+  errorMessage = '';
+  okMessage = '';
+  displayedColumns: string[] = ['key', 'value', 'edit', 'delete'];
   dataSet: DataSetGeneralInfoDto;
   dataSource = new MatTableDataSource<Parameter>();
   creation = false;
+  editing = false;
   parameterForm: FormGroup;
   keys: ParameterKey[];
 
@@ -31,6 +33,7 @@ export class DataSetDetailsComponent implements OnInit {
       this.dataSet = this.activatedRoute.snapshot.data.dataSet;
     });
     this.parameterForm = this.formBuilder.group({
+      id: new FormControl(null),
       key: this.formBuilder.group({
         id: new FormControl(0),
         key: new FormControl('', [this.validateKeyInput(), Validators.required])
@@ -50,8 +53,10 @@ export class DataSetDetailsComponent implements OnInit {
       .subscribe( (data: Parameter[]) => {
           this.dataSource.data = data;
         },
-        error => console.log(error)
-      );
+        (error: HttpErrorResponse) => {
+          console.log(error);
+          this.errorMessage = 'Can not load parameters';
+        });
   }
 
   onKeyInputChange(): void {
@@ -73,7 +78,11 @@ export class DataSetDetailsComponent implements OnInit {
 
   onSubmitButton(): void {
     this.parameterForm.disable();
-    this.saveCreatedParameter();
+    if (this.creation && !this.editing){
+      this.saveCreatedParameter();
+    } else {
+      this.saveEditedParameter();
+    }
     this.parameterForm.enable();
     this.cancelCreation();
   }
@@ -83,24 +92,77 @@ export class DataSetDetailsComponent implements OnInit {
     this.dataSetService.createParameter(this.parameterForm.value).subscribe((result) => {
       this.reloadParameters();
       console.log(result);
+      this.okMessage = 'Parameter created';
     }, (error: HttpErrorResponse) => {
       console.log(error);
+      this.errorMessage = 'Can not create parameter';
+    });
+  }
+
+  private saveEditedParameter(): void {
+    console.log(this.parameterForm.value);
+    this.dataSetService.updateParameter(this.parameterForm.value).subscribe((result) => {
+      this.reloadParameters();
+      console.log(result);
+      this.okMessage = 'Parameter edited';
+    }, (error: HttpErrorResponse) => {
+      console.log(error);
+      this.errorMessage = 'Can not edit parameter';
     });
   }
 
   cancelCreation(): void {
     this.creation = false;
+    this.editing = false;
     this.parameterForm.reset({
       key: {id: 0, key: '' },
       value: '',
-      dataSetId: null
+      dataSetId: null,
+      id: null
     });
     this.reloadKeys();
+    this.parameterForm.get('key.key').enable();
   }
 
   createParameter(): void {
     this.creation = true;
     this.parameterForm.get('dataSetId').setValue(this.dataSet.id);
+  }
+
+  editParameter(parameter: Parameter): void {
+    this.dataSetService.getParameterUsages(parameter.id).subscribe((result) => {
+      if (result === 0) {
+        this.editing = true;
+        this.parameterForm.get('dataSetId').setValue(this.dataSet.id);
+        this.parameterForm.get('value').setValue(parameter.value);
+        this.parameterForm.get('id').setValue(parameter.id);
+        this.parameterForm.get('key.id').setValue(parameter.key.id);
+        this.parameterForm.get('key.key').setValue(parameter.key.key);
+        this.parameterForm.get('key.key').disable();
+      } else {
+        this.errorMessage = 'Can not edit parameter! Parameter assigned to '
+          + result + ' action(s).';
+      }
+    }, (error: HttpErrorResponse) => {
+      console.log(error);
+      this.errorMessage = 'Can not edit parameter';
+    });
+  }
+
+  deleteParameter(parameter: Parameter): void {
+    this.dataSetService.deleteParameter(parameter.id).subscribe((result) => {
+      this.reloadParameters();
+      console.log(result);
+      this.okMessage = 'Parameter deleted';
+    }, (error: HttpErrorResponse) => {
+      console.log(error);
+      if (error.status === 403){
+        this.errorMessage = 'Can not delete parameter! Parameter assigned to '
+          + error.error + ' action(s).';
+      } else {
+        this.errorMessage = 'Can not delete parameter';
+      }
+    });
   }
 
   validateKeyInput(): ValidatorFn {
@@ -116,4 +178,11 @@ export class DataSetDetailsComponent implements OnInit {
     };
   }
 
+  closeErrorAlert(): void {
+    this.errorMessage = '';
+  }
+
+  closeOkAlert(): void {
+    this.okMessage = '';
+  }
 }
