@@ -30,6 +30,7 @@ export class TestScenariosComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(value => {
       this.testScenarios = this.activatedRoute.snapshot.data.testScenarios.list;
+      console.log(this.activatedRoute.snapshot.data.testScenarios);
       this.length = this.activatedRoute.snapshot.data.testScenarios.size;
       this.dataSource = new MatTableDataSource<any>(this.testScenarios);
     });
