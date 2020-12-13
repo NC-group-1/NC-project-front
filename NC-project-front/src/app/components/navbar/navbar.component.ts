@@ -8,6 +8,7 @@ import {WebSocketService} from '../../services/webSocket/web-socket.service';
 import {UserNotificationModel} from '../../../models/UserNotificationModel';
 import {TestCaseService} from '../../services/testCase/test-case.service';
 import {TestCaseProgressModel} from '../../../models/TestCaseProgressModel';
+import {NotificationService} from '../../services/notification/notification.service';
 
 @Component({
   selector: 'app-navbar',
@@ -26,7 +27,8 @@ export class NavbarComponent implements OnInit {
               private profileService: ProfileService,
               private router: Router,
               private webSocketService: WebSocketService,
-              private tcService: TestCaseService) {
+              private tcService: TestCaseService,
+              private nService: NotificationService) {
     this.stompClient = this.webSocketService.connect();
     auth.authSubscribe().subscribe(value => {
       this.loggedIn = value;
@@ -71,7 +73,21 @@ export class NavbarComponent implements OnInit {
     this.auth.logout();
   }
 
-  remove(i: number): void {
-    this.notifications.splice(i, 1);
+  remove(ntf: UserNotificationModel): void {
+    this.nService.delete(this.auth.getId(), ntf.notification.notificationId).subscribe(value => {
+      if (value){
+        this.notifications.splice(this.notifications.indexOf(ntf), 1);
+      }
+    });
+  }
+
+  markAsRead(ntf: UserNotificationModel) {
+    if (!ntf.isRead){
+      this.nService.markRead(this.auth.getId(), ntf.notification.notificationId).subscribe(value => {
+        if (value){
+          ntf.isRead = true;
+        }
+      });
+    }
   }
 }
