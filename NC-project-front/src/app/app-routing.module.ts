@@ -30,6 +30,7 @@ import {ListDataSetComponent} from './components/data-set/list-data-set/list-dat
 import {DataSetDetailsComponent} from './components/data-set/data-set-details/data-set-details.component';
 import {DataSetResolverService} from './services/data-set/data-set-resolver.service';
 import {DataSetListResolverServiceService} from './services/data-set/data-set-list-resolver-service.service';
+import {DetailsComponent} from "./components/details/details.component";
 
 
 
@@ -153,6 +154,10 @@ const routes: Routes = [
         component: TestCaseComponent
       }
     ]
+  },
+  {
+    path: 'details',
+    component: DetailsComponent
   },
   {
     path: 'createUser',

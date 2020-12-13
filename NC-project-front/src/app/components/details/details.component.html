@@ -1,0 +1,125 @@
+<!--<div class="row">-->
+<!--  <div class="col">-->
+    <div class="bg-white shadow-lg p-3">
+
+      <div class="example-container">
+        <h2 class="p-0 header m-3">Details of Test case</h2>
+      </div>
+
+      <div class="row w-100 m-3">
+        <div class="col-8">
+          <div class="panel">
+            <div class="example-container">
+              <p><span class="text-secondary text-shadow-gray mr-2">Name of test case:</span><span
+                class="text-shadow-gray">Test Case</span></p>
+              <p><span class="text-secondary text-shadow-gray mr-2">Status:</span><span class="text-shadow-gray"> in progress</span>
+              </p>
+            </div>
+
+            <p class="text-secondary text-shadow-gray mr-2">Completed:</p>
+            <dd>
+              <div class="progress progress-striped active m-b-sm">
+                <div style="width: 60%;" class="progress-bar"></div>
+              </div>
+              <small class="text-shadow-gray">Test case completed in <strong>60%</strong></small>
+            </dd>
+
+            <br/>
+
+            <p><span class="text-secondary text-shadow-gray mr-2">Started:</span><span class="text-shadow-gray">02/02/2020</span>
+            </p>
+            <p><span class="text-secondary text-shadow-gray mr-2">Duration:</span><span
+              class="text-shadow-gray">4 days</span></p>
+            <p><span class="text-secondary text-shadow-gray mr-2">Finished:</span><span class="text-shadow-gray"></span>
+            </p>
+
+            <div class="btn-toolbar">
+              <button class="btn btn-nc m-3 px-5 py-3" [routerLink]="['testCase/', 'edit',activatedRoute.snapshot.paramMap.get('testCaseId')]"> Change dataset</button>
+              <button class="btn btn-nc m-3 px-5 py-3" routerLink="sendReport"> Send Report</button>
+            </div>
+
+            <div>
+            <table mat-table [dataSource]="dataSource" matSort (matSortChange)="sortBy($event)">
+
+              <ng-container matColumnDef="name">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 30%;"> Name</th>
+                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="dataset">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 30%;">Dataset</th>
+                <td mat-cell *matCellDef="let element"> {{element.dataset}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="result">
+                <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 30%;">Result</th>
+                <td mat-cell *matCellDef="let element"> {{element.result}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="status">
+                <th mat-header-cell  mat-sort-header *matHeaderCellDef style="width: 10%;">Status</th>
+                <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+              </ng-container>
+
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-4">
+          <div class="panel">
+            <p><span class="text-secondary text-shadow-gray mr-2">Name of project:</span><span
+              class="text-shadow-gray">Project</span></p>
+            <p><span class="text-secondary text-shadow-gray mr-2">Link:</span><span
+              class="text-shadow-gray"> Link </span></p>
+
+            <p class="text-secondary text-shadow-gray mr-2"> Watchers: </p>
+
+            <div class="list list-row block">
+              <div class="list-item" data-id="1">
+                <div class="project-people">
+                  <a href="" data-abc="true"><span><img alt="image" class="img-circle"
+                                                        src="https://bootdey.com/img/Content/avatar/avatar1.png"></span><span><a> Sam Kuran</a> </span></a>
+                </div>
+              </div>
+              <br/>
+              <div class="list-item" data-id="1">
+                <div class="project-people">
+                  <a href="" data-abc="true"><span><img alt="image" class="img-circle "
+                                                        src="https://bootdey.com/img/Content/avatar/avatar2.png"></span><span><a> Kinley Adolf</a></span></a>
+                </div>
+              </div>
+              <br/>
+              <div class="list-item" data-id="2">
+                <div class="project-people">
+                  <a href="" data-abc="true"><span><img alt="image" class="img-circle"
+                                                        src="https://bootdey.com/img/Content/avatar/avatar3.png"></span><span><a> Ira Kamutova</a></span></a>
+                </div>
+              </div>
+              <br/>
+              <div class="list-item" data-id="3">
+                <div class="project-people">
+                  <a href="" data-abc="true"><span><img alt="image" class="img-circle"
+                                                        src="https://bootdey.com/img/Content/avatar/avatar4.png"></span><span><a> Stuart Kim</a></span></a>
+                </div>
+              </div>
+              <br/>
+              <div class="list-item" data-id="4">
+                <div class="project-people">
+                  <a href="" data-abc="true"><span><img alt="image" class="img-circle"
+                                                        src="https://bootdey.com/img/Content/avatar/avatar5.png"></span><span><a> Simply Fry</a></span></a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+<!--  </div>-->
+<!--</div>-->

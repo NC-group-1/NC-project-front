@@ -45,14 +45,6 @@ export class ListUsersComponent implements OnInit {
               private httpClientService: HttpClientService,
               private auth: AuthenticationService,
               private formBuilder: FormBuilder) {
-    this.selectedUser = '';
-    this.listUsers = [];
-    this.userForm = this.formBuilder.group({
-      orderBy: new FormControl('name'),
-      order: new FormControl('ASC')
-    });
-    this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
-    this.dataSource = new MatTableDataSource();
     this.activatedRoute.params.subscribe(param => {
       this.user = this.activatedRoute.snapshot.data.user;
       if (!auth.getRole().includes('engineer')){
@@ -62,6 +54,14 @@ export class ListUsersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.selectedUser = '';
+    this.listUsers = [];
+    this.userForm = this.formBuilder.group({
+      orderBy: new FormControl('name'),
+      order: new FormControl('ASC')
+    });
+    this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
+    this.dataSource = new MatTableDataSource();
     this.reloadUsers();
   }
 
@@ -113,11 +113,6 @@ export class ListUsersComponent implements OnInit {
     this.listUsers[index].surname = surname;
   }
 
-  // updateEmail(index: number, email: string) {
-  //   this.listUsers[index].email = email;
-  // }
-
-
   change(index: number) {
     this.listUsers[index].edit = !this.listUsers[index].edit;
 
@@ -146,7 +141,7 @@ export class ListUsersComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.user_id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.userId + 1}`;
   }
 
   onPaginationChange(pageEvent: PageEvent): void {

@@ -18,11 +18,11 @@ export class HttpClientService {
   getPaginatedUsers(pageSize: number, pageIndex: number, filter: string, orderBy: string, order: string): Observable<UserResponseModel> {
     return this.httpClient.get<UserResponseModel>(
       apiPath + 'api/ncp/users/list'
-      + '?pageSize=' + (!pageSize ? '' : pageSize)
-      + '&pageIndex=' + (!pageIndex ? '' : pageIndex)
-      + '&filter=' + (!filter ? '' : filter)
-      + '&orderBy=' + (!orderBy ? '' : orderBy)
-      + '&order=' + (!order ? '' : order))
+      + '?pageSize=' + pageSize
+      + '&pageIndex=' + pageIndex
+      + '&filter=' + filter
+      + '&orderBy=' + orderBy
+      + '&order=' + order)
       .pipe(tap(() => {
       }, e => {
         if (e.status) {
