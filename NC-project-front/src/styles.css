@@ -40,7 +40,7 @@
   color: white;
 }
 .bg-nc-trans{
-  background: radial-gradient( rgba(46,89,112,0.85), rgba(36,79,102,0.9));
+  background: radial-gradient( rgba(46, 89, 112, 0.85), rgba(36, 79, 102, 0.9));
   backdrop-filter: blur(8px);
   color: white;
 }
