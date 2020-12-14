@@ -1,24 +1,22 @@
 <nav class="navbar navbar-expand-lg row navbar-dark p-0 mt-0 mx-5 bg-white shadow-lg">
 
   <div class="col-9 px-0">
-    <div class="w-100 py-2 px-2">
-      <div class="float-left">
+    <div class="w-100 btn-group">
+      <span>
         <div id="navbar">
-          <nav class="navbar navbar-default navbar-static-top" role="navigation">
-            <div class="collapse navbar-collapse nav-nc py-3" id="navbar-collapse-1">
-              <ul class="nav navbar-nav">
+          <nav class="navbar nav-nc border-right" role="navigation">
+            <div class="collapse navbar-collapse nav-link" id="navbar-collapse-1">
+              <ul class="nav">
                 <li class="dropdown">
-                  <div class="w-100">
-                    <a href="#" data-toggle="dropdown">
-                      <span>
-                        <svg width="4em" height="4em" xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-list"
+                  <div>
+                    <a data-toggle="dropdown">
+                        <svg width="4em" height="4em" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                             class="bi bi-list"
                              viewBox="0 0 16 16">
                          <path fill-rule="evenodd"
                                d="M2.5 11.5A.5.5 0 0 1 3 11h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4A.5.5 0 0 1 3 3h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
                         </svg>
-                      </span>
                     </a>
-                    <img src="assets/images/logo.png" class="logo shadowed">
                   </div>
 
                   <ul class="dropdown-menu bg-nc-trans dropdown-shadow min-width-30 px-3 m-0 border-0 py-0">
@@ -26,7 +24,8 @@
                     <li>
                       <div role="button" class="row bg-nc-trans-hover" routerLink="/dashboard">
                         <p class="px-3 col-10 py-3 my-0">
-                          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                               fill="currentColor"
                                xmlns="http://www.w3.org/2000/svg">
                             <path fill-rule="evenodd"
                                   d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-5 0v-3H2v3h2z"/>
@@ -48,7 +47,8 @@
                         <li>
                           <div role="button" class="row bg-nc-trans-hover" routerLink="/createUser">
                             <p class="px-3 col-10 py-3 my-0">
-                              <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                              <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                   fill="currentColor"
                                    xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                               </svg>
@@ -59,7 +59,8 @@
                         <li>
                           <div role="button" class="row bg-nc-trans-hover" routerLink="/listUsers">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -77,15 +78,17 @@
                             d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
                           <path
                             d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
-                          <path fill-rule="evenodd" d="M6 1h6v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8V1z"/>
+                          <path fill-rule="evenodd"
+                                d="M6 1h6v7a.5.5 0 0 1-.757.429L9 7.083 6.757 8.43A.5.5 0 0 1 6 8V1z"/>
                         </svg>
                         MANAGE LIBRARY
                       </p>
                       <ul class="dropdown-menu bg-nc-trans dropdown-shadow min-width-30 px-3 m-0 border-0 py-0">
                         <li>
-                          <div role="button" class="row bg-nc-trans-hover" routerLink="/actions">
+                          <div role="button" class="row bg-nc-trans-hover" routerLink="/manageAction">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -96,7 +99,8 @@
                         <li>
                           <div role="button" class="row bg-nc-trans-hover" routerLink="/compounds">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -121,7 +125,8 @@
                         <li>
                           <div role="button" class="row bg-nc-trans-hover" routerLink="/createProject">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -132,7 +137,8 @@
                         <li>
                           <div role="button" class="row bg-nc-trans-hover" routerLink="/listProject">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -143,7 +149,8 @@
                         <li>
                           <div role="button" class="row bg-nc-trans-hover" routerLink="/testScenarios">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -154,7 +161,8 @@
                         <li>
                           <div role="button" class="row bg-nc-trans-hover" routerLink="/testCase">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -165,7 +173,8 @@
                         <li>
                           <div role="button" class="row bg-nc-trans-hover" routerLink="/testCase">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -176,7 +185,8 @@
                         <li>
                           <div role="button" class="row bg-nc-trans-hover" routerLink="/history">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -197,9 +207,10 @@
                       </p>
                       <ul class="dropdown-menu bg-nc-trans dropdown-shadow min-width-30 px-3 m-0 border-0 py-0">
                         <li>
-                          <div role="button" class="row bg-nc-trans-hover" routerLink="/dataset">
+                          <div role="button" class="row bg-nc-trans-hover" routerLink="/dataSet">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -210,7 +221,8 @@
                         <li>
                           <div role="button" class="row bg-nc-trans-hover" routerLink="/dataset/list">
                           <p class="px-3 col-10 py-3 my-0">
-                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line" fill="currentColor"
+                            <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-bar-chart-line"
+                                 fill="currentColor"
                                  xmlns="http://www.w3.org/2000/svg">
                               <path fill-rule="evenodd" d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
                             </svg>
@@ -226,7 +238,10 @@
             </div>
           </nav>
         </div>
-      </div>
+    </span>
+      <a class="w-100 nav-link nav-nc" href="#" >
+      <img src="assets/images/logo.png" class="logo shadowed">
+      </a>
     </div>
   </div>
 
@@ -324,5 +339,4 @@
       </div>
     </div>
   </div>
-
 </nav>
