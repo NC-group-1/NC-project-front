@@ -9,7 +9,7 @@ import {SelectionModel} from '@angular/cdk/collections';
 import {HttpErrorResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {MatSort} from '@angular/material/sort';
-import {AuthenticationService} from "../../../services/auth/authentication.service";
+import {AuthenticationService} from '../../../services/auth/authentication.service';
 
 @Component({
   selector: 'app-list-data-set',
@@ -17,9 +17,11 @@ import {AuthenticationService} from "../../../services/auth/authentication.servi
   styleUrls: ['./list-data-set.component.css']
 })
 export class ListDataSetComponent implements OnInit {
+  errorMessage = '';
+  okMessage = '';
   dataSource = new MatTableDataSource<DataSetGeneralInfoDto>();
-  displayedColumns: string[] = ['select', 'name', 'role', 'username',
-    'surname', 'details', 'edit'];
+  displayedColumns: string[] = ['name', 'role', 'username',
+    'surname', 'details', 'edit', 'delete'];
   length = 0;
   pageSize = 10;
   pageIndex = 0;
@@ -65,9 +67,10 @@ export class ListDataSetComponent implements OnInit {
       .subscribe( (data: DataSetGeneralInfoDtoPage) => {
           this.dataSource.data = data.list;
           this.length = data.size;
-        },
-        error => console.log(error)
-      );
+        }, (error: HttpErrorResponse) => {
+          console.log(error);
+          this.errorMessage = 'Can not load data sets';
+        });
   }
 
   onPaginationChange(pageEvent: PageEvent): void {
@@ -89,37 +92,20 @@ export class ListDataSetComponent implements OnInit {
     this.reloadDataSets();
   }
 
-  isAllSelected(): boolean {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data?.length;
-    return numSelected === numRows;
-  }
-
-  masterToggle(): void {
-    this.isAllSelected() ?
-      this.selection.clear() :
-      this.dataSource.data?.forEach((row: DataSetGeneralInfoDto) => this.selection.select(row));
-  }
-
-  checkboxLabel(row?: DataSetGeneralInfoDto): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
-    }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
-  }
-
-  deleteSelected() {
-    this.selection.selected
-      .forEach(value => {
-        this.dataSetService.deleteDataSet(value.id).subscribe((result) => {
-          this.reloadDataSets();
-          console.log(result);
-        }, (error: HttpErrorResponse) => {
-          console.log(error);
-        });
-        }
-      );
-    this.selection.clear();
+  deleteDataSet(dataSet: DataSetGeneralInfoDto): void {
+    this.dataSetService.deleteDataSet(dataSet.id).subscribe((result) => {
+      this.reloadDataSets();
+      console.log(result);
+      this.okMessage = 'Data set deleted';
+    }, (error: HttpErrorResponse) => {
+      console.log(error);
+      if (error.status === 403){
+        this.errorMessage = 'Can not delete data set! Parameters in this dataset assigned to '
+          + error.error + ' action(s).';
+      } else {
+        this.errorMessage = 'Can not delete data set';
+      }
+    });
   }
 
   editDataSet(dataSet: DataSetGeneralInfoDto): void {
@@ -151,10 +137,12 @@ export class ListDataSetComponent implements OnInit {
 
   private saveCreatedDataSet(): void{
     this.dataSetService.createDataSet(this.manageDataSetForm.value).subscribe((result) => {
-      this.reloadDataSets();
+      // this.reloadDataSets();
+      this.openDetails(result);
       console.log(result);
     }, (error: HttpErrorResponse) => {
       console.log(error);
+      this.errorMessage = 'Can not create data set';
     });
   }
 
@@ -162,8 +150,10 @@ export class ListDataSetComponent implements OnInit {
     this.dataSetService.updateDataSet(this.manageDataSetForm.value).subscribe((result) => {
       this.reloadDataSets();
       console.log(result);
+      this.okMessage = 'Dataset edited';
     }, (error: HttpErrorResponse) => {
       console.log(error);
+      this.errorMessage = 'Can not edit data set';
     });
   }
 
@@ -180,5 +170,13 @@ export class ListDataSetComponent implements OnInit {
 
   openDetails(dataSet: DataSetGeneralInfoDto): void {
     this.router.navigate(['dataSet/' + dataSet.id]);
+  }
+
+  closeErrorAlert(): void {
+    this.errorMessage = '';
+  }
+
+  closeOkAlert(): void {
+    this.okMessage = '';
   }
 }

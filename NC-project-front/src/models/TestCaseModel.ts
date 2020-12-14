@@ -9,7 +9,7 @@ export class TestCaseModel{
   id?: number;
   creatorId: number;
   starter?: UserDataModel;
-  test_scenario_id?: number;
+  testScenarioId?: number;
   actions?: ActionInstanceModel[];
   name: string;
   role?: string;

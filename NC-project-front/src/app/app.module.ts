@@ -34,7 +34,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
-import {CreateScenarioComponent} from './components/create-scenario/create-scenario.component';
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
 import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -43,6 +42,9 @@ import { ListDataSetComponent } from './components/data-set/list-data-set/list-d
 import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
 import {MatPaginatorModule} from "@angular/material/paginator";
 import { DetailsComponent } from './components/details/details.component';
+import {WebSocketService} from './services/webSocket/web-socket.service';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
 
 @NgModule({
   declarations: [
@@ -91,14 +93,15 @@ import { DetailsComponent } from './components/details/details.component';
     MatRadioModule,
     MatSelectModule,
     MatCheckboxModule,
-    MatExpansionModule
-  ],
+    MatExpansionModule,
+    MatProgressBarModule
+    ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     // useValue: { appearance: 'fill' },
     useClass: AuthorizationInterceptor,
     multi: true,
-  }],
+  }, WebSocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
