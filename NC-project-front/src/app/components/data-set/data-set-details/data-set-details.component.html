@@ -1,28 +1,25 @@
-f<h4 class="header">
+<div *ngIf="errorMessage !== ''" class="alert alert-danger alert-dismissible fade show" role="alert">
+  {{errorMessage}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeErrorAlert()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div *ngIf="okMessage !== ''" class="alert alert-success alert-dismissible fade show" role="alert">
+  {{okMessage}}
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeOkAlert()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<h4 class="header">
   <a [routerLink]="['/dataSet/list']">
     <mat-icon>undo</mat-icon>
     Back to list
   </a>
 </h4>
-<div class="row">
-  <div class="col-md-9">
-    <h4 class="header">
-      {{dataSet.name}}
-    </h4>
-    <p>
-      Description: {{dataSet.description}}
-    </p>
-    <p>
-      Created by: {{dataSet.createdByRole}} {{dataSet.createdByName}} {{dataSet.createdBySurname}}
-    </p>
-  </div>
-  <div class="col-md-3">
-    <button (click)="createParameter()" class="btn btn-primary btn-lg btn-block">Add parameter</button>
-  </div>
-</div>
-<div *ngIf="creation">
+<div *ngIf="editing || creation">
   <div class="mat-elevation-z8">
-    <h4 class="header">Add parameter to dataset</h4>
+    <h4 *ngIf="creation" class="header">Add parameter to dataset</h4>
+    <h4 *ngIf="editing" class="header">Edit parameter of dataset</h4>
     <form [formGroup]="parameterForm" name="parameterForm">
       <div class="mb-3">
         <label>Key for Parameter</label>
@@ -76,7 +73,8 @@ f<h4 class="header">
                   [disabled]="parameterForm.invalid"
                   class="btn btn-primary btn-lg btn-block"
                   type="submit">
-            Add
+            <div *ngIf="editing">Edit</div>
+            <div *ngIf="creation">Add</div>
           </button>
         </div>
         <div class="col-md-4"></div>
@@ -87,25 +85,66 @@ f<h4 class="header">
     </form>
   </div>
 </div>
-<hr>
-<div class="mat-elevation-z8">
-  <table [dataSource]="dataSource" mat-table>
-    <ng-container matColumnDef="key">
-      <th *matHeaderCellDef mat-header-cell>
-        <h4>Key</h4>
-      </th>
-      <td *matCellDef="let parameter" mat-cell> {{parameter.key.key}} </td>
-    </ng-container>
-    <ng-container matColumnDef="value">
-      <th *matHeaderCellDef mat-header-cell>
-        <h4>Value</h4>
-      </th>
-      <td *matCellDef="let parameter" mat-cell> {{parameter.value}} </td>
-    </ng-container>
-    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
-    <tr *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description" mat-row></tr>
-    <tr *matNoDataRow class="mat-row">
-      <td class="mat-cell" colspan="7">This data set is empty</td>
-    </tr>
-  </table>
+<div *ngIf="!editing && !creation">
+  <div class="mat-elevation-z8">
+    <div class="row">
+      <div class="col-md-9">
+        <h4 class="header">
+          {{dataSet.name}}
+        </h4>
+        <p>
+          Description: {{dataSet.description}}
+        </p>
+        <p>
+          Created by: {{dataSet.createdByRole}} {{dataSet.createdByName}} {{dataSet.createdBySurname}}
+        </p>
+      </div>
+      <div class="col-md-3">
+        <button (click)="createParameter()" class="btn btn-primary btn-lg btn-block">Add parameter</button>
+      </div>
+    </div>
+    <table [dataSource]="dataSource" mat-table>
+      <ng-container matColumnDef="key">
+        <th *matHeaderCellDef mat-header-cell>
+          <h4>Key</h4>
+        </th>
+        <td *matCellDef="let parameter" mat-cell> {{parameter.key.key}} </td>
+      </ng-container>
+      <ng-container matColumnDef="value">
+        <th *matHeaderCellDef mat-header-cell>
+          <h4>Value</h4>
+        </th>
+        <td *matCellDef="let parameter" mat-cell> {{parameter.value}} </td>
+      </ng-container>
+      <ng-container matColumnDef="edit">
+        <th *matHeaderCellDef mat-header-cell>
+          <h4>Edit</h4>
+        </th>
+        <td *matCellDef="let parameter" mat-cell>
+          <div class="example-flex-container">
+            <button (click)="editParameter(parameter)" aria-label="Icon button" mat-icon-button>
+              <mat-icon>edit</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="delete">
+        <th *matHeaderCellDef mat-header-cell>
+          <h4>Delete</h4>
+        </th>
+        <td *matCellDef="let parameter" mat-cell>
+          <div>
+            <button (click)="deleteParameter(parameter)" aria-label="Icon button" mat-icon-button>
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description" mat-row></tr>
+      <tr *matNoDataRow class="mat-row">
+        <td class="mat-cell" colspan="7">This data set is empty</td>
+      </tr>
+    </table>
+  </div>
 </div>

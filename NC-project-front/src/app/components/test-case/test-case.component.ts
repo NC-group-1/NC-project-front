@@ -61,7 +61,6 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
           value: null,
           parameterKey: {key: null, id: null}
         }));
-      console.log(this.actions);
       this.dataSource = new MatTableDataSource<any>(this.actions.sort((a, b) => a.orderNum - b.orderNum));
     });
     this.activatedRoute.queryParams.subscribe(value => {
@@ -163,7 +162,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       actions: this.actions,
       creatorId: parseInt(this.auth.getId(), 10),
       role: this.auth.getRole(),
-      test_scenario_id: parseInt(this.activatedRoute.snapshot.paramMap.get('testScenarioId'), 10)
+      testScenarioId: parseInt(this.activatedRoute.snapshot.paramMap.get('testScenarioId'), 10)
     }).subscribe(value => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
   }
 }

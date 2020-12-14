@@ -18,7 +18,7 @@ export class DataSetService {
 
   getPaginatedDataSets(page, size, filter: string, orderBy: string, order: string): Observable<DataSetGeneralInfoDtoPage>{
     return this.http.get<PageModel<DataSetGeneralInfoDto>>(
-      apiPath + 'api/datasets'
+      apiPath + 'api/ncp/datasets'
       + '?page=' + (!page ? '' : page)
       + '&size=' + (!size ? '' : size)
       + '&filter=' + (!filter ? '' : filter)
@@ -28,28 +28,40 @@ export class DataSetService {
   }
 
   getDataSetById(id: number): Observable<DataSetGeneralInfoDto>{
-    return this.http.get<DataSetGeneralInfoDto>(apiPath + 'api/datasets/' + id)
+    return this.http.get<DataSetGeneralInfoDto>(apiPath + 'api/ncp/datasets/' + id)
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 
   updateDataSet(dataSet: DataSetGeneralInfoDto): Observable<any>{
-    return this.http.put(apiPath + 'api/datasets/' + dataSet.id, dataSet);
+    return this.http.put(apiPath + 'api/ncp/datasets/' + dataSet.id, dataSet);
   }
 
   createDataSet(dataSet: DataSetGeneralInfoDto): Observable<any>{
-    return this.http.post(apiPath + 'api/datasets', dataSet);
+    return this.http.post(apiPath + 'api/ncp/datasets', dataSet);
   }
 
   createParameter(parameter: Parameter): Observable<any>{
-    return this.http.post(apiPath + 'api/parameters', parameter);
+    return this.http.post(apiPath + 'api/ncp/parameters', parameter);
+  }
+
+  updateParameter(parameter: Parameter): Observable<any>{
+    return this.http.put(apiPath + 'api/ncp/parameters/' + parameter.id, parameter);
+  }
+
+  deleteParameter(id: number): Observable<any>{
+    return this.http.delete(apiPath + 'api/ncp/parameters/' + id);
+  }
+
+  getParameterUsages(id: number): Observable<any>{
+    return this.http.get(apiPath + 'api/ncp/parameters/' + id + '/usages');
   }
 
   deleteDataSet(id: number): Observable<any>{
-    return this.http.delete(apiPath + 'api/datasets/' + id);
+    return this.http.delete(apiPath + 'api/ncp/datasets/' + id);
   }
 
   getParametersByDataSetId(id: number): Observable<Parameter[]> {
-    return this.http.get<Parameter[]>(apiPath + 'api/datasets/' + id + '/parameters')
+    return this.http.get<Parameter[]>(apiPath + 'api/ncp/datasets/' + id + '/parameters')
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 }

@@ -19,7 +19,6 @@
   border-radius: 50%;
 }
 
-
 .dropdown-submenu {
   position:relative;
 }
@@ -29,4 +28,10 @@
 }
 ul.nav li:hover > ul.dropdown-menu {
   display: block;
+}
+::ng-deep .mat-progress-bar-fill::after {
+  background: #1CEDD4;
+}
+::ng-deep .mat-progress-bar-buffer {
+  background: #3B958A;
 }

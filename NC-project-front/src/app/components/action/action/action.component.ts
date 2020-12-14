@@ -16,8 +16,8 @@ import {MatSort} from '@angular/material/sort';
   styleUrls: ['./action.component.css']
 })
 export class ActionComponent implements OnInit {
-
-  // actions: Action[];
+  errorMessage = '';
+  okMessage = '';
   actionTableDS = new MatTableDataSource<Action>();
   displayedColumns: string[] = ['name', 'key', 'edit'];
   length = 0;
@@ -85,9 +85,10 @@ export class ActionComponent implements OnInit {
       .subscribe( (data: ActionPage) => {
           this.actionTableDS.data = data.list;
           this.length = data.size;
-        },
-        error => console.log(error)
-      );
+        }, (error: HttpErrorResponse) => {
+          console.log(error);
+          this.errorMessage = 'Can not load actions';
+        });
   }
 
   reloadActionTypes(): void {
@@ -151,8 +152,10 @@ export class ActionComponent implements OnInit {
     this.actionService.updateAction(this.manageActionForm.value).subscribe((result) => {
       this.reloadActions();
       console.log(result);
+      this.okMessage = 'Action edited';
     }, (error: HttpErrorResponse) => {
       console.log(error);
+      this.errorMessage = 'Can not edit action';
     });
   }
 
@@ -161,8 +164,10 @@ export class ActionComponent implements OnInit {
     this.actionService.createAction(this.manageActionForm.value).subscribe((result) => {
       this.reloadActions();
       console.log(result);
+      this.okMessage = 'Action created';
     }, (error: HttpErrorResponse) => {
       console.log(error);
+      this.errorMessage = 'Can not create action';
     });
   }
 
@@ -205,5 +210,13 @@ export class ActionComponent implements OnInit {
   validateActionTypeInput(): ValidatorFn {
     return (control: AbstractControl): { [key: string]: any } | null =>
       this.actionTypes?.indexOf(control.value) > -1 ? null : {wrongType: control.value};
+  }
+
+  closeErrorAlert(): void {
+    this.errorMessage = '';
+  }
+
+  closeOkAlert(): void {
+    this.okMessage = '';
   }
 }

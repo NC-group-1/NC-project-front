@@ -257,26 +257,43 @@
       <p class="font-weight-bold my-0">NOTICES</p>
     </a>
     <div
-      class="dropdown-menu dropdown-menu-right text-center bg-nc-trans min-width-30 dropdown-shadow px-3 m-0 border-0 py-0"
+      class="dropdown-menu dropdown-menu-right bg-nc-trans min-width-30 dropdown-shadow px-3 m-0 border-0 py-0"
       aria-labelledby="navbarDropdown">
-      <div *ngFor="let ntf of notifications; let i = index" class="m-0" (click)="$event.stopPropagation()">
+
+
+      <div *ngFor="let progress of tcProgress" class="m-0">
         <div class="row bg-nc-trans-hover">
-          <p class="px-3 col-10 py-3 my-0 text-shadow-black break-word">
-            {{ntf.description}}
+          <p class="px-3 col-8 py-3 my-0 text-shadow-black break-word">
+            {{progress.name}}
           </p>
+          <mat-progress-bar mode="determinate" class="mx-4 bg-success"
+                            value="{{progress.progress*100}}"></mat-progress-bar>
+        </div>
+      </div>
+
+
+      <div *ngFor="let ntf of notifications; let i = index" class="m-0" (click)="$event.stopPropagation()">
+
+        <div class="row bg-nc-trans-hover" [class]="ntf.isRead ? '' : 'bg-orange-trans'" (mouseover)="markAsRead(ntf)">
+          <div class="px-3 mx-0 col-10 py-1 my-0">
+            <p class="text-shadow-black break-word">
+              {{ntf.notification.testCase.name}}
+            </p>
+            <p class="pb-0 mb-0"><span class="font-weight-bold">{{ntf.notification.type}} </span><span
+              class="font-italic"> {{ntf.notification.date}}</span></p>
+          </div>
           <div class="col-2 my-auto text-white px-0">
             <svg role="button" width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-x close-red"
-                 fill="currentColor" (click)="remove(i); $event.stopPropagation()"
+                 fill="currentColor" (click)="remove(ntf); $event.stopPropagation()"
                  xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd"
                     d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
             </svg>
           </div>
         </div>
+
         <div class="dropdown-divider border-secondary mx-2 my-0"></div>
-      </div>
-      <div role="button" routerLink="/" class="row justify-content-center bg-nc-trans-hover py-2">
-        <span class="font-italic">More</span>
+
       </div>
     </div>
   </div>
