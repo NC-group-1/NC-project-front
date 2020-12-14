@@ -48,5 +48,9 @@
   box-sizing: border-box;
 }
 
+.mat-sort-header-container {
+  align-items: center;
+}
+
 
 
