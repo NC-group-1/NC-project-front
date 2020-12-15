@@ -43,6 +43,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatPaginatorModule} from "@angular/material/paginator";
 import {WebSocketService} from './services/webSocket/web-socket.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { TestCaseHistoryComponent } from './components/test-case-history/test-case-history.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     TestScenariosComponent,
     TestCaseComponent,
     ListDataSetComponent,
-    DataSetDetailsComponent
+    DataSetDetailsComponent,
+    TestCaseHistoryComponent
   ],
     imports: [
         BrowserModule,
