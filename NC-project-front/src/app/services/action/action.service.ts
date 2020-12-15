@@ -24,7 +24,7 @@ export class ActionService {
                                 orderBy: string,
                                 order: string): Observable<ActionPage> {
     return this.http.get<ActionPage>(
-      apiPath + 'api/ncp/actions'
+      apiPath + '/api/ncp/actions'
       + '?page=' + page
       + '&size=' + size
       + '&filter=' + filter

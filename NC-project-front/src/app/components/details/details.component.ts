@@ -1,8 +1,14 @@
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {ActivatedRoute, Router} from "@angular/router";
-import {MatSort, Sort} from "@angular/material/sort";
+import {MatSort} from "@angular/material/sort";
 import {MatPaginator} from "@angular/material/paginator";
+import {WebSocketService} from "../../services/webSocket/web-socket.service";
+import {TestCaseService} from "../../services/testCase/test-case.service";
+import {AuthenticationService} from "../../services/auth/authentication.service";
+import {UserDataModel} from "../../../models/UserDataModel";
+import {ProfileService} from "../../services/profile/profile.service";
+import {DetailsTestCaseProgressModel} from "../../../models/DetailsTestCaseProgressModel";
 
 export interface TestCase {
   id: number;
@@ -31,19 +37,33 @@ export class DetailsComponent implements OnInit,AfterViewInit {
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'dataset', 'result', 'status'];
   length: number;
-  sortedData: TestCase[];
+  stompCase;
+  username: string;
+  detailsProgress: DetailsTestCaseProgressModel[] = [];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
 
-  constructor(private router: Router, public activatedRoute: ActivatedRoute) {
+  constructor(private router: Router,
+              private auth: AuthenticationService,
+              public activatedRoute: ActivatedRoute,
+              private webSocketService: WebSocketService,
+              private tcService: TestCaseService) {
+    this.stompCase = this.webSocketService.connect();
+    this.stompCase.connect({}, () => {
+      this.stompCase.subscribe('/topic/details/', frame => {
+        this.detailsProgress = JSON.parse(frame.body);
+      });
+    });
+    this.tcService.getDetailTestCase().subscribe(() => {
+      this.detailsProgress = [];
+    });
   }
 
   ngAfterViewInit(){
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
-
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(() => {
