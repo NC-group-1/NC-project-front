@@ -1,15 +1,25 @@
+import {ProjectModel} from './ProjectModel';
+import {UserModel} from './UserModel';
+import {UserDataModel} from './UserDataModel';
+import {ScenarioModel} from './TestScenario';
+import {TimeInterval} from 'rxjs';
+import {ActionInstanceModel} from './ActionInstanceModel';
+
 export class TestCaseModel{
   id?: number;
-  creator?: number;
-  starter_id?: number;
-  //tesc_scenario_id?: TestScenario;
-  name?: string;
+  creatorId: number;
+  starter?: UserDataModel;
+  testScenarioId?: number;
+  actions?: ActionInstanceModel[];
+  name: string;
+  role?: string;
+  description: string;
   creationDate?: Date;
   startDate?: Date;
-  finish_date?: Date;
+  finishDate?: Date;
   status?: string;
-  description?: string;
-  recurringTime?: String;
+  //recurringTime?: TimeInterval<Date>;
+  recurringTime?: string;
   iterationsAmount?: number;
   watcher_numb?: number;
   edit?: boolean;

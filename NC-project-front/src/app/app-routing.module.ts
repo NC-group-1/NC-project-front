@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 import {CreateUserComponent} from './components/create-user/create-user.component';
 import {ListUsersComponent} from './components/list-users/list-users.component';
 import {MainPageComponent} from './components/main-page/main-page.component';
@@ -24,9 +24,15 @@ import {ListProjectComponent} from './components/list-project/list-project.compo
 import {ListTestCaseComponent} from './components/list-test-case/list-test-case.component';
 import {RunningTestCaseComponent} from './components/running-test-case/running-test-case.component';
 import {ActionComponent} from './components/action/action/action.component';
+import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
+import {TestCaseComponent} from './components/test-case/test-case.component';
+import {TestScenarioListResolverService} from './services/scenario/test-scenario-list-resolver.service';
+import {TestScenarioResolverService} from './services/scenario/test-scenario-resolver.service';
 import {ListDataSetComponent} from './components/data-set/list-data-set/list-data-set.component';
-import {DataSetDetailsComponent} from "./components/data-set/data-set-details/data-set-details.component";
-import {DataSetResolverService} from "./services/data-set/data-set-resolver.service";
+import {DataSetDetailsComponent} from './components/data-set/data-set-details/data-set-details.component';
+import {DataSetResolverService} from './services/data-set/data-set-resolver.service';
+import {DataSetListResolverServiceService} from './services/data-set/data-set-list-resolver-service.service';
+
 
 
 const routes: Routes = [
@@ -114,16 +120,20 @@ const routes: Routes = [
     component: ListProjectComponent
   },
   {
-    path: 'createUser',
-    component: CreateUserComponent
-  },
-  {
-    path: 'listUsers',
-    component: ListUsersComponent
-  },
-  {
-    path: 'manageAction',
-    component: ActionComponent
+    path: 'testScenarios',
+    children: [
+      {
+        path: '',
+        redirectTo: '0',
+        pathMatch: 'full'
+      },
+      {
+        path: ':projectId',
+        component: TestScenariosComponent,
+        resolve: {testScenarios: TestScenarioListResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      }
+    ]
   },
   {
     path: 'testCase',
@@ -135,8 +145,30 @@ const routes: Routes = [
       {
         path: 'runningList',
         component: RunningTestCaseComponent
+      },
+      {
+        path: 'new/:testScenarioId',
+        component: TestCaseComponent,
+        resolve: {testScenario: TestScenarioResolverService, dataSets: DataSetListResolverServiceService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
+        path: ':testCaseId',
+        component: TestCaseComponent
       }
     ]
+  },
+  {
+    path: 'createUser',
+    component: CreateUserComponent
+  },
+  {
+    path: 'listUsers',
+    component: ListUsersComponent
+  },
+  {
+    path: 'manageAction',
+    component: ActionComponent
   },
   {
     path: 'dataSet',
@@ -156,9 +188,11 @@ const routes: Routes = [
     path: '**',
     component: PageNotFoundComponent
   }
-  ];
+];
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

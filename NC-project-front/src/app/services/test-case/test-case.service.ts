@@ -32,7 +32,7 @@ export class TestCaseService {
     return this.httpClient.post(apiPath + 'api/test-case', JSON.stringify(testCase),httpOption);
   }
 
-  deleteTestCase(id: number) {
+  deleteTestCase(id: number): Observable<any> {
     return this.httpClient.delete(apiPath + 'api/test-case/' + id);
   }
 

@@ -1,43 +1,11 @@
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
-.mat-form-field-full-width {
+table {
   width: 100%;
 }
 
-table, .mat-form-field {
-  width: 100%;
-}
-
-button {
-  margin-right: 10px;
-}
-
-.manage-mat-form-field {
-  width: 96%;
-  margin-left: 2%;
-  margin-right: 2%;
-}
-
-.example-flex-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-}
-
-.button-row {
-  margin: 8px 8px 8px 0;
-  display: table;
-}
-
-section {
-  display: table;
-  margin-left: 2%;
-}
-
-.mat-icon-text {
-  display: inline-block;
-  vertical-align: top;
-  margin-top: 3px;
+.mat-elevation-z8 {
+  padding: 10px;
 }
 
 .header {

@@ -1,33 +1,20 @@
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 
-.create-action-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
-}
-
-.create-action-full-width {
-  margin-left: 10%;
-  width: 100%;
-}
-
 table {
-  margin-left: 5%;
-  margin-right: 5%;
-  width: 90%;
+  width: 100%;
 }
 
-.example-flex-container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
+.mat-elevation-z8 {
+  padding: 10px;
 }
 
-.button-row {
-  margin: 8px 8px 8px 0;
-  display: table;
-}
-
-section {
-  display: table;
+.header {
+  font-family: Roboto;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  text-transform: capitalize;
+  color: #0275B1;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }

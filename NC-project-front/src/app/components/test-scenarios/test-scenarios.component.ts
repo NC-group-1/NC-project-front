@@ -1,0 +1,82 @@
+import { Component, OnInit } from '@angular/core';
+import {MatTableDataSource} from '@angular/material/table';
+import {MatSort} from '@angular/material/sort';
+import {PageEvent} from '@angular/material/paginator';
+import {ActivatedRoute, Router} from '@angular/router';
+import {PageModel} from '../../../models/PageModel';
+import {ScenarioModel} from '../../../models/TestScenario';
+import {ScenarioService} from '../../services/scenario/scenario.service';
+declare var $: any;
+
+@Component({
+  selector: 'app-test-case',
+  templateUrl: './test-scenarios.component.html',
+  styleUrls: ['./test-scenarios.component.css']
+})
+export class TestScenariosComponent implements OnInit {
+
+  currentPage: number;
+  selectedScenario: { testScenarioId: number, name: string, description: string, creatorName: string, active: boolean};
+  size: number;
+  dataSource: MatTableDataSource<any>;
+  searchColumns = {columns:  ['name', 'creatorName', 'description'], selected: ''};
+  sort: MatSort;
+  length: number;
+  testScenarios: ScenarioModel[];
+  created: boolean;
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private scService: ScenarioService) {
+  }
+
+  ngOnInit(): void {
+    this.activatedRoute.data.subscribe(value => {
+      this.testScenarios = this.activatedRoute.snapshot.data.testScenarios.list;
+      console.log(this.activatedRoute.snapshot.data.testScenarios);
+      this.length = this.activatedRoute.snapshot.data.testScenarios.size;
+      this.dataSource = new MatTableDataSource<any>(this.testScenarios);
+    });
+    this.activatedRoute.queryParams.subscribe(value => {
+      this.currentPage = !value.page ? 0 : value.page;
+      this.size = !value.size ? 10 : value.size;
+    });
+    this.dataSource.sort = this.sort;
+  }
+  deleteScenario(){
+    const testScenarioId = this.selectedScenario.testScenarioId;
+    this.scService.deleteScenario(testScenarioId).subscribe(value => {
+      console.log(this.selectedScenario.testScenarioId);
+      const delEl = this.testScenarios.find(sc => sc.testScenarioId === testScenarioId);
+      console.log(delEl);
+      this.testScenarios.splice(this.testScenarios.indexOf(delEl), 1);
+      console.log(this.testScenarios);
+      this.selectedScenario = null;
+      this.length -= 1;
+      this.dataSource = new MatTableDataSource<any>(this.testScenarios);
+    });
+  }
+
+  pageParamsChange(event: PageEvent): void {
+    this.router.navigate([], {relativeTo: this.activatedRoute,
+      queryParams: {size: event.pageSize, page: event.pageIndex}, queryParamsHandling: 'merge'});
+  }
+
+  clearQuery(): void{
+    this.router.navigate([], {relativeTo: this.activatedRoute,
+      queryParams: {searchBy: null}, queryParamsHandling: 'merge'});
+  }
+  setSearch(field: string){
+    this.searchColumns.selected = this.searchColumns.selected === field ? '' : field;
+  }
+
+  find(event: any) {
+    this.router.navigate([], {relativeTo: this.activatedRoute,
+      queryParams: {searchBy: this.searchColumns.selected, searchValue: event.target.value}, queryParamsHandling: 'merge'});
+  }
+  sortBy(event: any): void {
+    this.router.navigate([], {relativeTo: this.activatedRoute,
+      queryParams: {orderBy: event.active, direction: event.direction}, queryParamsHandling: 'merge'});
+  }
+
+  closeAlert() {
+    $('.alert').alert('close');
+  }
+}

@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+@import '~bootstrap/dist/css/bootstrap.min.css';
 @import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css");
 @import url("https://www.w3schools.com/w3css/4/w3.css");
 .min-width-30{
@@ -50,6 +51,12 @@
   transition-duration: 0.25s;
   background-color: rgba(86,129,152,0.85);
 }
+.bg-orange-trans{
+  background: radial-gradient( rgba(255,215,0,0.75), rgba(245,195,0,0.85));
+  backdrop-filter: blur(8px);
+  color: black;
+}
+
 .bg-nc-gray{
   background-color: #f2f5f9;
 }
@@ -85,12 +92,8 @@ body {
 }
 
 .pointer{
-  cursor: pointer
+  cursor: pointer !important;
 }
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.form {
-  padding: 20px;
-}

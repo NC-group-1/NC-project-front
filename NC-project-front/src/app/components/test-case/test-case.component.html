@@ -1,0 +1,156 @@
+<div class="row">
+  <div class="col-8">
+    <div class="bg-white shadow-lg p-5">
+      <form [formGroup]="testCaseForm">
+        <label class="m-3 color-nc font-weight-bold"> Test Case Name
+          <input formControlName="name" type="text" class="form-control">
+        </label>
+        <label class="m-3 color-nc font-weight-bold"> Test Case Description
+          <input formControlName="description" type="text" class="form-control">
+        </label>
+      </form>
+      <button class="btn btn-nc" (click)="createTestCase()">Create</button>
+      <hr class="mx-3">
+      <button class="btn btn-success mb-4" (click)="showDatasets()">Add Dataset</button>
+      <table mat-table [dataSource]="dataSource" class="shadow-lg w-100">
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef class="pl-4 border-right">
+            <h5>Name</h5>
+          </th>
+          <td mat-cell *matCellDef="let action" class="pl-4 border-right">
+            {{action.action.name}}
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="key">
+          <th mat-header-cell *matHeaderCellDef class="pl-4 border-right">
+            <h5>Key</h5>
+          </th>
+          <td mat-cell *matCellDef="let action" class="pl-4 border-right">
+            <mat-form-field appearance="standard">
+              <input matInput placeholder="Key" [matAutocomplete]="auto"
+                     name="paramKey"
+                     [(ngModel)]="action.parameterKey.key"
+                     (ngModelChange)="filter($event, action);">
+            </mat-form-field>
+            <mat-autocomplete #auto='matAutocomplete'>
+              <mat-option *ngFor="let key of filteredKeys" [value]="key">
+                {{key}}
+              </mat-option>
+            </mat-autocomplete>
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="dataset">
+          <th mat-header-cell *matHeaderCellDef class="pl-4 border-right">
+            <h5>Dataset</h5>
+          </th>
+          <td mat-cell *matCellDef="let action" class="pl-4 border-right">
+
+            <mat-form-field appearance="standard">
+              <mat-label>Select an option</mat-label>
+              <mat-select (selectionChange)="select(action, $event)" [value]="action.dataset">
+                <mat-option *ngFor="let dataset of matchingDatasets(action.parameterKey.key)" [ngModel]="dataset"
+                            [value]="dataset">{{dataset.name}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </td>
+        </ng-container>
+
+
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef class="pl-4">
+            <h5>Value</h5>
+          </th>
+          <td mat-cell *matCellDef="let action" class="pl-4">
+            {{action.value}}
+          </td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="columns"></tr>
+        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[10, 20, 30]" showFirstLastButtons></mat-paginator>
+    </div>
+  </div>
+  <div class="col mr-5">
+    <div class="bg-white shadow-lg">
+      <mat-accordion class="example-headers-align" multi hideToggle>
+        <mat-expansion-panel *ngFor="let dataset of selectedDatasets">
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{dataset.name}}
+            </mat-panel-title>
+            <!--            <mat-panel-description class="d-inline-block text-right">-->
+            <!--              {{dataset.parameters.length}}-->
+            <!--            </mat-panel-description>-->
+            <button class="btn btn-outline-danger m-0 p-0 shadow-none"
+                    (click)="removeDataset(dataset); $event.stopPropagation()">
+              <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-x" fill="currentColor"
+                   xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd"
+                      d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+              </svg>
+            </button>
+          </mat-expansion-panel-header>
+          <p class="font-italic text-secondary">Creator: {{dataset.creator.email}}</p>
+          <p class="font-weight-bold text-success">Description: {{dataset.description}}</p>
+          <div class="row" *ngFor="let ds of dataset.parameters">
+            <div class="col border">{{ds.key.key}}</div>
+            <div class="col border">{{ds.value}}</div>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="datasetModal" tabindex="-1" aria-labelledby="datasetModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="datasetModalLabel" data-target="dataset-1 dataset-2 dataset-3">Choose Datasets</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <mat-accordion class="example-headers-align" multi hideToggle>
+          <mat-expansion-panel *ngFor="let dataset of datasets">
+            <mat-expansion-panel-header (click)="loadParams(dataset)">
+              <mat-panel-title>
+                {{dataset.name}}
+              </mat-panel-title>
+              <!--              <mat-panel-description class="d-inline-block text-right">-->
+              <!--                {{dataset.parameters.length}}-->
+              <!--              </mat-panel-description>-->
+              <button *ngIf="!isSelected(dataset)" class="btn btn-outline-success m-0 p-0 shadow-none"
+                      (click)="addDataset(dataset); $event.stopPropagation()">
+                <svg width="1.5em" height="1.5em" viewBox="0 0 16 16" class="bi bi-plus" fill="currentColor"
+                     xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd"
+                        d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+                </svg>
+              </button>
+            </mat-expansion-panel-header>
+            <p class="font-italic text-secondary">Creator: {{dataset.creator.email}}</p>
+            <p class="font-weight-bold text-success">Description: {{dataset.description}}</p>
+            <div class="row" *ngFor="let ds of dataset.parameters">
+              <div class="col border">{{ds.key.key}}</div>
+              <div class="col border">{{ds.value}}</div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+      <div class="modal-footer">
+        <mat-paginator [pageSizeOptions]="[10, 20, 30]" pageSize="{{dsSize}}" length="{{datasetPage.size}}"
+                       (page)="dsPageParamsChange($event)" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

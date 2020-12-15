@@ -24,9 +24,6 @@ import { MainMenuComponent } from './components/main-menu/main-menu.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { CompoundListComponent } from './components/compound-list/compound-list.component';
 import { CompoundEditComponent } from './components/compound-edit/compound-edit.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatTableModule} from '@angular/material/table';
-import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatSortModule} from '@angular/material/sort';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
@@ -37,6 +34,8 @@ import { ListTestCaseComponent } from './components/list-test-case/list-test-cas
 import { RunningTestCaseComponent } from './components/running-test-case/running-test-case.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
+import {MatTableModule} from '@angular/material/table';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
@@ -44,6 +43,12 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
 import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
+import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
+import { TestCaseComponent } from './components/test-case/test-case.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatPaginatorModule} from "@angular/material/paginator";
+import {WebSocketService} from './services/webSocket/web-socket.service';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -60,8 +65,8 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
     MainMenuComponent,
     SettingsComponent,
     CompoundListComponent,
-    CompoundEditComponent,
     CreateProjectComponent,
+    CompoundEditComponent,
     ListProjectComponent,
     CreateUserComponent,
     ListUsersComponent,
@@ -69,39 +74,45 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
     RunningTestCaseComponent,
     ListDataSetComponent,
     DataSetDetailsComponent,
+    TestScenariosComponent,
+    TestCaseComponent,
+    ListDataSetComponent,
+    DataSetDetailsComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    MatPaginatorModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    FormsModule,
-    MatTableModule,
-    MatSortModule,
-    DragDropModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTooltipModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatSlideToggleModule,
-    MatTabsModule,
-    MatSnackBarModule,
-    NgxMatTimepickerModule,
-    NgxMatDatetimePickerModule,
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatPaginatorModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        FormsModule,
+        MatTableModule,
+        MatSortModule,
+        DragDropModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatExpansionModule,
+        MatProgressBarModule,
+        MatSlideToggleModule,
+        MatTabsModule,
+        MatSnackBarModule,
+        NgxMatTimepickerModule,
+        NgxMatDatetimePickerModule,
+    ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
     // useValue: { appearance: 'fill' },
     useClass: AuthorizationInterceptor,
     multi: true,
-  }],
+  }, WebSocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
