@@ -12,8 +12,6 @@ import {apiPath} from '../../../../globals';
 })
 export class ActionService {
 
-  private apiPath = 'http://localhost:8081/';
-
   constructor(private http: HttpClient, private router: Router) {
   }
 
@@ -24,7 +22,7 @@ export class ActionService {
                                 orderBy: string,
                                 order: string): Observable<ActionPage> {
     return this.http.get<ActionPage>(
-      apiPath + '/api/ncp/actions'
+      apiPath + 'api/ncp/actions'
       + '?page=' + page
       + '&size=' + size
       + '&filter=' + filter

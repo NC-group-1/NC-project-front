@@ -51,14 +51,21 @@ export class DetailsComponent implements OnInit,AfterViewInit {
               private tcService: TestCaseService) {
     this.stompCase = this.webSocketService.connect();
     this.stompCase.connect({}, () => {
-      this.stompCase.subscribe('/topic/details/', frame => {
-        this.detailsProgress = JSON.parse(frame.body);
+      this.stompCase.subscribe('/topic/details/history', response =>{
+        console.log(JSON.parse(response.body));
       });
-    });
-    this.tcService.getDetailTestCase().subscribe(() => {
-      this.detailsProgress = [];
-    });
+      this.stompCase.subscribe('/topic/details/message', progress => {
+        const message = JSON.parse(progress.body);
+        const find = this.detailsProgress.find(value => value.testCaseId === message.testCaseId);
+        if (find){
+          this.detailsProgress.splice(this.detailsProgress.indexOf(find), 1, message);
+        }else {
+          this.detailsProgress.push(JSON.parse(progress.body));
+        }
+      });
+  });
   }
+
 
   ngAfterViewInit(){
     this.dataSource.paginator = this.paginator;
