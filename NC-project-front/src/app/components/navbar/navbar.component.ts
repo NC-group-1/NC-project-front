@@ -45,22 +45,32 @@ export class NavbarComponent implements OnInit {
       this.stompClient.send('/app/notify', {}, +this.auth.getId());
       this.stompClient.subscribe('/topic/notification/' + this.auth.getId(), notifications => {
         this.notifications = JSON.parse(notifications.body);
+        for (const notification of this.notifications) {
+          const find = this.tcProgress.find(value => value.testCaseId === notification.notification.testCase.id);
+          if (!find) {
+            this.subscribeOnTc(notification.notification.testCase.id);
+          }
+        }
       });
       this.tcService.getTestCaseWatchers(this.auth.getId()).subscribe(tc => {
         this.tcProgress = [];
         for (const id of tc) {
-          this.stompClient.send('/app/progress/tc', {}, id);
-          this.stompClient.subscribe('/topic/progress/' + id, progress => {
-            const p = JSON.parse(progress.body);
-            const find = this.tcProgress.find(value => value.testCaseId === p.testCaseId);
-            if (find){
-              this.tcProgress.splice(this.tcProgress.indexOf(find), 1, p);
-            }else {
-              this.tcProgress.push(JSON.parse(progress.body));
-            }
-          });
+          this.subscribeOnTc(id);
         }
       });
+    });
+  }
+
+  private subscribeOnTc(id: number){
+    this.stompClient.send('/app/progress/tc', {}, id);
+    this.stompClient.subscribe('/topic/progress/' + id, progress => {
+      const p = JSON.parse(progress.body);
+      const find = this.tcProgress.find(value => value.testCaseId === p.testCaseId);
+      if (find){
+        this.tcProgress.splice(this.tcProgress.indexOf(find), 1, p);
+      }else {
+        this.tcProgress.push(JSON.parse(progress.body));
+      }
     });
   }
 
