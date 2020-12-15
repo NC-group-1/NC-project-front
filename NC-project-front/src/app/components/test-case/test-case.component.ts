@@ -36,9 +36,10 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   dsPage: number;
   dsSize: number;
   datasetPage: PageModel<DataSetGeneralInfoDto>;
-  keys: string[];
-  filteredKeys: string[];
+  keys: string[] = [];
+  filteredKeys: string[] = [];
   testCaseForm: FormGroup;
+  flattenedActions: ActionInstanceModel[] = [];
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private auth: AuthenticationService,
               private datasetService: DataSetService, private testCaseService: TestCaseService) {
@@ -53,22 +54,40 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       this.datasetPage = this.activatedRoute.snapshot.data.dataSets;
       this.datasets = this.datasetPage.list.map(value1 => new Dataset(value1));
       this.testScenario = this.activatedRoute.snapshot.data.testScenario;
-      this.actions = this.testScenario.actions.map(value1 =>
-        ({
-          action: value1.action,
-          orderNum: value1.orderNum,
-          datasetId: null,
-          value: null,
-          parameterKey: {key: null, id: null}
-        }));
-      this.dataSource = new MatTableDataSource<any>(this.actions.sort((a, b) => a.orderNum - b.orderNum));
+      this.actions = this.testScenario.actions.map(value1 => {
+          return {
+            action: value1.action,
+            orderNum: value1.orderNum,
+            datasetId: null,
+            value: null,
+            parameterKey: {key: null, id: null}
+          };
+        }
+      ).sort((a, b) => a.orderNum - b.orderNum);
+      for (const action of this.actions) {
+        if (action.action.type === 'COMPOUND'){
+          this.flattenedActions.push(...action.action.actions.map(value1 => {
+            if (value1.parameterKey === null){
+              value1.parameterKey = {key: ''};
+            } else if (value1.parameterKey?.key === null){
+              value1.parameterKey.key = '';
+            }
+            return value1;
+          }));
+        }else {
+          if (action.parameterKey === null){
+            action.parameterKey = {key: ''};
+          } else if (action.parameterKey?.key === null){
+            action.parameterKey.key = '';
+          }
+          this.flattenedActions.push(action);
+        }
+      }
+      this.dataSource = new MatTableDataSource<any>(this.flattenedActions);
     });
     this.activatedRoute.queryParams.subscribe(value => {
       this.dsPage = !value.dsPage ? 0 : value.dsPage;
       this.dsSize = !value.dsSize ? 10 : value.dsSize;
-    });
-    this.activatedRoute.data.subscribe(value => {
-      this.dataSource = new MatTableDataSource<any>(this.actions.sort((a, b) => a.orderNum - b.orderNum));
     });
   }
 
@@ -95,9 +114,9 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
           return value1.id === dataset.id;
         }).parameters = value;
         this.selectedDatasets.push(dataset);
-        this.actions.map(action => {
+        this.flattenedActions.map(action => {
           if (!action.value) {
-            const datasetKeyVal = dataset.parameters.find(value1 => value1.key === action.parameterKey.key)?.value;
+            const datasetKeyVal = dataset.parameters.find(value1 => value1.parameterKey.key === action.parameterKey.key)?.value;
             action.value = datasetKeyVal;
             action.datasetId = datasetKeyVal ? dataset.id : null;
           }
@@ -105,7 +124,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
         this.keys = [...new Set(
           flatten(this.selectedDatasets
             .map(value1 => flatten(value1.parameters))
-            .map(value1 => value1.map(value2 => value2.key.key)))
+            .map(value1 => value1.map(value2 => value2.parameterKey.key)))
         )];
       });
   }
@@ -122,7 +141,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
     this.keys = [...new Set(
       flatten(this.selectedDatasets
         .map(value => flatten(value.parameters))
-        .map(value => value.map(value1 => value1.key.key)))
+        .map(value => value.map(value1 => value1.parameterKey.key)))
     )];
   }
 
@@ -131,10 +150,11 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   }
 
   matchingDatasets(paramKey: string): Dataset[] {
-    return this.selectedDatasets.filter(dataset => !!dataset.parameters.find(value => value.key.key === paramKey));
+    return this.selectedDatasets.filter(dataset => !!dataset.parameters.find(value => value.parameterKey.key === paramKey));
   }
 
   filter(event: any, action: any) {
+    console.log(action);
     action.dataset = null;
     action.value = null;
     this.filteredKeys = this.keys.filter(value => value.toLowerCase().includes(event.toLowerCase()));
@@ -142,10 +162,12 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
 
 
   select(action: ActionInstanceModel, event: MatSelectChange) {
-    const dataset: Dataset = event.value;
-    action.datasetId = dataset.id;
-    action.parameterKey.id = dataset.parameters.find(value => value.key.key === action.parameterKey.key).key.id;
-    action.value = dataset.parameters.find(value => value.key.key === action.parameterKey.key).value;
+    const dsId = event.value;
+    action.datasetId = dsId;
+    const matchingParam = this.datasets.find(ds => ds.id === dsId)
+        .parameters.find(value => value.parameterKey.key === action.parameterKey.key);
+    action.parameterKey.id = matchingParam.parameterKey.id;
+    action.value = matchingParam.value;
   }
 
   loadParams(dataset: Dataset) {
@@ -160,9 +182,17 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       name: this.testCaseForm.value.name,
       description: this.testCaseForm.value.description,
       actions: this.actions,
-      creatorId: parseInt(this.auth.getId(), 10),
+      user: { id:parseInt(this.auth.getId(), 10) },
       role: this.auth.getRole(),
       testScenarioId: parseInt(this.activatedRoute.snapshot.paramMap.get('testScenarioId'), 10)
     }).subscribe(value => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
   }
+  initParams(): void{
+
+  }
+
+  log(obj) {
+    console.log(obj);
+  }
+
 }

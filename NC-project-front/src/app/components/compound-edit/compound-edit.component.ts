@@ -65,7 +65,7 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
       this.actionsAsCompActions = this.actions.list.map<ActionOfCompound>(value1 => ({
         action: value1,
         orderNum: 0,
-        key: value1.key
+        parameterKey: value1.parameterKey
       }));
     });
     this.compoundForm = new FormGroup({

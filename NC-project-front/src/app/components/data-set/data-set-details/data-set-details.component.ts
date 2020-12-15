@@ -136,8 +136,8 @@ export class DataSetDetailsComponent implements OnInit {
         this.parameterForm.get('dataSetId').setValue(this.dataSet.id);
         this.parameterForm.get('value').setValue(parameter.value);
         this.parameterForm.get('id').setValue(parameter.id);
-        this.parameterForm.get('key.id').setValue(parameter.key.id);
-        this.parameterForm.get('key.key').setValue(parameter.key.key);
+        this.parameterForm.get('key.id').setValue(parameter.parameterKey.id);
+        this.parameterForm.get('key.key').setValue(parameter.parameterKey.key);
         this.parameterForm.get('key.key').disable();
       } else {
         this.errorMessage = 'Can not edit parameter! Parameter assigned to '
@@ -170,7 +170,7 @@ export class DataSetDetailsComponent implements OnInit {
     {
       let valid = true;
       this.dataSource.data.forEach(parameter => {
-        if (parameter.key.key === control.value) {
+        if (parameter.parameterKey.key === control.value) {
           valid = false;
         }
       });
