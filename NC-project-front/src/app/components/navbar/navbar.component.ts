@@ -41,7 +41,7 @@ export class NavbarComponent implements OnInit {
         }, 50);
       }
     });
-    this.stompClient.connect({}, frame => {
+    this.stompClient.connect({}, () => {
       this.stompClient.send('/app/notify', {}, +this.auth.getId());
       this.stompClient.subscribe('/topic/notification/' + this.auth.getId(), notifications => {
         this.notifications = JSON.parse(notifications.body);

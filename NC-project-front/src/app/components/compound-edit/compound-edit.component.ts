@@ -1,9 +1,9 @@
-import {AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CompoundModel} from '../../../models/CompoundModel';
 import {ActionPage} from '../../../models/action-page';
 import {Action} from '../../../models/action';
-import {CdkDragDrop, moveItemInArray, transferArrayItem, copyArrayItem} from '@angular/cdk/drag-drop';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {ActionOfCompound} from '../../../models/ActionOfCompound';
 import {PageEvent} from '@angular/material/paginator';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
@@ -146,13 +146,11 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
       this.isError = true;
     }
   }
-
   delete(): void {
     this.compService.deleteCompound(this.compound.id).subscribe(value => {
       this.router.navigate(['compounds']);
     });
   }
-
 
   pageParamsChange(event: PageEvent): void {
     this.router.navigate([], {

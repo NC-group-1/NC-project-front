@@ -13,15 +13,15 @@ import {PageNotFoundComponent} from './components/page-not-found/page-not-found.
 import {SettingsComponent} from './components/settings/settings.component';
 import {LoginActivateGuard} from './guards/login-activate.guard';
 import {MyProfileResolverService} from './services/profile/my-profile-resolver.service';
-
+import {CreateProjectComponent} from './components/create-project/create-project.component';
+import {ListProjectComponent} from './components/list-project/list-project.component';
+import {ActionComponent} from './components/action/action/action.component';
 import {CompoundListComponent} from './components/compound-list/compound-list.component';
 import {CompoundEditComponent} from './components/compound-edit/compound-edit.component';
 import {CompoundListResolverService} from './services/compound/compound-list-resolver.service';
 import {CompoundResolverService} from './services/compound/compound-resolver.service';
 import {ActionPageResolverService} from './services/action/action-page-resolver.service';
-import {CreateProjectComponent} from './components/create-project/create-project.component';
-import {ListProjectComponent} from './components/list-project/list-project.component';
-import {ActionComponent} from './components/action/action/action.component';
+import {CreateScenarioComponent} from './components/create-scenario/create-scenario.component';
 import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
 import {TestCaseComponent} from './components/test-case/test-case.component';
 import {TestScenarioListResolverService} from './services/scenario/test-scenario-list-resolver.service';
@@ -31,6 +31,7 @@ import {DataSetDetailsComponent} from './components/data-set/data-set-details/da
 import {DataSetResolverService} from './services/data-set/data-set-resolver.service';
 import {DataSetListResolverServiceService} from './services/data-set/data-set-list-resolver-service.service';
 import {TestCaseHistoryComponent} from "./components/test-case-history/test-case-history.component";
+import {DetailsComponent} from "./components/details/details.component";
 
 
 
@@ -127,6 +128,12 @@ const routes: Routes = [
         pathMatch: 'full'
       },
       {
+        path: 'new/:projectId',
+        component: CreateScenarioComponent,
+        resolve: {actionPage: ActionPageResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
         path: ':projectId',
         component: TestScenariosComponent,
         resolve: {testScenarios: TestScenarioListResolverService},
@@ -154,11 +161,23 @@ const routes: Routes = [
     ]
   },
   {
+    path: 'details',
+    component: DetailsComponent
+  },
+  {
     path: 'createUser',
     component: CreateUserComponent
   },
   {
     path: 'listUsers',
+    component: ListUsersComponent
+  },
+  {
+    path: 'createScenario',
+    component: CreateUserComponent
+  },
+  {
+    path: 'listScenario',
     component: ListUsersComponent
   },
   {

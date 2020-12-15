@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Action} from '../../../models/action';
@@ -51,7 +51,6 @@ export class ActionService {
     return this.http.get<string[]>(apiPath + 'api/ncp/actions/types')
       .pipe(tap(() => {}, e => {if (e.status) {this.router.navigate(['404']); } }));
   }
-
   updateAction(action: Action): Observable<any> {
     console.log(action);
     return this.http.put(apiPath + 'api/ncp/actions/' + action.id, action);
