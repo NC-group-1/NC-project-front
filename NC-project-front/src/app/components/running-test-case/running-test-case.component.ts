@@ -37,7 +37,7 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
  })
 
 export class RunningTestCaseComponent implements OnInit {
-  columnsToDisplay = ['test_case_id', 'name', 'starter_id', 'watcher_numb', 'status', 'stop/run'];
+  columnsToDisplay = ['id', 'name', 'starter_id', 'watcher_numb', 'status', 'stop/run'];
   responseRunningTestCase?: TestCaseResponseModel;
   responseListWatcher?: UserResponseModel;
   responseListUser?: UserResponseModel;
@@ -168,7 +168,7 @@ export class RunningTestCaseComponent implements OnInit {
   }
 
   updateStatus (value, test_case_id){
-    const test_case = this.runningListTestCase.find(element => element.test_case_id === test_case_id);
+    const test_case = this.runningListTestCase.find(element => element.id === test_case_id);
     if (value.checked === true) {
       test_case.status = 'Running';
     } else {
@@ -177,7 +177,7 @@ export class RunningTestCaseComponent implements OnInit {
   }
 
   onChangeStatus(test_case_id) {
-    const body = this.runningListTestCase.find(element => element.test_case_id === test_case_id);
+    const body = this.runningListTestCase.find(element => element.id === test_case_id);
       this.runningTestCaseService.updateRunningTestCase(body)
         .subscribe(
           response => console.log(response),
