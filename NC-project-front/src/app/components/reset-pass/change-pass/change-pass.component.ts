@@ -15,9 +15,7 @@ export class ChangePassComponent implements OnInit {
   submitTouched = false;
   error: boolean;
 
-  constructor(private router: Router,
-              private passwordService: ResetPasswordService,
-              private route: ActivatedRoute, private auth: AuthenticationService) {
+  constructor(private router: Router, private passwordService: ResetPasswordService, private route: ActivatedRoute, private auth: AuthenticationService) {
     this.form = new FormGroup({
       password: new FormControl(null, [Validators.required, Validators.min(6)]),
       confirmPassword: new FormControl(null, [Validators.required, Validators.min(6)])

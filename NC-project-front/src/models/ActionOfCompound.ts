@@ -4,7 +4,6 @@ import {ParameterKey} from './parameter-key';
 export class ActionOfCompound{
   action: Action;
   orderNum: number;
-  parameterKey: ParameterKey;
-  // -------
+  key: ParameterKey;
   compoundActions?: any;
 }

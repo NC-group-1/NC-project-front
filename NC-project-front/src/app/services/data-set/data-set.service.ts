@@ -59,9 +59,6 @@ export class DataSetService {
   deleteDataSet(id: number): Observable<any>{
     return this.http.delete(apiPath + 'api/ncp/datasets/' + id);
   }
-  getDatasetValueByParam(id, parameterId): Observable<any>{
-    return this.http.get(apiPath + 'api/ncp/datasets/' + 'dataset/' + id + '/param/' + parameterId);
-  }
 
   getParametersByDataSetId(id: number): Observable<Parameter[]> {
     return this.http.get<Parameter[]>(apiPath + 'api/ncp/datasets/' + id + '/parameters')

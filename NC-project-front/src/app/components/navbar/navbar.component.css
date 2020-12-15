@@ -2,7 +2,7 @@
   transition-duration: 0.5s;
 }
 .nav-nc:hover{
-  background-color: #005793;
+  background-color: #2e5970;
   color: white;
   transition-duration: 0.5s;
 }
@@ -17,6 +17,17 @@
   height: 80px;
   width: 80px;
   border-radius: 50%;
+}
+
+.dropdown-submenu {
+  position:relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top:0;
+  left:100%;
+}
+ul.nav li:hover > ul.dropdown-menu {
+  display: block;
 }
 ::ng-deep .mat-progress-bar-fill::after {
   background: #1CEDD4;
