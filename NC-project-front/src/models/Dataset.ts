@@ -13,7 +13,7 @@ export class Dataset {
     this.name = dataset.name;
     this.description = dataset.description;
     this.creator = {
-      userId: dataset.createdById,
+      id: dataset.createdById,
       name: dataset.createdByName,
       surname: dataset.createdBySurname,
       role: dataset.createdByRole

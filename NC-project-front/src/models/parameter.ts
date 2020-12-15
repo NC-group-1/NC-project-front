@@ -2,7 +2,7 @@ import {ParameterKey} from './parameter-key';
 
 export class Parameter {
   id?: number;
-  parameterKey?: ParameterKey;
+  key?: ParameterKey;
   value?: any;
   dataSetId?: number;
 }
