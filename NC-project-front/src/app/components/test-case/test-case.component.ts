@@ -13,7 +13,7 @@ import {DataSetGeneralInfoDto} from '../../../models/data-set-general-info-dto';
 import {DataSetService} from '../../services/data-set/data-set.service';
 import {PageModel} from '../../../models/PageModel';
 import {TestCaseService} from '../../services/testCase/test-case.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormControl, FormGroup, ValidatorFn, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../services/auth/authentication.service';
 
 declare var $: any;
@@ -40,13 +40,10 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   filteredKeys: string[] = [];
   testCaseForm: FormGroup;
   flattenedActions: ActionInstanceModel[] = [];
+  empty = true;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private auth: AuthenticationService,
               private datasetService: DataSetService, private testCaseService: TestCaseService) {
-    this.testCaseForm = new FormGroup({
-      name: new FormControl(null, [Validators.required]),
-      description: new FormControl(null, [Validators.required])
-    });
   }
 
   ngOnInit(): void {
@@ -66,7 +63,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       ).sort((a, b) => a.orderNum - b.orderNum);
       for (const action of this.actions) {
         if (action.action.type === 'COMPOUND'){
-          this.flattenedActions.push(...action.action.actions.map(value1 => {
+          this.flattenedActions.push(...action.action.actions.map((value1, index, array) => {
             if (value1.parameterKey === null){
               value1.parameterKey = {key: ''};
             } else if (value1.parameterKey?.key === null){
@@ -83,16 +80,24 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
           this.flattenedActions.push(action);
         }
       }
+      this.flattenedActions.forEach((value1, index) => value1.orderNum = index + 1);
       this.dataSource = new MatTableDataSource<any>(this.flattenedActions);
     });
     this.activatedRoute.queryParams.subscribe(value => {
       this.dsPage = !value.dsPage ? 0 : value.dsPage;
       this.dsSize = !value.dsSize ? 10 : value.dsSize;
     });
+    this.testCaseForm = new FormGroup({
+      name: new FormControl(null, [Validators.required]),
+      description: new FormControl(null, [Validators.required])
+    });
   }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
+  }
+  fieldsEmpty(): void{
+    this.empty = !!this.flattenedActions.find(value => value.parameterKey.key === '' || value.datasetId === null);
   }
 
   showDatasets() {
@@ -126,12 +131,12 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
             .map(value1 => flatten(value1.parameters))
             .map(value1 => value1.map(value2 => value2.parameterKey.key)))
         )];
+        this.fieldsEmpty();
       });
   }
 
   removeDataset(dataset: Dataset) {
     this.actions.map(action => {
-      console.log(action, dataset.id);
       if (action.datasetId === dataset.id) {
         action.value = null;
         action.datasetId = null;
@@ -154,7 +159,6 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   }
 
   filter(event: any, action: any) {
-    console.log(action);
     action.dataset = null;
     action.value = null;
     this.filteredKeys = this.keys.filter(value => value.toLowerCase().includes(event.toLowerCase()));
@@ -168,6 +172,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
         .parameters.find(value => value.parameterKey.key === action.parameterKey.key);
     action.parameterKey.id = matchingParam.parameterKey.id;
     action.value = matchingParam.value;
+    this.fieldsEmpty();
   }
 
   loadParams(dataset: Dataset) {
@@ -181,18 +186,14 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
     this.testCaseService.createTestCase({
       name: this.testCaseForm.value.name,
       description: this.testCaseForm.value.description,
-      actions: this.actions,
-      user: { id:parseInt(this.auth.getId(), 10) },
+      actions: this.flattenedActions,
+      user: { id: parseInt(this.auth.getId(), 10) },
       role: this.auth.getRole(),
       testScenarioId: parseInt(this.activatedRoute.snapshot.paramMap.get('testScenarioId'), 10)
     }).subscribe(value => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
   }
   initParams(): void{
 
-  }
-
-  log(obj) {
-    console.log(obj);
   }
 
 }

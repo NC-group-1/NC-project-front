@@ -8,8 +8,8 @@
         <label class="m-3 color-nc font-weight-bold"> Test Case Description
           <input formControlName="description" type="text" class="form-control">
         </label>
+        <button type="submit" class="btn btn-nc" [attr.disabled]="empty||testCaseForm.invalid ? ' ' : null" (click)="createTestCase()">Create</button>
       </form>
-      <button class="btn btn-nc" (click)="createTestCase()">Create</button>
       <hr class="mx-3">
       <button class="btn btn-success mb-4" (click)="showDatasets()">Add Dataset</button>
       <table mat-table [dataSource]="dataSource" class="shadow-lg w-100">
@@ -30,7 +30,7 @@
           </th>
           <td mat-cell *matCellDef="let action" class="pl-4 border-right">
             <mat-form-field appearance="standard">
-              <input matInput placeholder="Key" [matAutocomplete]="auto" (click)="log(action)"
+              <input matInput placeholder="Key" [matAutocomplete]="auto"
                      name="paramKey"
                      [(ngModel)]="action.parameterKey.key"
                      (ngModelChange)="filter($event, action);">

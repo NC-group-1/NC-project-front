@@ -45,9 +45,7 @@ export class TestScenariosComponent implements OnInit {
     this.scService.deleteScenario(testScenarioId).subscribe(value => {
       console.log(this.selectedScenario.testScenarioId);
       const delEl = this.testScenarios.find(sc => sc.testScenarioId === testScenarioId);
-      console.log(delEl);
       this.testScenarios.splice(this.testScenarios.indexOf(delEl), 1);
-      console.log(this.testScenarios);
       this.selectedScenario = null;
       this.length -= 1;
       this.dataSource = new MatTableDataSource<any>(this.testScenarios);

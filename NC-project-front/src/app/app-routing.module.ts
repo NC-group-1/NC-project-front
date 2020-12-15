@@ -30,6 +30,9 @@ import {ListDataSetComponent} from './components/data-set/list-data-set/list-dat
 import {DataSetDetailsComponent} from './components/data-set/data-set-details/data-set-details.component';
 import {DataSetResolverService} from './services/data-set/data-set-resolver.service';
 import {DataSetListResolverServiceService} from './services/data-set/data-set-list-resolver-service.service';
+import {TestCaseViewComponent} from './components/test-case/test-case-view/test-case-view.component';
+import {TestCaseResolverService} from './services/testCase/test-case-resolver.service';
+import {TestCaseActionsResolverService} from './services/testCase/test-case-actions-resolver.service';
 
 
 
@@ -144,7 +147,8 @@ const routes: Routes = [
       },
       {
         path: ':testCaseId',
-        component: TestCaseComponent
+        component: TestCaseViewComponent,
+        resolve: {testCase: TestCaseResolverService, actions: TestCaseActionsResolverService}
       }
     ]
   },

@@ -7,7 +7,7 @@ import {ActionInstanceModel} from './ActionInstanceModel';
 
 export class TestCaseModel{
   id?: number;
-  user: { id: number };
+  user: { id: number, name?: string, surname?: string, email?: string };
   starter?: UserDataModel;
   testScenarioId?: number;
   actions?: ActionInstanceModel[];

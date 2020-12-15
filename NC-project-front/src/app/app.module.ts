@@ -40,9 +40,10 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
 import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {WebSocketService} from './services/webSocket/web-socket.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { TestCaseViewComponent } from './components/test-case/test-case-view/test-case-view.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     TestScenariosComponent,
     TestCaseComponent,
     ListDataSetComponent,
-    DataSetDetailsComponent
+    DataSetDetailsComponent,
+    TestCaseViewComponent
   ],
     imports: [
         BrowserModule,
