@@ -2,10 +2,15 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {PageEvent} from '@angular/material/paginator';
+import { FormControl, FormGroup, Validators } from "@angular/forms";
 import {TestCaseService} from '../../services/test-case/test-case.service';
 import {TestCaseResponseModel} from '../../../models/TestCaseResponseModel';
 import {TestCaseModel} from '../../../models/TestCaseModel';
 import {Sort} from '@angular/material/sort';
+import {ThemePalette} from '@angular/material/core';
+import {MatSort} from '@angular/material/sort';
+import * as moment from 'moment';
+
 
 interface RecTime {
   value: string;
@@ -19,20 +24,29 @@ interface RecTime {
 })
 
 export class ListTestCaseComponent implements OnInit {
+
   selectedTestCase: string;
-  displayedColumns: string[] = ['test_case_id', 'select', 'name', 'creator_id', 'creation_date', 'iterations_amount', 'recurring_time', 'editBtn'];
+  displayedColumns: string[] = ['id', 'select', 'name', 'creator', 'creationDate', 'iterationsAmount', 'recurringTime','startDate', 'status','editBtn'];
   responseTestCase?: TestCaseResponseModel;
   listTestCase: TestCaseModel[];
   dataSource: any;
   length = 0;
   pageSize = 10;
   pageIndex = 0;
-  pageSizeOptions: number[] = [10, 50, 100];
+  pageSizeOptions: number[] = [10, 20, 30];
   filter = '';
   orderBy = '';
   order = '';
+  background: ThemePalette = undefined;
+  public color: ThemePalette = "primary";
+  public disabled = false;
+  minDate: string;
+  //minDate = moment().format().toString();
+  //public minDate = new Date().toString();
+
 
   selection = new SelectionModel<TestCaseModel>(true, []);
+  @ViewChild(MatSort) sort: MatSort;
 
   rectimes: RecTime[] = [
   {value: '00:30:00', viewValue: '00:30:00'},
@@ -49,6 +63,7 @@ export class ListTestCaseComponent implements OnInit {
 
 
   constructor(private testCaseService: TestCaseService) {
+    this.minDate = moment().add(1,'day').format('YYYY-MM-DDTHH:mm');
     this.selectedTestCase = "";
     this.listTestCase = [];
     this.dataSource = new MatTableDataSource();
@@ -59,7 +74,6 @@ export class ListTestCaseComponent implements OnInit {
   }
 
   reloadTestCases(): void {
-    console.log(this.orderBy);
     this.testCaseService.getPaginatedTestCases(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order)
       .subscribe(
         response => {
@@ -78,10 +92,16 @@ export class ListTestCaseComponent implements OnInit {
     this.reloadTestCases();
   }
 
+  sortData(): void{
+    this.order = this.sort.direction.toUpperCase();
+    this.orderBy = this.sort.active;
+    this.reloadTestCases();
+  }
+
   delete(){
     this.selection.selected
       .forEach(element => {
-          this.testCaseService.deleteTestCase(element.test_case_id)
+          this.testCaseService.deleteTestCase(element.id)
             .subscribe(
               response => {console.log(response);
               this.reloadTestCases();this.selection.clear();},
@@ -95,18 +115,17 @@ export class ListTestCaseComponent implements OnInit {
     this.listTestCase[index].name = name;
   }
 
-  updateDescription(index: number, description: string) {
-    this.listTestCase[index].description = description;
+  updateStartTime(index: number, startDate: any) {
+    this.listTestCase[index].startDate = startDate;
   }
 
 
-  updateIterations(index: number, iterations_amount: any) {
-    this.listTestCase[index].iterations_amount = iterations_amount;
+  updateIterations(index: number, iterationsAmount: any) {
+    this.listTestCase[index].iterationsAmount = iterationsAmount;
   }
 
-  updateRecTime(index: number, recurring_time: string) {
-    console.log(recurring_time);
-    this.listTestCase[index].recurring_time = recurring_time;
+  updateRecTime(index: number, recurringTime: string) {
+    this.listTestCase[index].recurringTime = recurringTime;
   }
 
   change(index: number) {
@@ -137,7 +156,7 @@ export class ListTestCaseComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.test_case_id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 
   onPaginationChange(pageEvent: PageEvent): void {
@@ -146,9 +165,4 @@ export class ListTestCaseComponent implements OnInit {
     this.reloadTestCases();
   }
 
-  sortData(orderBy: string) {
-    this.orderBy = orderBy;
-    this.order === '' ? this.order = 'DESC' : this.order = '';
-    this.reloadTestCases();
-  }
 }

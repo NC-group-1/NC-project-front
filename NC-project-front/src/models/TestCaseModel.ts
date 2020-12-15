@@ -1,15 +1,16 @@
 export class TestCaseModel{
-  test_case_id?: number;
-  creator_id?: number;
-  started_id?: number;
+  id?: number;
+  creator?: number;
+  starter_id?: number;
   //tesc_scenario_id?: TestScenario;
   name?: string;
-  creation_date?: Date;
-  start_date?: Date;
+  creationDate?: Date;
+  startDate?: Date;
   finish_date?: Date;
   status?: string;
   description?: string;
-  recurring_time?: String;
-  iterations_amount?: number;
+  recurringTime?: String;
+  iterationsAmount?: number;
+  watcher_numb?: number;
   edit?: boolean;
 }

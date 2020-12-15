@@ -5,11 +5,13 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ActionComponent } from './components/action/action/action.component';
 import { AppComponent } from './components/app/app.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthorizationInterceptor} from './services/auth/authorization-interceptor.service';
 import { ForgotPassEmailComponent } from './components/reset-pass/forgot-pass-email/forgot-pass-email.component';
@@ -32,11 +34,14 @@ import { ListProjectComponent } from './components/list-project/list-project.com
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { ListUsersComponent } from './components/list-users/list-users.component';
 import { ListTestCaseComponent } from './components/list-test-case/list-test-case.component';
+import { RunningTestCaseComponent } from './components/running-test-case/running-test-case.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
 import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
 
@@ -61,6 +66,7 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
     CreateUserComponent,
     ListUsersComponent,
     ListTestCaseComponent,
+    RunningTestCaseComponent,
     ListDataSetComponent,
     DataSetDetailsComponent,
   ],
@@ -83,7 +89,12 @@ import { DataSetDetailsComponent } from './components/data-set/data-set-details/
     MatTooltipModule,
     MatRadioModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatSlideToggleModule,
+    MatTabsModule,
+    MatSnackBarModule,
+    NgxMatTimepickerModule,
+    NgxMatDatetimePickerModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

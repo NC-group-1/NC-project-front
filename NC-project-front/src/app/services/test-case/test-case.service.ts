@@ -16,7 +16,7 @@ export class TestCaseService {
 
   getPaginatedTestCases(pageSize: number, pageIndex: number, filter: string, orderBy: string, order: string): Observable<TestCaseResponseModel>{
     return this.httpClient.get<TestCaseResponseModel>(
-      apiPath + 'api/test_case/list'
+      apiPath + 'api/test-case/list'
       + '?pageSize=' + pageSize
       + '&pageIndex=' + pageIndex
       + '&filter=' + filter
@@ -29,11 +29,11 @@ export class TestCaseService {
     const httpOption = {
       headers:new HttpHeaders({"Content-Type":"application/json"})
     }
-    return this.httpClient.post(apiPath + 'api/test_case/update', JSON.stringify(testCase),httpOption);
+    return this.httpClient.post(apiPath + 'api/test-case', JSON.stringify(testCase),httpOption);
   }
 
   deleteTestCase(id: number) {
-    return this.httpClient.delete(apiPath + 'api/test_case/' + id);
+    return this.httpClient.delete(apiPath + 'api/test-case/' + id);
   }
 
   /*postTestCase(testCase: TestCaseModel) {

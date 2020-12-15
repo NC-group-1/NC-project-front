@@ -22,6 +22,7 @@ import {ActionPageResolverService} from './services/action/action-page-resolver.
 import {CreateProjectComponent} from './components/create-project/create-project.component';
 import {ListProjectComponent} from './components/list-project/list-project.component';
 import {ListTestCaseComponent} from './components/list-test-case/list-test-case.component';
+import {RunningTestCaseComponent} from './components/running-test-case/running-test-case.component';
 import {ActionComponent} from './components/action/action/action.component';
 import {ListDataSetComponent} from './components/data-set/list-data-set/list-data-set.component';
 import {DataSetDetailsComponent} from "./components/data-set/data-set-details/data-set-details.component";
@@ -125,8 +126,17 @@ const routes: Routes = [
     component: ActionComponent
   },
   {
-    path: 'listTestCase',
-    component: ListTestCaseComponent
+    path: 'testCase',
+    children: [
+      {
+        path: 'list',
+        component: ListTestCaseComponent
+      },
+      {
+        path: 'runningList',
+        component: RunningTestCaseComponent
+      }
+    ]
   },
   {
     path: 'dataSet',
