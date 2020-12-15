@@ -24,15 +24,7 @@ export class TestScenariosComponent implements OnInit {
   length: number;
   testScenarios: ScenarioModel[];
   created: boolean;
-  projectId: any;
-  testScenariosPage: PageModel<any>;
-  // testScenarios = [
-  //   {id: 1, name: 'Name 1', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true},
-  //   {id: 2, name: 'Name 2', user: {id: 13, email: 'clayn130@gmail.com'}, description: 'Description 1', active: false},
-  //   {id: 3, name: 'Name 3', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: false},
-  //   {id: 4, name: 'Name 4', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true}];
-  constructor(private router: Router, public activatedRoute: ActivatedRoute, private scService: ScenarioService) {
-
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private scService: ScenarioService) {
   }
 
   ngOnInit(): void {
@@ -48,15 +40,12 @@ export class TestScenariosComponent implements OnInit {
     });
     this.dataSource.sort = this.sort;
   }
-
   deleteScenario(){
     const testScenarioId = this.selectedScenario.testScenarioId;
     this.scService.deleteScenario(testScenarioId).subscribe(value => {
       console.log(this.selectedScenario.testScenarioId);
       const delEl = this.testScenarios.find(sc => sc.testScenarioId === testScenarioId);
-      console.log(delEl);
       this.testScenarios.splice(this.testScenarios.indexOf(delEl), 1);
-      console.log(this.testScenarios);
       this.selectedScenario = null;
       this.length -= 1;
       this.dataSource = new MatTableDataSource<any>(this.testScenarios);
@@ -70,8 +59,7 @@ export class TestScenariosComponent implements OnInit {
 
   clearQuery(): void{
     this.router.navigate([], {relativeTo: this.activatedRoute,
-      queryParams: {searchBy: null},
-      queryParamsHandling: 'merge'});
+      queryParams: {searchBy: null}, queryParamsHandling: 'merge'});
   }
   setSearch(field: string){
     this.searchColumns.selected = this.searchColumns.selected === field ? '' : field;

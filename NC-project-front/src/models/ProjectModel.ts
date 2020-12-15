@@ -1,4 +1,4 @@
-import {UserDataModel} from "./UserDataModel";
+import {UserModel} from './UserModel';
 
 export class ProjectModel{
   projectId?: number;
@@ -6,7 +6,7 @@ export class ProjectModel{
   link?: string;
   date?: Date;
   role?: string;
-  user?: UserDataModel;
+  user: UserModel;
   archived?: boolean;
   edit?: boolean;
 }

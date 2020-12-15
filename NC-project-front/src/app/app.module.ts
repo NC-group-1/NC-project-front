@@ -23,6 +23,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { CompoundListComponent } from './components/compound-list/compound-list.component';
 import { CompoundEditComponent } from './components/compound-edit/compound-edit.component';
 import {MatSortModule} from '@angular/material/sort';
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import { CreateProjectComponent } from './components/create-project/create-project.component';
 import { ListProjectComponent } from './components/list-project/list-project.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
@@ -34,17 +35,15 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
+import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
 import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {DragDropModule} from "@angular/cdk/drag-drop";
-import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
-import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
-import {MatPaginatorModule} from "@angular/material/paginator";
-import { DetailsComponent } from './components/details/details.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 import {WebSocketService} from './services/webSocket/web-socket.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
+import { TestCaseViewComponent } from './components/test-case/test-case-view/test-case-view.component';
 
 @NgModule({
   declarations: [
@@ -70,31 +69,32 @@ import {CreateScenarioComponent} from "./components/create-scenario/create-scena
     DataSetDetailsComponent,
     TestScenariosComponent,
     TestCaseComponent,
-    CreateScenarioComponent,
-    DetailsComponent
+    ListDataSetComponent,
+    DataSetDetailsComponent,
+    TestCaseViewComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    FormsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    DragDropModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTooltipModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatExpansionModule,
-    MatProgressBarModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        FormsModule,
+        MatPaginatorModule,
+        MatSortModule,
+        DragDropModule,
+        MatTableModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatExpansionModule,
+        MatProgressBarModule
     ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

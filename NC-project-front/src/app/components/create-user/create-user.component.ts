@@ -1,40 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
 import {HttpClientService} from '../../services/users/http-client.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthenticationService} from "../../services/auth/authentication.service";
-import {UserListModel} from "../../../models/UserListModel";
-import {ResetPasswordService} from "../../services/reset-pass/reset-password.service";
-import {MatSelectChange} from "@angular/material/select";
-import {state, style, trigger} from "@angular/animations";
 
 interface Role {
   role: string;
 }
 
-declare var $: any;
-
 @Component({
   selector: 'app-create-user',
   templateUrl: './create-user.component.html',
-  styleUrls: ['./create-user.component.scss'],
-  animations: [
-    trigger('invalidForm', [
-      state('invalid', style({
-        animation: 'shake 0.82s cubic-bezier(.36,.07,.19,.97) both',
-        transform: 'translate3d(0, 0, 0)',
-        perspective: '1000px',
-        border: '2px solid #dc3545'
-      })),
-      state('', style({}))
-    ])
-  ],
+  styleUrls: ['./create-user.component.scss']
 })
 export class CreateUserComponent implements OnInit {
 
   role: string;
-  hasCreatingPermission: boolean;
-  user: UserListModel;
 
   userFormGroup = new FormGroup({
     emailUser: new FormControl('', [Validators.required, Validators.email]),
@@ -50,49 +30,23 @@ export class CreateUserComponent implements OnInit {
   displayedColumns: string[] = ['role', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth'];
   dataSource = this.users;
 
-  constructor(private activatedRoute: ActivatedRoute,
-              private httpClientService: HttpClientService,
-              private router: Router,
-              private auth: AuthenticationService,
-              private passwordService: ResetPasswordService) {
+  constructor(private httpClientService: HttpClientService, private router: Router) {
     this.role = '';
-    this.activatedRoute.params.subscribe(() => {
-      this.user = this.activatedRoute.snapshot.data.user;
-      if (auth.getRole().includes('admin'))
-        this.hasCreatingPermission = true;
-    });
   }
 
-  setRole(event: MatSelectChange) {
-    // console.log(event.source.triggerValue);
-    this.role = event.source.triggerValue;
+  setRole(role: string) {
+    this.role = role;
   }
 
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-  }
-
-  sendCode(email: string): void {
-      this.auth.register({
-        email: email,
-        role: this.role,
-      }).subscribe(() => {
-          this.passwordService.sendCodeOnEmail(email).subscribe(
-            () => {
-            },
-            error => console.log(error)
-          );
-        }, error => console.log(error)
+  createUser(emailUser: string) {
+    this.httpClientService.createUser(emailUser, this.role)
+      .subscribe(
+        response => console.log(response),
+        error => console.log(error)
       );
-      this.router.navigate(['listUsers'], {queryParams: {created: true}});
-  }
 
-
-  closeAlert(): void {
-    $('.alert').alert('close');
-  }
-
-  modalShow() {
     this.router.navigateByUrl('/listUsers');
   }
 }

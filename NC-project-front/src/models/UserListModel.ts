@@ -1,5 +1,5 @@
 export class UserListModel {
-  userId: number = 1;
+  user_id: number = 1;
   name?: string;
   surname?: string;
   email?: string;

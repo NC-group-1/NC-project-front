@@ -1,24 +1,18 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {HttpClientService} from '../../services/projects/http-client.service';
 import {ProjectModel} from '../../../models/ProjectModel';
 import {PageEvent} from '@angular/material/paginator';
 import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
-import {ActivatedRoute, Router} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {MatSort} from "@angular/material/sort";
-import {UserDataModel} from "../../../models/UserDataModel";
-
-declare var $: any;
 
 @Component({
   selector: 'app-list-project',
   templateUrl: './list-project.component.html',
   styleUrls: ['./list-project.component.scss']
 })
-export class ListProjectComponent implements OnInit {
+export class ListProjectComponent implements OnInit{
   selectedProject: string;
-  displayedColumns: string[] = ['project_id', 'name', 'link', 'date', 'role', 'archived', 'editBtn'];
+  displayedColumns: string[] = ['project_id', 'radioBtn', 'name', 'link', 'date', 'role', 'archived', 'editBtn'];
   responseProject?: ProjectResponseModel;
   listProjects: ProjectModel[];
   dataSource: any;
@@ -29,37 +23,25 @@ export class ListProjectComponent implements OnInit {
   filter = '';
   orderBy = '';
   order = '';
-  created: boolean;
-  projectForm: FormGroup;
 
-  @ViewChild(MatSort) sort: MatSort;
-
-  constructor(private httpClientService: HttpClientService,
-              private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private formBuilder: FormBuilder) {
-  }
-
-  ngOnInit(): void {
-    this.projectForm = this.formBuilder.group({
-      orderBy: new FormControl('name'),
-      order: new FormControl('ASC')
-    });
-    this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
+  constructor(private httpClientService: HttpClientService) {
     this.selectedProject = '';
     this.listProjects = [];
     this.dataSource = new MatTableDataSource();
+  }
+
+  ngOnInit(): void {
     this.reloadProjects();
   }
 
   reloadProjects(): void {
-    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex + 1, this.filter, this.projectForm.value.orderBy, this.projectForm.value.order)
+    console.log(this.orderBy);
+    this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order)
       .subscribe(
         response => {
           // console.log(JSON.stringify(response));
           this.responseProject = response;
           this.listProjects = response.list;
-          console.log(this.listProjects);
           this.dataSource = new MatTableDataSource(this.listProjects);
           this.length = response.size;
           // console.log(JSON.stringify(this.listUsers));
@@ -70,12 +52,6 @@ export class ListProjectComponent implements OnInit {
 
   applyFilter(event: Event) {
     this.filter = (event.target as HTMLInputElement).value;
-    this.reloadProjects();
-  }
-
-  sortData() {
-    this.projectForm.value.order = this.sort.direction.toUpperCase();
-    this.projectForm.value.orderBy = this.sort.active;
     this.reloadProjects();
   }
 
@@ -94,7 +70,7 @@ export class ListProjectComponent implements OnInit {
   change(index: number) {
     this.listProjects[index].edit = !this.listProjects[index].edit;
 
-    if (!this.listProjects[index].edit) {
+    if(!this.listProjects[index].edit) {
       this.httpClientService.updateProject(this.listProjects[index])
         .subscribe(
           response => console.log(response),
@@ -109,13 +85,10 @@ export class ListProjectComponent implements OnInit {
     this.reloadProjects();
   }
 
-  // sortData(orderBy: string) {
-  //   this.orderBy = orderBy;
-  //   this.order == '' ? this.order = 'DESC' : this.order = '';
-  //   this.reloadProjects();
-  // }
-
-  closeAlert(): void {
-    $('.alert').alert('close');
+  sortData(orderBy: string) {
+    this.orderBy = orderBy;
+    this.order == '' ? this.order = 'DESC' : this.order = '';
+    this.reloadProjects();
   }
+
 }

@@ -18,7 +18,7 @@ export class AuthenticationService {
   }
 
   login(user: UserModel): Observable<TokenModel> {
-    // console.log(user);
+    console.log(user);
     return this.http.post<TokenModel>(apiPath + 'user/auth/', user)
       .pipe(tap(({token}) => {
         this.isAuth.next(true);
@@ -26,9 +26,8 @@ export class AuthenticationService {
         this.setToken('Bearer ' + token);
       }));
   }
-
   register(user: UserModel): Observable<any> {
-    return this.http.post(apiPath + 'user', user);
+    return this.http.post(apiPath + 'user/', user);
   }
 
   setToken(token: string): void {
@@ -49,12 +48,10 @@ export class AuthenticationService {
     const parse = JSON.parse(s);
     return parse.role;
   }
-
   getId(): string {
     const temp = this.token.toString().substr(8);
     const s = atob(temp.split('.')[1]);
     const parse = JSON.parse(s);
-    console.log(parse.userId);
     return parse.userId;
   }
 

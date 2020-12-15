@@ -9,4 +9,5 @@ export class ActionInstanceModel{
   datasetId: number;
   parameterKey?: ParameterKey;
   value?: any;
+  dataset?: string;
 }

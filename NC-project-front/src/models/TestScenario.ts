@@ -7,8 +7,7 @@ export class ScenarioModel{
   testScenarioId?: number;
   name: string;
   description: string;
-  user? : UserDataModel;
-  project? : ProjectModel;
-  listActionCompoundId?: number[];
-  actions: ActionOfCompound[];
+  user?: UserDataModel;
+  project?: ProjectModel;
+  actions?: ActionOfCompound[];
 }

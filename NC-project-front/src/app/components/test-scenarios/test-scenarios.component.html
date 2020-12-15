@@ -92,7 +92,7 @@
       </table>
       <mat-paginator [pageSizeOptions]="[10, 20, 30]" pageSize="{{size}}" length="{{length}}"
                      (page)="pageParamsChange($event)" showFirstLastButtons></mat-paginator>
-            <a class="btn btn-nc m-3 px-5" [routerLink]="['../', 'new',activatedRoute.snapshot.paramMap.get('projectId')]">New</a>
+      <button class="btn btn-nc m-3 px-5" routerLink="../new">New</button>
     </div>
   </div>
   <div class="col mr-5">

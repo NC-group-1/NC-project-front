@@ -65,12 +65,12 @@ export class ProfileComponent implements OnInit {
     this.setEditFalse();
     this.profileService.updateUserProfile(
       {
-        id: this.user.id,
+        userId: this.user.userId,
         name: this.form.value.name,
         surname: this.form.value.surname,
         aboutMe: this.form.value.aboutMe,
       }).subscribe(value =>
-      this.profileService.getUserById(this.user.id)
+      this.profileService.getUserById(this.user.userId)
         .subscribe(value1 => this.user = value1));
   }
 }
