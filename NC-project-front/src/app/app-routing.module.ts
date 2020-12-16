@@ -151,7 +151,7 @@ const routes: Routes = [
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       },
       {
-        path: 'history',
+        path: 'history/:projectId',
         component: TestCaseHistoryComponent
       },
       {
