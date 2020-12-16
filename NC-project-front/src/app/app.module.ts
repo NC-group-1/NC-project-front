@@ -44,6 +44,7 @@ import {MatPaginatorModule} from "@angular/material/paginator";
 import { DetailsComponent } from './components/details/details.component';
 import {WebSocketService} from './services/webSocket/web-socket.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { TestCaseHistoryComponent } from './components/test-case-history/test-case-history.component';
 import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
 
 @NgModule({
@@ -70,6 +71,9 @@ import {CreateScenarioComponent} from "./components/create-scenario/create-scena
     DataSetDetailsComponent,
     TestScenariosComponent,
     TestCaseComponent,
+    ListDataSetComponent,
+    DataSetDetailsComponent,
+    TestCaseHistoryComponent,
     CreateScenarioComponent,
     DetailsComponent
   ],
