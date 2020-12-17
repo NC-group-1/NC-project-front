@@ -8,7 +8,6 @@ export class DetailsTestCaseModel{
   creator: UserDataModel;
   starter: UserDataModel;
   status: string;
-  numberOfActions: number;
   startDate: string;
   finishDate: string;
   project: ProjectModel;

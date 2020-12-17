@@ -8,14 +8,15 @@ import {DetailsTestCaseModel} from "../../../models/DetailsTestCaseModel";
 import {ActionInstRun} from "../../../models/ActionInstRun";
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {TestCaseService} from "../../services/testCase/test-case.service";
+import {TestCaseProgressModel} from "../../../models/TestCaseProgressModel";
 
-export interface TestCase {
-  id: number;
-  name: string;
-  dataset: string;
-  result: string;
-  status: string;
-}
+// export interface TestCase {
+//   id: number;
+//   name: string;
+//   dataset: string;
+//   result: string;
+//   status: string;
+// }
 
 @Component({
   selector: 'app-details',
@@ -29,7 +30,7 @@ export interface TestCase {
     ]),
   ],
 })
-export class DetailsComponent implements OnInit,AfterViewInit {
+export class DetailsComponent implements OnInit {
   // actionInst: TestCase[] = [
   //   {id: 1, name: 'Compound 1', dataset: 'Dataset 1', result: 'Result 1', status: 'failed'},
   //   {id: 2, name: 'Action 2', dataset: 'Dataset 3', result: 'Result 5', status: 'passed'},
@@ -39,27 +40,29 @@ export class DetailsComponent implements OnInit,AfterViewInit {
   //   {id: 6, name: 'Compound 3', dataset: 'Dataset 2', result: 'Result 4', status: 'passed'},
   //   {id: 7, name: 'Action 6', dataset: 'Dataset 2', result: 'Result 4', status: 'passed'},
   //   {id: 8, name: 'Action 4', dataset: 'Dataset 7', result: 'Result 3', status: 'failed'}];
-  // testCase: DetailsTestCaseModel;
-  actionInst: ActionInstRun[];
   testCase: DetailsTestCaseModel;
   size: number;
-  dataSource: MatTableDataSource<any>;
-  displayedColumns: string[] = ['name', 'dataset', 'status'];
-  expandedElement: TestCase | null;
+  dataSource: any;
+  columnToDisplay = ['actionName','dataSetName', 'status'];
+  expandedElement:  ActionInstRun[] | null;
   length: number;
   stompCase;
   username: string;
-  detailsProgress: ActionInstRun[] = [];
+  detailsProgress: ActionInstRun[] ;
   id: number;
+  tcProgress: TestCaseProgressModel[] = [];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
 
   constructor(private router: Router,
               private auth: AuthenticationService,
               public activatedRoute: ActivatedRoute,
               private webSocketService: WebSocketService,
               private tcService: TestCaseService) {
-    this.id = 1; //***********************************************************************************//
+    this.id = 2; //***********************************************************************************//
+    this.dataSource = new MatTableDataSource();
+    this.detailsProgress = [];
     this.tcService.getTestCaseDetailsById(this.id)
       .subscribe(
         value => this.testCase = value
@@ -68,23 +71,29 @@ export class DetailsComponent implements OnInit,AfterViewInit {
     this.stompCase.connect({}, () => {
       this.tcService.getAllActionInstRun(this.id).subscribe(value => {
         console.log(value);
-        this.stompCase.send('/api/test-case/actionInst/tc', {}, +this.id);
-        this.stompCase.subscribe('/topic/actionInst/'+this.id, response => {
-          console.log(JSON.parse(response.body));
+        this.dataSource = new MatTableDataSource(value);
+        this.dataSource.paginator = this.paginator;
+        this.subscribeOnTcProgress(this.id);
+        this.stompCase.send('/api/test-case/actionInst/tc', {}, + this.id);
+        this.stompCase.subscribe('/topic/actionInst/'+ this.id, response => {
+          // console.log(JSON.parse(response.body));
           this.detailsProgress.push(JSON.parse(response.body));
         });
       });
     });
   }
 
-
-  ngAfterViewInit(){
-    this.dataSource.paginator = this.paginator;
+  private subscribeOnTcProgress(id: number){
+    this.stompCase.send('/app/progress/tc', {}, id);
+    this.stompCase.subscribe('/topic/progress/' + id, progress => {
+      console.log(progress);
+      this.tcProgress.push(JSON.parse(progress.body));
+    });
   }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(() => {
-      this.dataSource = new MatTableDataSource<any>(this.actionInst);
+      this.dataSource = new MatTableDataSource(this.detailsProgress);
     });
   }
 
