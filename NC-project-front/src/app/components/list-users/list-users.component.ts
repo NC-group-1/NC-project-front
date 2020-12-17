@@ -5,7 +5,12 @@ import {PageEvent} from '@angular/material/paginator';
 import {HttpClientService} from '../../services/users/http-client.service';
 import {UserResponseModel} from '../../../models/UserResponseModel';
 import {UserListModel} from '../../../models/UserListModel';
-import {Sort} from '@angular/material/sort';
+import {ActivatedRoute} from "@angular/router";
+import {AuthenticationService} from "../../services/auth/authentication.service";
+import {MatSort} from "@angular/material/sort";
+import {FormBuilder, FormControl} from "@angular/forms";
+
+declare var $: any;
 
 @Component({
   selector: 'app-list-project',
@@ -15,10 +20,13 @@ import {Sort} from '@angular/material/sort';
 
 export class ListUsersComponent implements OnInit {
   selectedUser: string;
+  hasSearchingPermission: boolean;
   displayedColumns: string[] = ['user_id', 'select', 'name', 'surname', 'email', 'role', 'activated', 'editBtn'];
   responseUser?: UserResponseModel;
   listUsers: UserListModel[];
+  user: UserListModel;
   dataSource: any;
+  nameEditing: boolean;
   length = 0;
   pageSize = 5;
   pageIndex = 0;
@@ -26,22 +34,39 @@ export class ListUsersComponent implements OnInit {
   filter = '';
   orderBy = '';
   order = '';
+  created: boolean;
+  userForm: any;
 
   selection = new SelectionModel<UserListModel>(true, []);
 
-  constructor(private httpClientService: HttpClientService) {
-    this.selectedUser = '';
-    this.listUsers = [];
-    this.dataSource = new MatTableDataSource();
+  @ViewChild(MatSort) sort: MatSort;
+
+  constructor(private activatedRoute: ActivatedRoute,
+              private httpClientService: HttpClientService,
+              private auth: AuthenticationService,
+              private formBuilder: FormBuilder) {
+    this.activatedRoute.params.subscribe(param => {
+      this.user = this.activatedRoute.snapshot.data.user;
+      if (!auth.getRole().includes('engineer')){
+        this.hasSearchingPermission = true;
+      }
+    });
   }
 
   ngOnInit(): void {
+    this.selectedUser = '';
+    this.listUsers = [];
+    this.userForm = this.formBuilder.group({
+      orderBy: new FormControl('name'),
+      order: new FormControl('ASC')
+    });
+    this.created = !!this.activatedRoute.snapshot.queryParamMap.get('created');
+    this.dataSource = new MatTableDataSource();
     this.reloadUsers();
   }
 
   reloadUsers(): void {
-    console.log(this.orderBy);
-    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order)
+    this.httpClientService.getPaginatedUsers(this.pageSize, this.pageIndex + 1, this.filter, this.userForm.value.orderBy, this.userForm.value.order)
       .subscribe(
         response => {
           // console.log(JSON.stringify(response));
@@ -49,20 +74,21 @@ export class ListUsersComponent implements OnInit {
           this.listUsers = response.list;
           this.dataSource = new MatTableDataSource(this.listUsers);
           this.length = response.size;
-          // console.log(JSON.stringify(this.listUsers));
         },
         error => console.log(error)
       );
   }
 
-  // applyFilter(event: Event) {
-  //   const filterValue = (event.target as HTMLInputElement).value;
-  //   this.dataSource.filter = filterValue.trim().toLowerCase();
-  // }
 
   applyFilter(event: Event) {
     this.filter = (event.target as HTMLInputElement).value;
     // this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.reloadUsers();
+  }
+
+  sortData(): void{
+    this.userForm.value.order = this.sort.direction.toUpperCase();
+    this.userForm.value.orderBy = this.sort.active;
     this.reloadUsers();
   }
 
@@ -85,10 +111,6 @@ export class ListUsersComponent implements OnInit {
 
   updateSurname(index: number, surname: string) {
     this.listUsers[index].surname = surname;
-  }
-
-  updateEmail(index: number, email: string) {
-    this.listUsers[index].email = email;
   }
 
   change(index: number) {
@@ -119,7 +141,7 @@ export class ListUsersComponent implements OnInit {
     if (!row) {
       return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.user_id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.userId + 1}`;
   }
 
   onPaginationChange(pageEvent: PageEvent): void {
@@ -128,9 +150,13 @@ export class ListUsersComponent implements OnInit {
     this.reloadUsers();
   }
 
-  sortData(orderBy: string) {
-    this.orderBy = orderBy;
-    this.order === '' ? this.order = 'DESC' : this.order = '';
-    this.reloadUsers();
+  // sortData(orderBy: string) {
+  //   this.orderBy = orderBy;
+  //   this.order === '' ? this.order = 'DESC' : this.order = '';
+  //   this.reloadUsers();
+  // }
+
+  closeAlert(): void {
+    $('.alert').alert('close');
   }
 }

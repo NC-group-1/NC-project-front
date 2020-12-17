@@ -2,13 +2,16 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {PageEvent} from '@angular/material/paginator';
+import {ActivatedRoute, Router} from '@angular/router';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import {TestCaseService} from '../../services/test-case/test-case.service';
+import {TestCaseService} from '../../services/list-test-case/list-test-case.service';
+import {AuthenticationService} from '../../services/auth/authentication.service';
 import {TestCaseResponseModel} from '../../../models/TestCaseResponseModel';
 import {TestCaseModel} from '../../../models/TestCaseModel';
 import {Sort} from '@angular/material/sort';
 import {ThemePalette} from '@angular/material/core';
 import {MatSort} from '@angular/material/sort';
+import {UserDataModel} from "../../../models/UserDataModel";
 import * as moment from 'moment';
 
 
@@ -30,6 +33,8 @@ export class ListTestCaseComponent implements OnInit {
   responseTestCase?: TestCaseResponseModel;
   listTestCase: TestCaseModel[];
   dataSource: any;
+  projectId: number;
+  authorizedUserId: number;
   length = 0;
   pageSize = 10;
   pageIndex = 0;
@@ -62,11 +67,14 @@ export class ListTestCaseComponent implements OnInit {
   ];
 
 
-  constructor(private testCaseService: TestCaseService) {
+  constructor(private testCaseService: TestCaseService, private auth: AuthenticationService, public router: ActivatedRoute) {
     this.minDate = moment().add(1,'day').format('YYYY-MM-DDTHH:mm');
     this.selectedTestCase = "";
     this.listTestCase = [];
     this.dataSource = new MatTableDataSource();
+    this.projectId = parseInt(this.router.snapshot.paramMap.get('projectId'),10);
+    this.authorizedUserId = parseInt(auth.getId(), 10);
+
   }
 
   ngOnInit(): void {
@@ -74,7 +82,7 @@ export class ListTestCaseComponent implements OnInit {
   }
 
   reloadTestCases(): void {
-    this.testCaseService.getPaginatedTestCases(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order)
+    this.testCaseService.getPaginatedTestCases(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order, this.projectId)
       .subscribe(
         response => {
           this.responseTestCase = response;
@@ -102,6 +110,19 @@ export class ListTestCaseComponent implements OnInit {
     this.selection.selected
       .forEach(element => {
           this.testCaseService.deleteTestCase(element.id)
+            .subscribe(
+              response => {console.log(response);
+              this.reloadTestCases();this.selection.clear();},
+              error => console.log(error)
+            );
+        }
+      );
+  }
+
+  run(){
+    this.selection.selected
+      .forEach(element => {
+          this.testCaseService.runTestCase(element.id, this.authorizedUserId)
             .subscribe(
               response => {console.log(response);
               this.reloadTestCases();this.selection.clear();},

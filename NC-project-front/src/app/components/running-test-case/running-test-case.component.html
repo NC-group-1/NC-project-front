@@ -1,19 +1,20 @@
-<div class="mr-5">
+<div>
   <div class="bg-white shadow-lg px-5 py-2">
     <nav mat-tab-nav-bar>
-      <a mat-tab-link [routerLink]="['../list']">Test Scenarios</a>
-      <a mat-tab-link [routerLink]="['../list']">Test Cases</a>
-      <a mat-tab-link [routerLink]="['../runningList']" [active]="true">Running Test Cases</a>
+      <a mat-tab-link [routerLink]="['/testScenarios',router.snapshot.paramMap.get('projectId')]">Test Scenarios</a>
+      <a mat-tab-link [routerLink]="['/testCase/list',router.snapshot.paramMap.get('projectId')]" >Test Cases</a>
+      <a mat-tab-link [routerLink]="['/testCase/runningList',router.snapshot.paramMap.get('projectId')]" [active]="true">Running Test Cases</a>
       <a mat-tab-link [routerLink]="['../runningList']">History Test Cases</a>
     </nav>
 
     <div class="example-container">
-      <h2 class="p-0">Running test case</h2>
+      <h2 class="p-0 header mt-3">Running test case</h2>
     </div>
 
     <div class="form-group">
-      <input class="form-control float-left col-4 input-sm mt-2" id="input" type="text" #input
-         matInput placeholder="Search by name..." (keyup)="applyFilter($event)">
+      <label for="input">Find running test case:</label>
+      <input type="text" class="form-control" style="width:400px" #input
+          placeholder="Search by name..." (keyup)="applyFilter($event)">
     </div>
 
     <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
@@ -25,19 +26,19 @@
              </ng-container>
 
              <ng-container matColumnDef="name">
-               <th mat-header-cell style="width: 25%;" *matHeaderCellDef mat-sort-header>Name</th>
-               <td mat-cell class="w3-link w3-text-blue" style="cursor: pointer;" *matCellDef="let element" [matTooltip]="element.description"> {{element.name}} </td>
+               <th mat-header-cell style="width: 25%;" class="pl-3" *matHeaderCellDef mat-sort-header>Name</th>
+               <td mat-cell class="w3-link w3-text-blue pl-3" style="cursor: pointer;" *matCellDef="let element" [matTooltip]="element.description"> {{element.name}} </td>
              </ng-container>
 
-             <ng-container matColumnDef="starter_id">
+             <ng-container matColumnDef="starter">
                <th mat-header-cell style="width: 25%;" *matHeaderCellDef>Started by</th>
-               <td mat-cell *matCellDef="let element"> User{{element.starter_id}} </td>
+               <td mat-cell *matCellDef="let element"> {{element.user.name + ' ' + element.user.surname}} </td>
              </ng-container>
 
              <ng-container matColumnDef="watcher_numb">
                <th mat-header-cell style="width: 25%;" *matHeaderCellDef>Watcher</th>
                <td mat-cell *matCellDef="let element" style="cursor: pointer; font-style: italic;"
-               (click)="reloadWatchers(element.test_case_id); expandedElement = expandedElement === element ? null : element"> List of {{element.watcher_numb}} </td>
+               (click)="reloadWatchers(element.id); expandedElement = expandedElement === element ? null : element"> List of {{element.watcher_numb}} </td>
              </ng-container>
 
              <ng-container matColumnDef="status">
@@ -47,12 +48,12 @@
 
              <ng-container matColumnDef="stop/run">
                <th mat-header-cell style="width: 7%;" *matHeaderCellDef >Stop/Run</th>
-               <td mat-cell *matCellDef="let element;">
-                 <div *ngIf="element.status === 'Stopped'">
-                    <mat-slide-toggle color='primary' [checked]="false" (change)="updateStatus($event, element.test_case_id); onChangeStatus(element.test_case_id)" ></mat-slide-toggle>
+               <td mat-cell style="padding-left: 1%;" *matCellDef="let element;">
+                 <div *ngIf="element.status === 'STOPPED'">
+                    <mat-slide-toggle color='primary' [checked]="false" (change)="updateStatus($event, element.id); onChangeStatus(element.id)" ></mat-slide-toggle>
                 </div>
-                <div *ngIf="element.status != 'Stopped'">
-                   <mat-slide-toggle color='primary' [checked]="true" (change)="updateStatus($event, element.test_case_id); onChangeStatus(element.test_case_id)" ></mat-slide-toggle>
+                <div *ngIf="element.status != 'STOPPED'">
+                   <mat-slide-toggle color='primary' [checked]="true" (change)="updateStatus($event, element.id); onChangeStatus(element.id)" ></mat-slide-toggle>
                </div>
                </td>
              </ng-container>
@@ -113,7 +114,7 @@
                 </mat-form-field>
                 <a  class="btn btn-nc ml-3 px-3" color='primary'
                    style="background-color: #0275B1;"
-                   (click)="addWatcher(element.test_case_id) ? openSnackBar('This user has been assigned as a watcher!','success', '') : openSnackBar('This user is already assigned or does not exist!','error', '')">Add</a>
+                   (click)="addWatcher(element.id) ? openSnackBar('This user has been assigned as a watcher!','success', '') : openSnackBar('This user is already assigned or does not exist!','error', '')">Add</a>
 
             </div>
           </td>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient,HttpHeaders} from '@angular/common/http';
 import {TestCaseModel} from '../../../models/TestCaseModel';
 import {UserListModel} from '../../../models/UserListModel';
+import {UserDataModel} from '../../../models/UserDataModel';
 import {WatcherModel} from '../../../models/WatcherModel';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
@@ -17,9 +18,9 @@ export class RunningTestCaseService {
 
   constructor(private httpClient: HttpClient, private router: Router) {}
 
-  getPaginatedRunningTestCases(pageSize: number, pageIndex: number, filter: string, orderBy: string, order: string): Observable<TestCaseResponseModel>{
+  getPaginatedRunningTestCases(pageSize: number, pageIndex: number, filter: string, orderBy: string, order: string, projectId: number): Observable<TestCaseResponseModel>{
     return this.httpClient.get<TestCaseResponseModel>(
-      apiPath + 'api/running-test-case/list'
+      apiPath + 'api/ncp/running-test-case/list/' + projectId
       + '?pageSize=' + pageSize
       + '&pageIndex=' + pageIndex
       + '&filter=' + filter
@@ -32,23 +33,23 @@ export class RunningTestCaseService {
     const httpOption = {
       headers:new HttpHeaders({"Content-Type":"application/json"})
     }
-    return this.httpClient.post(apiPath + 'api/running-test-case', JSON.stringify(testCase),httpOption);
+    return this.httpClient.put(apiPath + 'api/ncp/running-test-case/edit', JSON.stringify(testCase),httpOption);
   }
 
-  getWatcherByTestCaseId(test_case_id: number): Observable<UserResponseModel>{
-    return this.httpClient.get<UserResponseModel>(
-      apiPath + 'api/running-test-case/?test_case_id=' + test_case_id)
+  getWatcherByTestCaseId(test_case_id: number): Observable<UserListModel[]>{
+    return this.httpClient.get<UserListModel[]>(
+      apiPath + 'api/ncp/running-test-case/?test_case_id=' + test_case_id)
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 
-  getSearchedUsers(searchStr: string): Observable<UserResponseModel>{
-    return this.httpClient.get<UserResponseModel>(
-      apiPath + 'api/running-test-case/users/?name=' + searchStr)
+  getSearchedUsers(searchStr: string): Observable<UserListModel[]>{
+    return this.httpClient.get<UserListModel[]>(
+      apiPath + 'api/ncp/running-test-case/users/?name=' + searchStr)
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 
   postWatcher(watcher: WatcherModel) {
-    return this.httpClient.post(apiPath + 'api/running-test-case/add-watcher', watcher);
+    return this.httpClient.post(apiPath + 'api/ncp/running-test-case/add-watcher', watcher);
   }
 
 }

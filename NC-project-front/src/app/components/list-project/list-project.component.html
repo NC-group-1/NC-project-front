@@ -1,103 +1,119 @@
-<div class="form">
-  <p class="header">List of project</p>
-  <mat-form-field>
-    <mat-label>Filter</mat-label>
-    <input #input (keyup)="applyFilter($event)" matInput placeholder="Search">
-  </mat-form-field>
-
-  <mat-radio-group
-    aria-labelledby="example-radio-group-label"
-    class="example-radio-group"
-    [(ngModel)]="selectedProject">
-    <table width="100%" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-      <ng-container matColumnDef="project_id">
-        <th [hidden]="true" mat-header-cell *matHeaderCellDef></th>
-        <td [hidden]="true" mat-cell *matCellDef="let element"><p>{{element.project_id}}</p></td>
-      </ng-container>
-
-      <ng-container matColumnDef="radioBtn">
-        <th width="5%" mat-header-cell *matHeaderCellDef></th>
-        <td mat-cell *matCellDef="let element"><mat-radio-button class="w3-margin-left example-radio-button" [value]="element.name"></mat-radio-button></td>
-      </ng-container>
-
-      <ng-container matColumnDef="name">
-        <th width="30%" mat-header-cell *matHeaderCellDef (click)="sortData('name')"> Name </th>
-        <td mat-cell *matCellDef="let element;let i = index;">
-          <p [hidden]="element.edit">{{element.name}}</p>
-
-          <div [hidden]="!element.edit" style="width: 75%">
-            <mat-form-field>
-              <mat-label>Edit</mat-label>
-              <input #inputName matInput placeholder="Element name" [value]="element.name" (change)="updateName(i, inputName.value)">
-            </mat-form-field>
-          </div>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="link">
-        <th width="25%" mat-header-cell *matHeaderCellDef> Link </th>
-        <td mat-cell *matCellDef="let element;let i = index;">
-          <p [hidden]="element.edit">{{element.link}}</p>
-
-          <div [hidden]="!element.edit" style="width: 75%">
-            <mat-form-field>
-              <mat-label>Edit</mat-label>
-              <input #inputLink matInput placeholder="Element link" [value]="element.link" (change)="updateLink(i, inputLink.value)">
-            </mat-form-field>
-          </div>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="date">
-        <th width="15%" mat-header-cell *matHeaderCellDef (click)="sortData('data')"> Date </th>
-        <td mat-cell *matCellDef="let element"> {{element.date | date:'short'}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="role">
-        <th width="10%" mat-header-cell *matHeaderCellDef> Creator </th>
-        <td mat-cell *matCellDef="let element"> {{element.role}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="archived">
-        <th width="30%" mat-header-cell *matHeaderCellDef> Archived </th>
-        <td mat-cell *matCellDef="let element">
-          <p [hidden]="element.edit">{{element.archived ? 'Archived': 'Not archived'}}</p>
-
-          <div [hidden]="!element.edit" style="width: 75%">
-            <mat-form-field>
-              <mat-label>Select an option</mat-label>
-              <mat-select [(value)]="element.archived">
-                <mat-option [value]="option" *ngFor="let option of [true, false]">{{ option ? 'Archived': 'Not archived' }}</mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="editBtn">
-        <th width="5%" mat-header-cell *matHeaderCellDef> Edit </th>
-        <td mat-cell *matCellDef="let element; let i =index">
-          <button class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white" (click)="change(i)"><i class="fa fa-pencil"></i></button>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-
-      <tr class="mat-row" *matNoDataRow>
-        <td class="mat-cell" colspan="7">No data matching the filter "{{input.value}}"</td>
-      </tr>
-
-    </table>
-  </mat-radio-group>
-  <br />
-  <mat-paginator [pageSizeOptions]="pageSizeOptions"
-                 [length]="length"
-                 [pageSize]="pageSize"
-                 (page)="onPaginationChange($event)" showFirstLastButtons>
-  </mat-paginator>
-  <div class="w3-bar">
-    <a [routerLink]="['/createProject']" class="w3-button w3-round-xlarge w3-left" style="background-color: #0275B1; color: white">+Add</a>
-    <button class="w3-button w3-round-xlarge w3-right" style="background-color: #0275B1; color: white" (click)="open()">Open</button>
-  </div>
+<!--<div class="row">-->
+<!--  <div class="col-8">-->
+<div *ngIf="created" class="alert alert-success alert-dismissible fade show" role="alert">
+  Project was added successfully!
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeAlert()">
+    <span aria-hidden="true">&times;</span>
+  </button>
 </div>
+    <div class="bg-white shadow-lg p-5">
+      <form [formGroup]="projectForm" name="projectForm">
+      <div class="example-container">
+        <h2 class="p-0 header">List of projects</h2>
+      </div>
+
+      <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
+
+          <div class="form-group">
+            <label>Find project:</label>
+            <input type="text" class="form-control" style="width:400px" #input (keyup)="applyFilter($event)"
+                   placeholder="Search by name and link...">
+          </div>
+
+        <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData()">
+
+            <ng-container matColumnDef="project_id">
+              <th [hidden]="true" mat-header-cell *matHeaderCellDef></th>
+              <td [hidden]="true" mat-cell *matCellDef="let element"><p>{{element.project_id}}</p></td>
+            </ng-container>
+
+            <ng-container matColumnDef="name">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 25%;"> Name</th>
+              <td routerLink="/testCase/list" mat-cell *matCellDef="let element;let i = index;">
+                <p [hidden]="element.edit">
+                  <a href="#" class="stretched-link" style="position: relative;" (click)="open()">
+                    {{element.name}}
+                  </a>
+                </p>
+
+                <div [hidden]="!element.edit" style="width: 75%">
+                  <div class="input-group w-50">
+                    <input #inputName type="text" class="form-control" (change)="updateName(i, inputName.value)"
+                           [value]="element.name" placeholder="Element name">
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="link">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 25%;"> Link</th>
+              <td mat-cell *matCellDef="let element;let i = index;">
+                <p [hidden]="element.edit">{{element.link}}</p>
+
+                <div [hidden]="!element.edit" style="width: 75%">
+                  <div class="input-group w-50">
+                    <input #inputLink type="text" class="form-control" (change)="updateLink(i, inputLink.value)"
+                           [value]="element.link" placeholder="Element name">
+                  </div>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="date">
+              <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 15%;"> Date</th>
+              <td mat-cell *matCellDef="let element"> {{element.date | date:'short'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="role">
+              <th width="10%" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 20%;"> Creator</th>
+              <td mat-cell *matCellDef="let element"> {{element.user.name + ' ' + element.user.surname}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="archived">
+              <th width="30%" mat-header-cell *matHeaderCellDef style="width: 15%;"> Archived</th>
+              <td mat-cell *matCellDef="let element">
+                <p [hidden]="element.edit">{{element.archived ? 'Archived' : 'Not archived'}}</p>
+
+                <div [hidden]="!element.edit" style="width: 50%;">
+                  <mat-form-field>
+                    <mat-label>Select an option</mat-label>
+                    <mat-select [(value)]="element.archived">
+                      <mat-option [value]="option"
+                                  *ngFor="let option of [true, false]">{{ option ? 'Archived' : 'Not archived' }}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+              </td>
+            </ng-container>
+
+            <ng-container matColumnDef="editBtn">
+              <th width="5%" mat-header-cell *matHeaderCellDef style="width: 5%;"></th>
+              <td mat-cell *matCellDef="let element; let i =index">
+                <button class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white"
+                        (click)="change(i)"><i class="fa fa-pencil"></i></button>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <tr class="mat-row" *matNoDataRow>
+              <td class="mat-cell" colspan="7">No data matching the filter "{{input.value}}"</td>
+            </tr>
+          </table>
+
+      </div>
+
+      <mat-paginator [pageSizeOptions]="pageSizeOptions"
+                     [length]="length"
+                     [pageSize]="pageSize"
+                     (page)="onPaginationChange($event)" showFirstLastButtons>
+      </mat-paginator>
+
+      <div class="w3-bar">
+        <a class="btn btn-nc m-3 px-5" routerLink="/createProject">+Add</a>
+      </div>
+      </form>
+    </div>
+<!--  </div>-->
+<!--</div>-->

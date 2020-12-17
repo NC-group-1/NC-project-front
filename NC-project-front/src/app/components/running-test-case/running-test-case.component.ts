@@ -3,13 +3,13 @@ import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {PageEvent} from '@angular/material/paginator';
+import {ActivatedRoute, Router} from '@angular/router';
 import {RunningTestCaseService} from '../../services/running-test-case/running-test-case.service';
 import {TestCaseResponseModel} from '../../../models/TestCaseResponseModel';
 import {TestCaseModel} from '../../../models/TestCaseModel';
 import {WatcherModel} from '../../../models/WatcherModel';
 import {UserResponseModel} from '../../../models/UserResponseModel';
 import {UserListModel} from '../../../models/UserListModel';
-import {UserDataModel} from '../../../models/UserDataModel';
 import {Sort} from '@angular/material/sort';
 import {ThemePalette} from '@angular/material/core';
 import {MatSort} from '@angular/material/sort';
@@ -37,12 +37,13 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
  })
 
 export class RunningTestCaseComponent implements OnInit {
-  columnsToDisplay = ['id', 'name', 'starter_id', 'watcher_numb', 'status', 'stop/run'];
+  projectId: number;
+  columnsToDisplay = ['id', 'name', 'starter', 'watcher_numb', 'status', 'stop/run'];
   responseRunningTestCase?: TestCaseResponseModel;
-  responseListWatcher?: UserResponseModel;
-  responseListUser?: UserResponseModel;
+  //responseListWatcher?: UserDataModel[];
+  //responseListUser?: UserDataModel[];
   runningListTestCase: TestCaseModel[];
-  watcherList: UserDataModel[];
+  watcherList: UserListModel[];
   dataSource: any;
   dataSource2: any;
 
@@ -58,19 +59,20 @@ export class RunningTestCaseComponent implements OnInit {
   expandedElement: TestCaseModel[] | null;
 
   watchersCtrl = new FormControl();
-  filteredWatchers: Observable<UserDataModel[]>;
-  userList: UserDataModel[];
+  filteredWatchers: Observable<UserListModel[]>;
+  userList: UserListModel[];
   selectedUserID: number;
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private _snackBar: MatSnackBar, private runningTestCaseService: RunningTestCaseService) {
+  constructor(private _snackBar: MatSnackBar, private runningTestCaseService: RunningTestCaseService, public router: ActivatedRoute) {
     this.runningListTestCase = [];
     this.dataSource = new MatTableDataSource();
     this.watcherList = [];
     this.userList = [];
     this.dataSource2 = new MatTableDataSource();
     this.selectedUserID = 0;
+    this.projectId = parseInt(this.router.snapshot.paramMap.get('projectId'),10);
 
     this.filteredWatchers = this.watchersCtrl.valueChanges
         .pipe(
@@ -85,11 +87,12 @@ export class RunningTestCaseComponent implements OnInit {
   }
 
   reloadRunningTestCases(): void {
-    this.runningTestCaseService.getPaginatedRunningTestCases(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order)
+    this.runningTestCaseService.getPaginatedRunningTestCases(this.pageSize, this.pageIndex + 1, this.filter, this.orderBy, this.order, this.projectId)
       .subscribe(
         response => {
           this.responseRunningTestCase = response;
           this.runningListTestCase = response.list;
+          console.log(this.runningListTestCase);
           this.dataSource = new MatTableDataSource(this.runningListTestCase);
           this.length = response.size;
         },
@@ -104,7 +107,7 @@ export class RunningTestCaseComponent implements OnInit {
     });
   }
 
-  _filterUserList(value: string): UserDataModel[] {
+  _filterUserList(value: string): UserListModel[] {
     const filterValue = value.toLowerCase();
     return this.userList.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
   }
@@ -113,13 +116,10 @@ export class RunningTestCaseComponent implements OnInit {
     this.selectedUserID = index;
   }
 
-
-
   reloadWatchers(index: number): void {
     this.runningTestCaseService.getWatcherByTestCaseId(index).subscribe(
       response => {
-        this.responseListWatcher = response;
-        this.watcherList = response.list;
+        this.watcherList = response;
         this.dataSource2 = new MatTableDataSource(this.watcherList);
       },
       error => console.log(error)
@@ -129,8 +129,7 @@ export class RunningTestCaseComponent implements OnInit {
   reloadUsers(name: string): void {
     this.runningTestCaseService.getSearchedUsers(name).subscribe(
       response => {
-        this.responseListUser = response;
-        this.userList = response.list;
+        this.userList = response;
       },
       error => console.log(error)
     );
@@ -139,6 +138,8 @@ export class RunningTestCaseComponent implements OnInit {
   addWatcher(test_case_id: number): boolean {
     if (!this.watcherList.some(element => element.userId === this.selectedUserID) && (this.selectedUserID != 0)){
       const watcher: WatcherModel = {user_id: this.selectedUserID, test_case_id: test_case_id};
+      console.log(watcher);
+
       this.runningTestCaseService.postWatcher(watcher)
         .subscribe(
           response => {console.log(response);this.reloadWatchers(test_case_id);},
@@ -167,17 +168,19 @@ export class RunningTestCaseComponent implements OnInit {
     this.reloadRunningTestCases();
   }
 
-  updateStatus (value, test_case_id){
+  updateStatus(value, test_case_id){
     const test_case = this.runningListTestCase.find(element => element.id === test_case_id);
+    console.log(test_case);
     if (value.checked === true) {
-      test_case.status = 'Running';
+      test_case.status = 'IN_PROGRESS';
     } else {
-      test_case.status = 'Stopped';
+      test_case.status = 'STOPPED';
     }
   }
 
   onChangeStatus(test_case_id) {
     const body = this.runningListTestCase.find(element => element.id === test_case_id);
+    console.log(body);
       this.runningTestCaseService.updateRunningTestCase(body)
         .subscribe(
           response => console.log(response),

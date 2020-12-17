@@ -5,6 +5,5 @@ export class ActionOfCompound{
   action: Action;
   orderNum: number;
   key: ParameterKey;
-  // -------
   compoundActions?: any;
 }
