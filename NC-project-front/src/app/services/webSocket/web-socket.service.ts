@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-
 import SockJs from 'sockjs-client';
 import Stomp from 'stompjs';
 import {apiPath} from '../../../../globals';
