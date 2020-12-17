@@ -32,6 +32,7 @@ import {ListDataSetComponent} from './components/data-set/list-data-set/list-dat
 import {DataSetDetailsComponent} from './components/data-set/data-set-details/data-set-details.component';
 import {DataSetResolverService} from './services/data-set/data-set-resolver.service';
 import {DataSetListResolverServiceService} from './services/data-set/data-set-list-resolver-service.service';
+import {TestCaseHistoryComponent} from "./components/test-case-history/test-case-history.component";
 import {DetailsComponent} from "./components/details/details.component";
 
 
@@ -158,6 +159,10 @@ const routes: Routes = [
         component: TestCaseComponent,
         resolve: {testScenario: TestScenarioResolverService, dataSets: DataSetListResolverServiceService},
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
+        path: 'history/:projectId',
+        component: TestCaseHistoryComponent
       },
       {
         path: ':testCaseId',
