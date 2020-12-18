@@ -57,7 +57,6 @@ export class ActionService {
   }
 
   createAction(action: Action): Observable<any> {
-    console.log(action);
     return this.http.post(apiPath + 'api/ncp/actions', action);
   }
 }

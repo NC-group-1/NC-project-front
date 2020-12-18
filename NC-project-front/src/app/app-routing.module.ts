@@ -25,7 +25,7 @@ import {RunningTestCaseComponent} from './components/running-test-case/running-t
 import {ActionComponent} from './components/action/action/action.component';
 import {CreateScenarioComponent} from './components/create-scenario/create-scenario.component';
 import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
-import {TestCaseComponent} from './components/test-case/test-case.component';
+import {TestCaseComponent} from './components/test-case/test-case-create/test-case.component';
 import {TestScenarioListResolverService} from './services/scenario/test-scenario-list-resolver.service';
 import {TestScenarioResolverService} from './services/scenario/test-scenario-resolver.service';
 import {ListDataSetComponent} from './components/data-set/list-data-set/list-data-set.component';
@@ -34,6 +34,9 @@ import {DataSetResolverService} from './services/data-set/data-set-resolver.serv
 import {DataSetListResolverServiceService} from './services/data-set/data-set-list-resolver-service.service';
 import {TestCaseHistoryComponent} from "./components/test-case-history/test-case-history.component";
 import {DetailsComponent} from "./components/details/details.component";
+import {TestCaseViewComponent} from './components/test-case/test-case-view/test-case-view.component';
+import {TestCaseResolverService} from './services/testCase/test-case-resolver.service';
+import {TestCaseActionsResolverService} from './services/testCase/test-case-actions-resolver.service';
 
 
 
@@ -161,18 +164,25 @@ const routes: Routes = [
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       },
       {
+        path: 'edit/:testCaseId',
+        component: TestCaseComponent,
+        resolve: {testCase: TestCaseResolverService, actions: TestCaseActionsResolverService, dataSets: DataSetListResolverServiceService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
+        path: 'details/:testCaseId',
+        component: DetailsComponent
+      },
+      {
         path: 'history/:projectId',
         component: TestCaseHistoryComponent
       },
       {
         path: ':testCaseId',
-        component: TestCaseComponent
-      },
+        component: TestCaseViewComponent,
+        resolve: {testCase: TestCaseResolverService, actions: TestCaseActionsResolverService}
+      }
     ]
-  },
-  {
-    path: 'details',
-    component: DetailsComponent
   },
   {
     path: 'createUser',

@@ -4,8 +4,8 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {MatPaginator} from "@angular/material/paginator";
 import {WebSocketService} from "../../services/webSocket/web-socket.service";
 import {AuthenticationService} from "../../services/auth/authentication.service";
-import {DetailsTestCaseModel} from "../../../models/DetailsTestCaseModel";
-import {ActionInstRun} from "../../../models/ActionInstRun";
+import {DetailsTestCaseModel} from '../../../models/DetailsTestCaseModel';
+import {ActionInstRun} from '../../../models/ActionInstRun';
 import {animate, state, style, transition, trigger} from "@angular/animations";
 import {TestCaseService} from "../../services/testCase/test-case.service";
 import {TestCaseProgressModel} from "../../../models/TestCaseProgressModel";
@@ -60,7 +60,7 @@ export class DetailsComponent implements OnInit {
               public activatedRoute: ActivatedRoute,
               private webSocketService: WebSocketService,
               private tcService: TestCaseService) {
-    this.id = 2; //***********************************************************************************//
+    this.id = 2;
     this.dataSource = new MatTableDataSource();
     this.detailsProgress = [];
     this.tcService.getTestCaseDetailsById(this.id)

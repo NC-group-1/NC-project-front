@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import {CompoundModel} from "../../../models/CompoundModel";
-import {Observable} from "rxjs";
-import {apiPath} from "../../../../globals";
-import {HttpClient} from "@angular/common/http";
-import {Action} from "../../../models/action";
-import {CompoundPage} from "../../../models/CompoundPage";
-import {ProjectResponseModel} from "../../../models/ProjectResponseModel";
-import {tap} from "rxjs/operators";
-import {Router} from "@angular/router";
+import {CompoundModel} from '../../../models/CompoundModel';
+import {Observable} from 'rxjs';
+import {apiPath} from '../../../../globals';
+import {HttpClient} from '@angular/common/http';
+import {Action} from '../../../models/action';
+import {CompoundPage} from '../../../models/CompoundPage';
+import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
+import {tap} from 'rxjs/operators';
+import {Router} from '@angular/router';
 import {PageModel} from '../../../models/PageModel';
-import {ScenarioModel} from "../../../models/TestScenario";
+import {ScenarioModel} from '../../../models/TestScenario';
 
 
 @Injectable({
