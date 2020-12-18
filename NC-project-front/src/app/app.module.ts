@@ -5,11 +5,13 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import { ActionComponent } from './components/action/action/action.component';
 import { AppComponent } from './components/app/app.component';
 import { LoginPageComponent } from './components/login-page/login-page.component';
 import { MainPageComponent } from './components/main-page/main-page.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {AuthorizationInterceptor} from './services/auth/authorization-interceptor.service';
 import { ForgotPassEmailComponent } from './components/reset-pass/forgot-pass-email/forgot-pass-email.component';
@@ -27,6 +29,8 @@ import { CreateProjectComponent } from './components/create-project/create-proje
 import { ListProjectComponent } from './components/list-project/list-project.component';
 import { CreateUserComponent } from './components/create-user/create-user.component';
 import { ListUsersComponent } from './components/list-users/list-users.component';
+import { ListTestCaseComponent } from './components/list-test-case/list-test-case.component';
+import { RunningTestCaseComponent } from './components/running-test-case/running-test-case.component';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
 import {MatTableModule} from '@angular/material/table';
@@ -34,6 +38,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
 import { TestCaseComponent } from './components/test-case/test-case-create/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
@@ -46,6 +52,7 @@ import {WebSocketService} from './services/webSocket/web-socket.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {CreateScenarioComponent} from './components/create-scenario/create-scenario.component';
 import { TestCaseViewComponent } from './components/test-case/test-case-view/test-case-view.component';
+import { TestCaseHistoryComponent } from './components/test-case-history/test-case-history.component';
 
 @NgModule({
   declarations: [
@@ -67,36 +74,46 @@ import { TestCaseViewComponent } from './components/test-case/test-case-view/tes
     ListProjectComponent,
     CreateUserComponent,
     ListUsersComponent,
+    ListTestCaseComponent,
+    RunningTestCaseComponent,
     ListDataSetComponent,
     DataSetDetailsComponent,
     TestScenariosComponent,
     TestCaseComponent,
+    ListDataSetComponent,
+    DataSetDetailsComponent,
+    TestCaseHistoryComponent,
     CreateScenarioComponent,
     DetailsComponent,
     TestCaseViewComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    FormsModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    DragDropModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTooltipModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatCheckboxModule,
-    MatExpansionModule,
-    MatProgressBarModule
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        MatPaginatorModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        FormsModule,
+        MatTableModule,
+        MatSortModule,
+        DragDropModule,
+        MatIconModule,
+        MatButtonModule,
+        MatTooltipModule,
+        MatRadioModule,
+        MatSelectModule,
+        MatCheckboxModule,
+        MatExpansionModule,
+        MatProgressBarModule,
+        MatSlideToggleModule,
+        MatTabsModule,
+        MatSnackBarModule,
+        NgxMatTimepickerModule,
+        NgxMatDatetimePickerModule,
     ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

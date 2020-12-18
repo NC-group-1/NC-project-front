@@ -14,10 +14,13 @@ export class TestCaseModel{
   name: string;
   role?: string;
   description: string;
-  creationTime?: Date;
+  creationDate?: Date;
   startDate?: Date;
   finishDate?: Date;
   status?: string;
-  recurringTime?: TimeInterval<Date>;
+  //recurringTime?: TimeInterval<Date>;
+  recurringTime?: string;
   iterationsAmount?: number;
+  watcher_numb?: number;
+  edit?: boolean;
 }

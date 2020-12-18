@@ -13,14 +13,16 @@ import {PageNotFoundComponent} from './components/page-not-found/page-not-found.
 import {SettingsComponent} from './components/settings/settings.component';
 import {LoginActivateGuard} from './guards/login-activate.guard';
 import {MyProfileResolverService} from './services/profile/my-profile-resolver.service';
-import {CreateProjectComponent} from './components/create-project/create-project.component';
-import {ListProjectComponent} from './components/list-project/list-project.component';
-import {ActionComponent} from './components/action/action/action.component';
 import {CompoundListComponent} from './components/compound-list/compound-list.component';
 import {CompoundEditComponent} from './components/compound-edit/compound-edit.component';
 import {CompoundListResolverService} from './services/compound/compound-list-resolver.service';
 import {CompoundResolverService} from './services/compound/compound-resolver.service';
 import {ActionPageResolverService} from './services/action/action-page-resolver.service';
+import {CreateProjectComponent} from './components/create-project/create-project.component';
+import {ListProjectComponent} from './components/list-project/list-project.component';
+import {ListTestCaseComponent} from './components/list-test-case/list-test-case.component';
+import {RunningTestCaseComponent} from './components/running-test-case/running-test-case.component';
+import {ActionComponent} from './components/action/action/action.component';
 import {CreateScenarioComponent} from './components/create-scenario/create-scenario.component';
 import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
 import {TestCaseComponent} from './components/test-case/test-case-create/test-case.component';
@@ -30,6 +32,7 @@ import {ListDataSetComponent} from './components/data-set/list-data-set/list-dat
 import {DataSetDetailsComponent} from './components/data-set/data-set-details/data-set-details.component';
 import {DataSetResolverService} from './services/data-set/data-set-resolver.service';
 import {DataSetListResolverServiceService} from './services/data-set/data-set-list-resolver-service.service';
+import {TestCaseHistoryComponent} from "./components/test-case-history/test-case-history.component";
 import {DetailsComponent} from "./components/details/details.component";
 import {TestCaseViewComponent} from './components/test-case/test-case-view/test-case-view.component';
 import {TestCaseResolverService} from './services/testCase/test-case-resolver.service';
@@ -147,6 +150,14 @@ const routes: Routes = [
     path: 'testCase',
     children: [
       {
+        path: 'list/:projectId',
+        component: ListTestCaseComponent
+      },
+      {
+        path: 'runningList/:projectId',
+        component: RunningTestCaseComponent
+      },
+      {
         path: 'new/:testScenarioId',
         component: TestCaseComponent,
         resolve: {testScenario: TestScenarioResolverService, dataSets: DataSetListResolverServiceService},
@@ -157,6 +168,10 @@ const routes: Routes = [
         component: TestCaseComponent,
         resolve: {testCase: TestCaseResolverService, actions: TestCaseActionsResolverService, dataSets: DataSetListResolverServiceService},
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
+        path: 'history/:projectId',
+        component: TestCaseHistoryComponent
       },
       {
         path: ':testCaseId',
