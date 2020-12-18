@@ -57,6 +57,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       this.actionsSource = this.creating ?
         this.activatedRoute.snapshot.data.testScenario.actions
         : this.activatedRoute.snapshot.data.actions;
+      console.log(this.actionsSource);
       if (this.creating) {
         this.initParamsCreation();
       } else {

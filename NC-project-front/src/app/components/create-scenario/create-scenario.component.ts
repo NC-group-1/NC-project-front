@@ -107,12 +107,12 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    // fromEvent(this.search.nativeElement, 'keydown').pipe(
-    //   debounceTime(550),
-    //   map(x => x.target.value)).subscribe(value => {
-    // this.updateFilter(value);
-    // });
-    // this.changeDetector.detectChanges();
+     fromEvent(this.search.nativeElement, 'keydown').pipe(
+       debounceTime(550),
+       map(x => x['target']['value'])).subscribe(value => {
+     this.updateFilter(value);
+     });
+     this.changeDetector.detectChanges();
   }
 
   updateFilter(val: any) {

@@ -6,6 +6,7 @@ import {TimeInterval} from 'rxjs';
 import {ActionInstanceModel} from './ActionInstanceModel';
 
 export class TestCaseModel{
+  id?: number;
   testCaseId?: number;
   user: { id: number, name?: string, surname?: string, email?: string };
   starter?: UserDataModel;

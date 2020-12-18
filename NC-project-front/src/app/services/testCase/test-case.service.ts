@@ -17,22 +17,22 @@ export class TestCaseService {
 
   constructor(private http: HttpClient) { }
   createTestCase(testCase: TestCaseModel): Observable<any>{
-    return this.http.post(apiPath + 'api/test-case', testCase);
+    return this.http.post(apiPath + 'api/ncp/test-case', testCase);
   }
   getTestCaseWatchers(userId): Observable<number[]>{
-    return this.http.get<number[]>(apiPath + 'api/test-case/user/' + userId);
+    return this.http.get<number[]>(apiPath + 'api/ncp/test-case/user/' + userId);
   }
   getDetailTestCase(): Observable<DetailsTestCaseProgressModel[]>{
-    return this.http.get<DetailsTestCaseProgressModel[]>(apiPath + 'api/test-case/details/');
+    return this.http.get<DetailsTestCaseProgressModel[]>(apiPath + 'api/ncp/test-case/details/');
   }
   getTestCase(testCaseId): Observable<TestCaseModel>{
-    return this.http.get<TestCaseModel>(apiPath + 'api/test-case/' + testCaseId);
+    return this.http.get<TestCaseModel>(apiPath + 'api/ncp/test-case/' + testCaseId);
   }
   getActionInstances(testCaseId): Observable<ActionInstanceModel[]>{
-    return this.http.get<ActionInstanceModel[]>(apiPath + 'api/test-case/actions/' + testCaseId);
+    return this.http.get<ActionInstanceModel[]>(apiPath + 'api/ncp/test-case/actions/' + testCaseId);
   }
 
   editTestCase(testCase: TestCaseModel): Observable<boolean> {
-    return this.http.put<boolean>(apiPath + 'api/test-case', testCase);
+    return this.http.put<boolean>(apiPath + 'api/ncp/test-case', testCase);
   }
 }
