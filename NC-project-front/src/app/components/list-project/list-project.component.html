@@ -29,9 +29,9 @@
 
             <ng-container matColumnDef="name">
               <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 25%;"> Name</th>
-              <td routerLink="/testCase/list" mat-cell *matCellDef="let element;let i = index;">
+              <td  mat-cell *matCellDef="let element;let i = index;">
                 <p [hidden]="element.edit">
-                  <a href="#" class="stretched-link" style="position: relative;" (click)="open()">
+                  <a [routerLink]="['/testCase/list',element.projectId]" class="stretched-link" style="position: relative;" (click)="open()">
                     {{element.name}}
                   </a>
                 </p>
