@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from "@angular/material/table";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatPaginator} from "@angular/material/paginator";
@@ -76,7 +76,6 @@ export class DetailsComponent implements OnInit {
         this.subscribeOnTcProgress(this.id);
         this.stompCase.send('/api/test-case/actionInst/tc', {}, + this.id);
         this.stompCase.subscribe('/topic/actionInst/'+ this.id, response => {
-          // console.log(JSON.parse(response.body));
           this.detailsProgress.push(JSON.parse(response.body));
         });
       });

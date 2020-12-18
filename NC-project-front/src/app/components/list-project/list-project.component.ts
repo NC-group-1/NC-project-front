@@ -80,7 +80,8 @@ export class ListProjectComponent implements OnInit {
   }
 
   open() {
-    console.log(this.selectedProject);
+    // console.log(this.selectedProject);
+    this.router.navigateByUrl('/testCase');
   }
 
   updateName(index: number, name: string) {
@@ -117,5 +118,9 @@ export class ListProjectComponent implements OnInit {
 
   closeAlert(): void {
     $('.alert').alert('close');
+  }
+
+  openProfile(id: number) {
+    this.router.navigateByUrl('/user/profile');
   }
 }

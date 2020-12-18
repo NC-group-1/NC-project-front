@@ -167,7 +167,7 @@ const routes: Routes = [
       {
         path: ':testCaseId',
         component: TestCaseComponent
-      }
+      },
     ]
   },
   {
@@ -180,14 +180,6 @@ const routes: Routes = [
   },
   {
     path: 'listUsers',
-    component: ListUsersComponent
-  },
-  {
-    path: 'createScenario',
-    component: CreateUserComponent
-  },
-  {
-    path: 'listScenario',
     component: ListUsersComponent
   },
   {
