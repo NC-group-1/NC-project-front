@@ -170,6 +170,10 @@ const routes: Routes = [
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       },
       {
+        path: 'details/:testCaseId',
+        component: DetailsComponent
+      },
+      {
         path: 'history/:projectId',
         component: TestCaseHistoryComponent
       },
@@ -179,10 +183,6 @@ const routes: Routes = [
         resolve: {testCase: TestCaseResolverService, actions: TestCaseActionsResolverService}
       }
     ]
-  },
-  {
-    path: 'details',
-    component: DetailsComponent
   },
   {
     path: 'createUser',
