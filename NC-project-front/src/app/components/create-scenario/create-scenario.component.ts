@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CompoundModel} from '../../../models/CompoundModel';
 import {ActionPage} from '../../../models/action-page';
@@ -15,6 +15,7 @@ import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
 import {fromEvent} from 'rxjs';
 import {debounceTime, map} from 'rxjs/operators';
 import {ScenarioModel} from '../../../models/TestScenario';
+
 declare var $: any;
 
 @Component({
@@ -107,18 +108,18 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-     fromEvent(this.search.nativeElement, 'keydown').pipe(
-       debounceTime(550),
-       map(x => x['target']['value'])).subscribe(value => {
-     this.updateFilter(value);
-     });
-     this.changeDetector.detectChanges();
+    fromEvent(this.search.nativeElement, 'keydown').pipe(
+      debounceTime(550),
+      map(x => x['target']['value'])).subscribe(value => {
+      this.updateFilter(value);
+    });
+    this.changeDetector.detectChanges();
   }
 
   updateFilter(val: any) {
     this.actionsAsCompActionsFiltered = [];
     this.actionsAsCompActionsFiltered = this.actionsAsCompActions.filter(item => {
-        return !!item.action.name.toLocaleLowerCase().trim().match(val.toLocaleLowerCase().trim());
+      return !!item.action.name.toLocaleLowerCase().trim().match(val.toLocaleLowerCase().trim());
     });
   }
 
@@ -136,7 +137,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     } else if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer !== event.container) {
       this.compoundActions.splice(event.previousIndex, 1);
       this.compoundActionsDto.splice(event.previousIndex, 1);
-    } else  {
+    } else {
       this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
     }
     if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer !== event.container) {
@@ -184,7 +185,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           },
           listActionCompoundId: actions_id
         }).subscribe(() => {
-            this.router.navigate(['testScenarios'], {queryParams: {created: true}});
+        this.router.navigate(['testScenarios'], {queryParams: {created: true}});
       });
     } else {
       this.isError = true;
