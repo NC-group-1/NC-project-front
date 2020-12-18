@@ -127,7 +127,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   drop(event: CdkDragDrop<any[]>): void {
-    console.log(event);
+    // console.log(event);
     if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer === event.container) {
       moveItemInArray(this.compoundActions, event.previousIndex, event.currentIndex);
       moveItemInArray(this.compoundActionsDto, event.previousIndex, event.currentIndex);
@@ -138,26 +138,19 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       this.compoundActionsDto.splice(event.previousIndex, 1);
     } else  {
       this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
-      this.compoundActionsDto.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
     }
     if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer !== event.container) {
-      const dataAct = event.previousContainer.data[event.previousIndex];
-      if (dataAct.action.type === 'COMPOUND') {
-        this.compService.getCompoundById(dataAct.action.id).subscribe(value => {
-          this.compoundActions.forEach(val => this.compoundActionsDto.push(Object.assign({}, val)));
-          this.compoundActionsDto.splice(event.currentIndex, 0, ...value.actions.sort((a, b) => a.orderNum - b.orderNum));
-        });
-      }
+      this.adjustOrder(this.compoundActions);
     }
     this.adjustOrder(this.compoundActions);
     this.updateFilter(this.search.nativeElement.value);
   }
 
   submit(): void {
-    this.emptyInvalid = this.compoundActionsDto.length === 0;
+    this.emptyInvalid = this.compoundActions.length === 0;
     if (this.creating && !this.emptyInvalid && this.scenarioForm.valid) {
       const actions_id = [];
-      this.compoundActionsDto.forEach(
+      this.compoundActions.forEach(
         element => actions_id.push(element.action.id)
       );
       this.scenarioService.createTestScenario(
@@ -170,8 +163,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           project: {
             projectId: this.projectId
           },
-          listActionCompoundId: actions_id,
-          actions: this.compoundActions
+          listActionCompoundId: actions_id
         }
       ).subscribe(() => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
     } else if (!this.emptyInvalid && this.scenarioForm.valid) {
@@ -190,8 +182,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           project: {
             projectId: this.projectId
           },
-          listActionCompoundId: actions_id,
-          actions: this.compoundActions
+          listActionCompoundId: actions_id
         }).subscribe(() => {
             this.router.navigate(['testScenarios'], {queryParams: {created: true}});
       });
