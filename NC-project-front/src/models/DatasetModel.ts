@@ -2,7 +2,7 @@ import {UserDataModel} from './UserDataModel';
 import {Parameter} from './parameter';
 import {DataSetGeneralInfoDto} from './data-set-general-info-dto';
 
-export class Dataset {
+export class DatasetModel {
   id: number;
   name: string;
   description: string;

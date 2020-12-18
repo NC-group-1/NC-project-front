@@ -75,14 +75,14 @@
           <strong class="color-nc">Action name: </strong>
           <a role="button" (click)="navToCompound(selectedAction.action)">{{selectedAction.action.name}}</a>
         </h1>
-        <h3 *ngIf="!selectedCompoundActions"><strong class="color-nc">Key:</strong> {{selectedAction.key.key}}</h3>
+        <h3 *ngIf="!selectedCompoundActions"><strong class="color-nc">Key:</strong> {{selectedAction.parameterKey.key}}</h3>
         <h3 class="color-nc">Description:</h3>
         <h4>{{selectedAction.action.description}}</h4>
         <div *ngIf="!!selectedCompoundActions">
           <div class="row" *ngFor="let action of selectedCompoundActions">
             <div class="col border">{{action.action.name}}</div>
             <input class="m-0 p-0 col border" matInput placeholder="Key"
-                   [(ngModel)]="action.key.key"
+                   [(ngModel)]="action.parameterKey.key"
                    (ngModelChange)="changeCompoundActionKey($event, action, selectedAction.action.id)">
             <!--          <div >{{action.key.key || action.action.key.key}}</div>-->
           </div>
