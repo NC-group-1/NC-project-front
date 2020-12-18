@@ -1,5 +1,5 @@
 import {Action} from './action';
-import {Dataset} from './Dataset';
+import {DatasetModel} from './DatasetModel';
 import {ParameterKey} from './parameter-key';
 
 export class ActionInstanceModel{
@@ -7,6 +7,8 @@ export class ActionInstanceModel{
   action: Action;
   orderNum: number;
   datasetId: number;
+  compoundId?: number;
   parameterKey?: ParameterKey;
   value?: any;
+  dataset?: string;
 }

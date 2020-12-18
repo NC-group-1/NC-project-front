@@ -22,7 +22,7 @@ export class TestCaseHistoryService {
                           order: string,
                           projectId: number): Observable<PageModel<TestCaseHistory>> {
     return this.http.get<PageModel<TestCaseHistory>>(
-      apiPath + 'api/test-case/historyList/' + projectId
+      apiPath + 'api/ncp/test-case/historyList/' + projectId
 
       + '?pageSize=' + (!pageSize ? '' : pageSize)
       + '&pageIndex=' + (!pageIndex ? '' : pageIndex)

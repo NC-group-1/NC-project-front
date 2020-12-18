@@ -192,12 +192,12 @@ export class ActionComponent implements OnInit {
     this.manageActionForm.get('name').setValue(action.name);
     this.manageActionForm.get('type').setValue(action.type);
     this.manageActionForm.get('description').setValue(action.description);
-    if (action.key.key === null) {
+    if (action.parameterKey.key === null) {
       this.manageActionForm.get('key.key').setValue('');
     }
     else {
-      this.manageActionForm.get('key.key').setValue(action.key.key);
-      this.manageActionForm.get('key.id').setValue(action.key.id);
+      this.manageActionForm.get('key.key').setValue(action.parameterKey.key);
+      this.manageActionForm.get('key.id').setValue(action.parameterKey.id);
     }
     this.manageActionForm.get('name').disable();
     this.manageActionForm.get('type').disable();
