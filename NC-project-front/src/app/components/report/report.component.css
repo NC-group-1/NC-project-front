@@ -1,0 +1,22 @@
+.header {
+  font-family: Roboto;
+  font-style: italic;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 28px;
+  text-transform: capitalize;
+  color: #0275B1;
+  text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+.example-section {
+  margin: 12px 0;
+}
+
+.example-margin {
+  margin: 0 12px;
+}
+
+ul {
+  list-style-type: none;
+  margin-top: 4px;
+}
