@@ -7,7 +7,8 @@ import {apiPath} from '../../../../globals';
 import {Action} from '../../../models/action';
 import {ActionOfCompound} from '../../../models/ActionOfCompound';
 import {TestCaseModel} from '../../../models/TestCaseModel';
-import {DetailsTestCaseProgressModel} from "../../../models/DetailsTestCaseProgressModel";
+import {DetailsTestCaseProgressModel} from '../../../models/DetailsTestCaseProgressModel';
+import {ActionInstanceModel} from '../../../models/ActionInstanceModel';
 
 @Injectable({
   providedIn: 'root'
@@ -24,5 +25,14 @@ export class TestCaseService {
   getDetailTestCase(): Observable<DetailsTestCaseProgressModel[]>{
     return this.http.get<DetailsTestCaseProgressModel[]>(apiPath + 'api/test-case/details/');
   }
+  getTestCase(testCaseId): Observable<TestCaseModel>{
+    return this.http.get<TestCaseModel>(apiPath + 'api/test-case/' + testCaseId);
+  }
+  getActionInstances(testCaseId): Observable<ActionInstanceModel[]>{
+    return this.http.get<ActionInstanceModel[]>(apiPath + 'api/test-case/actions/' + testCaseId);
+  }
 
+  editTestCase(testCase: TestCaseModel): Observable<boolean> {
+    return this.http.put<boolean>(apiPath + 'api/test-case', testCase);
+  }
 }

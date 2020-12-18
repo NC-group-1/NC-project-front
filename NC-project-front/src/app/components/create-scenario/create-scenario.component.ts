@@ -8,13 +8,13 @@ import {PageEvent} from '@angular/material/paginator';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {CompoundService} from '../../services/compound/compound.service';
 import {state, style, trigger} from '@angular/animations';
-import {CompoundPage} from "../../../models/CompoundPage";
-import {ScenarioService} from "../../services/scenario/scenario.service";
-import {AuthenticationService} from "../../services/auth/authentication.service";
-import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
-import {fromEvent} from "rxjs";
-import {debounceTime, map} from "rxjs/operators";
-import {ScenarioModel} from "../../../models/TestScenario";
+import {CompoundPage} from '../../../models/CompoundPage';
+import {ScenarioService} from '../../services/scenario/scenario.service';
+import {AuthenticationService} from '../../services/auth/authentication.service';
+import {CdkDragDrop, moveItemInArray} from '@angular/cdk/drag-drop';
+import {fromEvent} from 'rxjs';
+import {debounceTime, map} from 'rxjs/operators';
+import {ScenarioModel} from '../../../models/TestScenario';
 declare var $: any;
 
 @Component({
@@ -77,7 +77,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       this.page = !value.actionPage ? 0 : value.actionPage;
     });
     this.activatedRoute.params.subscribe(() => {
-      this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'),10);
+      this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'), 10);
       this.compound = this.activatedRoute.snapshot.data.compound;
       if (!!this.compound) {
         this.compoundActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
@@ -88,7 +88,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       this.actionsAsCompActions = this.actions.list.map<ActionOfCompound>(value1 => ({
         action: value1,
         orderNum: 0,
-        key: value1.key
+        parameterKey: value1.parameterKey
       }));
     });
     this.scenarioForm = new FormGroup({
@@ -107,12 +107,12 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    fromEvent(this.search.nativeElement, 'keydown').pipe(
-      debounceTime(550),
-      map(x => x['target']['value'])).subscribe(value => {
-    this.updateFilter(value);
-    })
-    this.changeDetector.detectChanges();
+    // fromEvent(this.search.nativeElement, 'keydown').pipe(
+    //   debounceTime(550),
+    //   map(x => x.target.value)).subscribe(value => {
+    // this.updateFilter(value);
+    // });
+    // this.changeDetector.detectChanges();
   }
 
   updateFilter(val: any) {
@@ -156,7 +156,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   submit(): void {
     this.emptyInvalid = this.compoundActionsDto.length === 0;
     if (this.creating && !this.emptyInvalid && this.scenarioForm.valid) {
-      let actions_id = [];
+      const actions_id = [];
       this.compoundActionsDto.forEach(
         element => actions_id.push(element.action.id)
       );
@@ -176,7 +176,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
         }
       ).subscribe(() => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
     } else if (!this.emptyInvalid && this.scenarioForm.valid) {
-      let actions_id = [];
+      const actions_id = [];
       this.compoundActionsDto.forEach(
         element => actions_id.push(element.action.id)
       );
@@ -194,7 +194,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           listActionCompoundId: actions_id,
           actions: this.compoundActions
         }).subscribe(() => {
-            this.router.navigate(['testScenarios'], {queryParams: {created: true}})
+            this.router.navigate(['testScenarios'], {queryParams: {created: true}});
       });
     } else {
       this.isError = true;

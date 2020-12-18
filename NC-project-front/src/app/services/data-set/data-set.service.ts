@@ -8,6 +8,7 @@ import {DataSetGeneralInfoDtoPage} from '../../../models/data-set-general-info-d
 import {DataSetGeneralInfoDto} from '../../../models/data-set-general-info-dto';
 import {Parameter} from '../../../models/parameter';
 import {PageModel} from '../../../models/PageModel';
+import {DatasetModel} from '../../../models/DatasetModel';
 
 @Injectable({
   providedIn: 'root'
@@ -59,7 +60,9 @@ export class DataSetService {
   deleteDataSet(id: number): Observable<any>{
     return this.http.delete(apiPath + 'api/ncp/datasets/' + id);
   }
-
+  getDatasetValueByParam(id, parameterId): Observable<any>{
+    return this.http.get(apiPath + 'api/ncp/datasets/' + 'dataset/' + id + '/param/' + parameterId);
+  }
   getParametersByDataSetId(id: number): Observable<Parameter[]> {
     return this.http.get<Parameter[]>(apiPath + 'api/ncp/datasets/' + id + '/parameters')
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));

@@ -1,9 +1,11 @@
 import {ParameterKey} from './parameter-key';
+import {ActionInstanceModel} from './ActionInstanceModel';
 
 export class Action {
   id?: number;
   name: string;
   description?: string;
   type: string;
-  key?: ParameterKey;
+  parameterKey?: ParameterKey;
+  actions?: ActionInstanceModel[];
 }

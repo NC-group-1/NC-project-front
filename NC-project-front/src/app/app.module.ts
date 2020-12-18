@@ -35,16 +35,17 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
-import { TestCaseComponent } from './components/test-case/test-case.component';
+import { TestCaseComponent } from './components/test-case/test-case-create/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
-import {DragDropModule} from "@angular/cdk/drag-drop";
+import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
 import { DataSetDetailsComponent } from './components/data-set/data-set-details/data-set-details.component';
-import {MatPaginatorModule} from "@angular/material/paginator";
+import {MatPaginatorModule} from '@angular/material/paginator';
 import { DetailsComponent } from './components/details/details.component';
 import {WebSocketService} from './services/webSocket/web-socket.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
+import {CreateScenarioComponent} from './components/create-scenario/create-scenario.component';
+import { TestCaseViewComponent } from './components/test-case/test-case-view/test-case-view.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import {CreateScenarioComponent} from "./components/create-scenario/create-scena
     TestScenariosComponent,
     TestCaseComponent,
     CreateScenarioComponent,
-    DetailsComponent
+    DetailsComponent,
+    TestCaseViewComponent
   ],
   imports: [
     BrowserModule,

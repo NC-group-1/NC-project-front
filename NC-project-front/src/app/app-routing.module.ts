@@ -23,7 +23,7 @@ import {CompoundResolverService} from './services/compound/compound-resolver.ser
 import {ActionPageResolverService} from './services/action/action-page-resolver.service';
 import {CreateScenarioComponent} from './components/create-scenario/create-scenario.component';
 import {TestScenariosComponent} from './components/test-scenarios/test-scenarios.component';
-import {TestCaseComponent} from './components/test-case/test-case.component';
+import {TestCaseComponent} from './components/test-case/test-case-create/test-case.component';
 import {TestScenarioListResolverService} from './services/scenario/test-scenario-list-resolver.service';
 import {TestScenarioResolverService} from './services/scenario/test-scenario-resolver.service';
 import {ListDataSetComponent} from './components/data-set/list-data-set/list-data-set.component';
@@ -31,6 +31,9 @@ import {DataSetDetailsComponent} from './components/data-set/data-set-details/da
 import {DataSetResolverService} from './services/data-set/data-set-resolver.service';
 import {DataSetListResolverServiceService} from './services/data-set/data-set-list-resolver-service.service';
 import {DetailsComponent} from "./components/details/details.component";
+import {TestCaseViewComponent} from './components/test-case/test-case-view/test-case-view.component';
+import {TestCaseResolverService} from './services/testCase/test-case-resolver.service';
+import {TestCaseActionsResolverService} from './services/testCase/test-case-actions-resolver.service';
 
 
 
@@ -150,8 +153,15 @@ const routes: Routes = [
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       },
       {
+        path: 'edit/:testCaseId',
+        component: TestCaseComponent,
+        resolve: {testCase: TestCaseResolverService, actions: TestCaseActionsResolverService, dataSets: DataSetListResolverServiceService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
         path: ':testCaseId',
-        component: TestCaseComponent
+        component: TestCaseViewComponent,
+        resolve: {testCase: TestCaseResolverService, actions: TestCaseActionsResolverService}
       }
     ]
   },
