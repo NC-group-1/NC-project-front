@@ -183,14 +183,6 @@ const routes: Routes = [
     component: ListUsersComponent
   },
   {
-    path: 'createScenario',
-    component: CreateUserComponent
-  },
-  {
-    path: 'listScenario',
-    component: ListUsersComponent
-  },
-  {
     path: 'manageAction',
     component: ActionComponent
   },
