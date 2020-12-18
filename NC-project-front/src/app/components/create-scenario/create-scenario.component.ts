@@ -127,7 +127,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   drop(event: CdkDragDrop<any[]>): void {
-    // console.log(event);
+    console.log(event);
     if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer === event.container) {
       moveItemInArray(this.compoundActions, event.previousIndex, event.currentIndex);
       moveItemInArray(this.compoundActionsDto, event.previousIndex, event.currentIndex);
@@ -160,7 +160,6 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       this.compoundActionsDto.forEach(
         element => actions_id.push(element.action.id)
       );
-
       this.scenarioService.createTestScenario(
         {
           name: this.scenarioForm.value.name,

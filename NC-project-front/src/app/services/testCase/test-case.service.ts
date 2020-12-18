@@ -22,11 +22,11 @@ export class TestCaseService {
   }
 
   getAllActionInstRun(tcId):Observable<ActionInstRun[]>{
-    return this.http.get<ActionInstRun[]>(apiPath + 'api/test-case/' + tcId + '/run-details');
+    return this.http.get<ActionInstRun[]>(apiPath + 'api/ncp/test-case/' + tcId + '/run-details');
   }
 
   getTestCaseDetailsById(tcId): Observable<DetailsTestCaseModel>{
-    return this.http.get<DetailsTestCaseModel>(apiPath + 'api/test-case/'+ tcId + '/details');
+    return this.http.get<DetailsTestCaseModel>(apiPath + 'api/ncp/test-case/'+ tcId + '/details');
   }
 
   getTestCase(testCaseId): Observable<TestCaseModel>{
