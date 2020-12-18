@@ -52,6 +52,7 @@ import {WebSocketService} from './services/webSocket/web-socket.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { TestCaseHistoryComponent } from './components/test-case-history/test-case-history.component';
 import {CreateScenarioComponent} from "./components/create-scenario/create-scenario.component";
+import { ReportComponent } from './components/report/report.component';
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import {CreateScenarioComponent} from "./components/create-scenario/create-scena
     DataSetDetailsComponent,
     TestCaseHistoryComponent,
     CreateScenarioComponent,
-    DetailsComponent
+    DetailsComponent,
+    ReportComponent
   ],
     imports: [
         BrowserModule,
