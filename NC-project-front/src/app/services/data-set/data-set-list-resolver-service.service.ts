@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
-import {Dataset} from '../../../models/Dataset';
+import {DatasetModel} from '../../../models/DatasetModel';
 import {PageModel} from '../../../models/PageModel';
 import {Observable} from 'rxjs';
 import {DataSetService} from './data-set.service';

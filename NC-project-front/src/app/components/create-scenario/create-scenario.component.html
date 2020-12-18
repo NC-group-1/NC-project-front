@@ -70,12 +70,11 @@
       <button *ngIf="!creating" class="btn btn-outline-danger m-3 px-5 py-3" (click)="modalDelShow()">DELETE</button>
     </div>
 
-
     <div *ngIf="!!selectedAction" class="bg-white mt-4 shadow-lg p-5">
       <h1><strong class="color-nc">Name: </strong> <a role="button"
                                                       (click)="navToCompound(selectedAction.action)">{{selectedAction.action.name}}</a>
       </h1>
-      <h3><strong class="color-nc">Key: </strong> {{selectedAction.key.key}}</h3>
+      <h3><strong class="color-nc">Key: </strong> {{selectedAction.parameterKey.key}}</h3>
       <h3 class="color-nc">Description: </h3>
       <h4>{{selectedAction.action.description}}</h4>
     </div>
