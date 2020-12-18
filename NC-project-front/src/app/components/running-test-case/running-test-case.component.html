@@ -4,7 +4,7 @@
       <a mat-tab-link [routerLink]="['/testScenarios',router.snapshot.paramMap.get('projectId')]">Test Scenarios</a>
       <a mat-tab-link [routerLink]="['/testCase/list',router.snapshot.paramMap.get('projectId')]" >Test Cases</a>
       <a mat-tab-link [routerLink]="['/testCase/runningList',router.snapshot.paramMap.get('projectId')]" [active]="true">Running Test Cases</a>
-      <a mat-tab-link [routerLink]="['../runningList']">History Test Cases</a>
+      <a mat-tab-link [routerLink]="['/testCase/history',router.snapshot.paramMap.get('projectId')]">History Test Cases</a>
     </nav>
 
     <div class="example-container">
