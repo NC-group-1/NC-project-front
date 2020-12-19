@@ -5,6 +5,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {PageEvent} from '@angular/material/paginator';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RunningTestCaseService} from '../../services/running-test-case/running-test-case.service';
+import {HttpClientService} from '../../services/projects/http-client.service';
 import {TestCaseResponseModel} from '../../../models/TestCaseResponseModel';
 import {TestCaseModel} from '../../../models/TestCaseModel';
 import {WatcherModel} from '../../../models/WatcherModel';
@@ -13,11 +14,9 @@ import {UserListModel} from '../../../models/UserListModel';
 import {Sort} from '@angular/material/sort';
 import {ThemePalette} from '@angular/material/core';
 import {MatSort} from '@angular/material/sort';
-import { map, startWith } from 'rxjs/operators';
-import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {animate, state, style, transition, trigger} from '@angular/animations';
+
 
 /**
  * @title Table with expandable rows
@@ -27,25 +26,15 @@ import {animate, state, style, transition, trigger} from '@angular/animations';
    selector: 'app-running-test-case',
    templateUrl: './running-test-case.component.html',
    styleUrls: ['./running-test-case.component.scss'],
-   animations: [
-    trigger('detailExpand', [
-      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
-      state('expanded', style({height: '*'})),
-      transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
-    ]),
-  ],
  })
 
 export class RunningTestCaseComponent implements OnInit {
   projectId: number;
-  columnsToDisplay = ['id', 'name', 'starter', 'watcher_numb', 'status', 'stop/run'];
+  projectName: string;
+  columnsToDisplay = ['id', 'name', 'starter', 'startDate', 'status', 'stop/run'];
   responseRunningTestCase?: TestCaseResponseModel;
-  //responseListWatcher?: UserDataModel[];
-  //responseListUser?: UserDataModel[];
   runningListTestCase: TestCaseModel[];
-  watcherList: UserListModel[];
   dataSource: any;
-  dataSource2: any;
 
   length = 0;
   pageSize = 5;
@@ -55,35 +44,28 @@ export class RunningTestCaseComponent implements OnInit {
   orderBy = '';
   order = '';
 
-  columnsToDisplay2 = ['user_id', 'name', 'surname', 'role'];
-  expandedElement: TestCaseModel[] | null;
-
-  watchersCtrl = new FormControl();
-  filteredWatchers: Observable<UserListModel[]>;
-  userList: UserListModel[];
-  selectedUserID: number;
-
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private _snackBar: MatSnackBar, private runningTestCaseService: RunningTestCaseService, public router: ActivatedRoute) {
+  constructor(private _snackBar: MatSnackBar, private runningTestCaseService: RunningTestCaseService, private httpClientService: HttpClientService, public router: ActivatedRoute) {
     this.runningListTestCase = [];
     this.dataSource = new MatTableDataSource();
-    this.watcherList = [];
-    this.userList = [];
-    this.dataSource2 = new MatTableDataSource();
-    this.selectedUserID = 0;
     this.projectId = parseInt(this.router.snapshot.paramMap.get('projectId'),10);
 
-    this.filteredWatchers = this.watchersCtrl.valueChanges
-        .pipe(
-          startWith(''),
-          map(user => user ? this._filterUserList(user) : this.userList.slice())
-        );
   }
 
   ngOnInit(): void {
     this.reloadRunningTestCases();
-    this.reloadUsers('');
+    this.loadProjectName();
+  }
+
+  loadProjectName(): void {
+    this.httpClientService.getProjectName(this.projectId)
+      .subscribe(
+        response => {
+          this.projectName = response;
+        },
+        error => console.log(error)
+      );
   }
 
   reloadRunningTestCases(): void {
@@ -105,50 +87,6 @@ export class RunningTestCaseComponent implements OnInit {
       duration: 3500,
       panelClass: [type],
     });
-  }
-
-  _filterUserList(value: string): UserListModel[] {
-    const filterValue = value.toLowerCase();
-    return this.userList.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
-  }
-
-  updateUserID(index:any){
-    this.selectedUserID = index;
-  }
-
-  reloadWatchers(index: number): void {
-    this.runningTestCaseService.getWatcherByTestCaseId(index).subscribe(
-      response => {
-        this.watcherList = response;
-        this.dataSource2 = new MatTableDataSource(this.watcherList);
-      },
-      error => console.log(error)
-    );
-  }
-
-  reloadUsers(name: string): void {
-    this.runningTestCaseService.getSearchedUsers(name).subscribe(
-      response => {
-        this.userList = response;
-      },
-      error => console.log(error)
-    );
-  }
-
-  addWatcher(test_case_id: number): boolean {
-    if (!this.watcherList.some(element => element.userId === this.selectedUserID) && (this.selectedUserID != 0)){
-      const watcher: WatcherModel = {user_id: this.selectedUserID, test_case_id: test_case_id};
-      console.log(watcher);
-
-      this.runningTestCaseService.postWatcher(watcher)
-        .subscribe(
-          response => {console.log(response);this.reloadWatchers(test_case_id);},
-          error => console.log(error)
-        );
-        return true;
-    } else {
-      return false;
-    }
   }
 
   applyFilter(event: Event) {
