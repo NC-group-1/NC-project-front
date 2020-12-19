@@ -6,6 +6,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {PageModel} from '../../../models/PageModel';
 import {ScenarioModel} from '../../../models/TestScenario';
 import {ScenarioService} from '../../services/scenario/scenario.service';
+import {HttpClientService} from '../../services/projects/http-client.service';
 declare var $: any;
 
 @Component({
@@ -25,14 +26,16 @@ export class TestScenariosComponent implements OnInit {
   testScenarios: ScenarioModel[];
   created: boolean;
   projectId: any;
+  projectName: string;
   testScenariosPage: PageModel<any>;
   // testScenarios = [
   //   {id: 1, name: 'Name 1', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true},
   //   {id: 2, name: 'Name 2', user: {id: 13, email: 'clayn130@gmail.com'}, description: 'Description 1', active: false},
   //   {id: 3, name: 'Name 3', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: false},
   //   {id: 4, name: 'Name 4', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true}];
-  constructor(private router: Router, public activatedRoute: ActivatedRoute, private scService: ScenarioService) {
-
+  constructor(private router: Router, public activatedRoute: ActivatedRoute, private httpClientService: HttpClientService, private scService: ScenarioService) {
+    this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'),10)
+    this.projectName = "";
   }
 
   ngOnInit(): void {
@@ -46,6 +49,18 @@ export class TestScenariosComponent implements OnInit {
       this.size = !value.size ? 10 : value.size;
     });
     this.dataSource.sort = this.sort;
+    this.loadProjectName();
+  }
+
+  loadProjectName(): void {
+    console.log(this.projectId);
+    this.httpClientService.getProjectName(this.projectId)
+      .subscribe(
+        response => {
+          this.projectName = response;
+        },
+        error => console.log(error)
+      );
   }
 
   deleteScenario(){

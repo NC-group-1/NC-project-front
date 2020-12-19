@@ -16,12 +16,12 @@ export class TestCaseModel{
   role?: string;
   description: string;
   creationDate?: Date;
-  startDate?: Date;
+  startDate?: any;
   finishDate?: Date;
   status?: string;
   //recurringTime?: TimeInterval<Date>;
   recurringTime?: string;
   iterationsAmount?: number;
-  watcher_numb?: number;
+  watcherNumb?: number;
   edit?: boolean;
 }

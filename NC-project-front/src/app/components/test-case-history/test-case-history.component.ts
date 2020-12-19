@@ -7,6 +7,7 @@ import {TestCaseHistoryService} from '../../services/test-case-history/test-case
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../services/auth/authentication.service';
+import {HttpClientService} from '../../services/projects/http-client.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {PageModel} from "../../../models/PageModel";
 
@@ -22,6 +23,7 @@ export class TestCaseHistoryComponent implements OnInit {
   length: number;
   created: boolean;
   projectId: any;
+  projectName: string;
   testCaseTableForm: FormGroup;
   manageTestCaseForm: FormGroup;
   displayedColumns: string[] = ['tc.name', 'role', 'finish_date', 'ts.name', 'status'];
@@ -33,9 +35,10 @@ export class TestCaseHistoryComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private testCaseHistoryService: TestCaseHistoryService,
+              private httpClientService: HttpClientService,
               private authenticationService: AuthenticationService,
               private formBuilder: FormBuilder,
-              private router: ActivatedRoute) {
+              public router: ActivatedRoute) {
     this.testCaseTableForm = this.formBuilder.group({
       filter: new FormControl(''),
       orderBy: new FormControl('tc.name'),
@@ -52,8 +55,19 @@ export class TestCaseHistoryComponent implements OnInit {
   ngOnInit(): void {
     this.projectId = this.router.snapshot.paramMap.get('projectId');
     this.reloadTestCases();
+    this.loadProjectName();
   }
 
+  loadProjectName(): void {
+    this.httpClientService.getProjectName(this.projectId)
+      .subscribe(
+        response => {
+          this.projectName = response;
+        },
+        error => console.log(error)
+      );
+  }
+  
   reloadTestCases(): void {
     this.testCaseHistoryService.getPaginatedCaseHistory(
       this.pageSize,

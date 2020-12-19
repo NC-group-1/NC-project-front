@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient,HttpHeaders} from '@angular/common/http';
 import {TestCaseModel} from '../../../models/TestCaseModel';
+import {UserListModel} from '../../../models/UserListModel';
+import {WatcherModel} from '../../../models/WatcherModel';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 import {TestCaseResponseModel} from '../../../models/TestCaseResponseModel';
@@ -38,6 +40,22 @@ export class TestCaseService {
 
   runTestCase(id: number, startedById: number): Observable<any> {
     return this.httpClient.post(apiPath + 'api/ncp/test-case/' + id + '/run' + '?startedById=' + startedById,null);
+  }
+
+  getWatcherByTestCaseId(test_case_id: number): Observable<UserListModel[]>{
+    return this.httpClient.get<UserListModel[]>(
+      apiPath + 'api/ncp/test-case/?test_case_id=' + test_case_id)
+      .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
+  }
+
+  getSearchedUsers(searchStr: string): Observable<UserListModel[]>{
+    return this.httpClient.get<UserListModel[]>(
+      apiPath + 'api/ncp/test-case/users/?name=' + searchStr)
+      .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
+  }
+
+  postWatcher(watcher: WatcherModel) {
+    return this.httpClient.post(apiPath + 'api/ncp/test-case/add-watcher', watcher);
   }
 
   /*postTestCase(testCase: TestCaseModel) {

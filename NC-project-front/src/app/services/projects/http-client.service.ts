@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ProjectModel} from '../../../models/ProjectModel';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
@@ -39,6 +39,12 @@ export class HttpClientService {
           this.router.navigate(['404']);
         }
       }));
+  }
+
+  getProjectName(projectId: number) :Observable<string> {
+    //const httpOption = {responseType:'text' as 'text'}
+    return this.httpClient.get(
+      apiPath + 'api/ncp/project' + '?projectId=' + projectId, {responseType:'text' as 'text'});
   }
 
   updateProject(project: ProjectModel) {

@@ -2,6 +2,13 @@
   <form [formGroup]="testCaseTableForm" name="dataSetTableForm">
 
     <div class="mat-elevation-z8">
+      <nav mat-tab-nav-bar>
+        <h4 class="p-1 pl-3 mt-2" style="font-family: Roboto; font-weight: 400; color: rgba(0,0,0,.65);">{{projectName}}</h4>
+        <a mat-tab-link [routerLink]="['/testScenarios',router.snapshot.paramMap.get('projectId')]">Test Scenarios</a>
+        <a mat-tab-link [routerLink]="['/testCase/list',router.snapshot.paramMap.get('projectId')]" >Test Cases</a>
+        <a mat-tab-link [routerLink]="['/testCase/runningList',router.snapshot.paramMap.get('projectId')]">Running Test Cases</a>
+        <a mat-tab-link [routerLink]="['/testCase/history',router.snapshot.paramMap.get('projectId')]" [active]="true">History Test Cases</a>
+      </nav>
       <h1 class="p-0 header m-3 ng-tns-c142-7">History of test case</h1>
       <div class="col-md-12">
         <div class="mb-3">
