@@ -179,7 +179,7 @@ const routes: Routes = [
         component: TestCaseHistoryComponent
       },
       {
-        path: 'report/:projectId',
+        path: 'report/:testCaseId',
         component: ReportComponent
       },
       {

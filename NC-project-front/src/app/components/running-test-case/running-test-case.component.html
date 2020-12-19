@@ -27,7 +27,7 @@
 
              <ng-container matColumnDef="name">
                <th mat-header-cell style="width: 25%;" class="pl-3" *matHeaderCellDef mat-sort-header>Name</th>
-               <td mat-cell class="w3-link w3-text-blue pl-3" style="cursor: pointer;" [routerLink]="['../', 'details',router.snapshot.paramMap.get('id')]"
+               <td mat-cell class="w3-link w3-text-blue pl-3" style="cursor: pointer;" [routerLink]="['../', 'details',element.id]"
                    *matCellDef="let element" [matTooltip]="element.description"> {{element.name}} </td>
              </ng-container>
 

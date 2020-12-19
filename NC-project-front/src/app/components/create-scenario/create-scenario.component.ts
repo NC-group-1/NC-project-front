@@ -60,7 +60,6 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private router: Router,
-              private compService: CompoundService,
               private scenarioService: ScenarioService,
               private changeDetector: ChangeDetectorRef,
               private auth: AuthenticationService) {
@@ -84,6 +83,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
         this.compoundActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
       }
     });
+
     this.activatedRoute.data.subscribe(() => {
       this.actions = this.activatedRoute.snapshot.data.actionPage;
       this.actionsAsCompActions = this.actions.list.map<ActionOfCompound>(value1 => ({
@@ -198,6 +198,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   pageParamsChange(event: PageEvent): void {
+    this.actions.size = event.length;
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: {actionSize: event.pageSize, actionPage: event.pageIndex},

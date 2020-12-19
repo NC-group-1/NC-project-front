@@ -60,7 +60,7 @@ export class DetailsComponent implements OnInit {
               public activatedRoute: ActivatedRoute,
               private webSocketService: WebSocketService,
               private tcService: TestCaseService) {
-    this.id = 2;
+    this.id = parseInt(this.router.url.split("/")[3],10);
     this.dataSource = new MatTableDataSource();
     this.detailsProgress = [];
     this.tcService.getTestCaseDetailsById(this.id)

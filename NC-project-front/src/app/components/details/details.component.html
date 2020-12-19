@@ -45,7 +45,7 @@
                   [routerLink]="['testCase/', 'edit',activatedRoute.snapshot.paramMap.get('testCaseId')]"> Change
             dataset
           </button>
-          <button class="btn btn-nc m-3 px-5 py-3" routerLink="sendReport"> Send Report</button>
+          <button class="btn btn-nc m-3 px-5 py-3" [routerLink]="['../../','report', testCase.id]" [disabled]="tcProgress[0]?.progress != 1"> Send Report</button>
         </div>
 
         <br/>
@@ -89,7 +89,7 @@
     <div class="col-4">
       <div class="panel">
         <p><span class="text-secondary text-shadow-gray mr-2">Name of project:</span><span
-          class="text-shadow-gray">{{testCase?.project.name}}</span></p>
+          class="text-shadow-gray" [routerLink]="['/testCase/list',testCase?.id]">{{testCase?.project.name}}</span></p>
         <p><span class="text-secondary text-shadow-gray mr-2">Link:</span><span
           class="text-shadow-gray"> {{testCase?.project.link}} </span></p>
 
