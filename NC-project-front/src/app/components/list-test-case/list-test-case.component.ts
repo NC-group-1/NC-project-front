@@ -8,10 +8,17 @@ import {TestCaseService} from '../../services/list-test-case/list-test-case.serv
 import {AuthenticationService} from '../../services/auth/authentication.service';
 import {TestCaseResponseModel} from '../../../models/TestCaseResponseModel';
 import {TestCaseModel} from '../../../models/TestCaseModel';
+import {UserListModel} from '../../../models/UserListModel';
+import {HttpClientService} from '../../services/projects/http-client.service';
 import {Sort} from '@angular/material/sort';
 import {ThemePalette} from '@angular/material/core';
 import {MatSort} from '@angular/material/sort';
 import {UserDataModel} from "../../../models/UserDataModel";
+import {WatcherModel} from '../../../models/WatcherModel';
+import {MatSnackBar} from "@angular/material/snack-bar";
+import { Observable } from 'rxjs';
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import { map, startWith } from 'rxjs/operators';
 import * as moment from 'moment';
 
 
@@ -23,18 +30,34 @@ interface RecTime {
 @Component({
   selector: 'app-list-test-case',
   templateUrl: './list-test-case.component.html',
-  styleUrls: ['./list-test-case.component.scss']
+  styleUrls: ['./list-test-case.component.scss'],
+  animations: [
+   trigger('detailExpand', [
+     state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
+     state('expanded', style({height: '*'})),
+     transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+   ]),
+ ],
 })
 
 export class ListTestCaseComponent implements OnInit {
+  projectId: number;
+  projectName: string;
+  authorizedUserId: number;
 
   selectedTestCase: string;
-  displayedColumns: string[] = ['id', 'select', 'name', 'creator', 'creationDate', 'iterationsAmount', 'recurringTime','startDate', 'status','editBtn'];
+  displayedColumns: string[] = ['id', 'select', 'name', 'creator', 'creationDate', 'iterationsAmount', 'recurringTime',  'watcher_numb', 'startDate', 'status','editBtn'];
   responseTestCase?: TestCaseResponseModel;
   listTestCase: TestCaseModel[];
   dataSource: any;
-  projectId: number;
-  authorizedUserId: number;
+
+  dataSource2: any;
+  watcherList: UserListModel[];
+  watchersCtrl = new FormControl();
+  filteredWatchers: Observable<UserListModel[]>;
+  userList: UserListModel[];
+  selectedUserID: number;
+
   length = 0;
   pageSize = 10;
   pageIndex = 0;
@@ -42,6 +65,10 @@ export class ListTestCaseComponent implements OnInit {
   filter = '';
   orderBy = '';
   order = '';
+
+  displayedColumns2 = ['user_id', 'name', 'surname', 'role'];
+  expandedElement: TestCaseModel[] | null;
+
   background: ThemePalette = undefined;
   public color: ThemePalette = "primary";
   public disabled = false;
@@ -67,18 +94,82 @@ export class ListTestCaseComponent implements OnInit {
   ];
 
 
-  constructor(private testCaseService: TestCaseService, private auth: AuthenticationService, public router: ActivatedRoute) {
+  constructor(private _snackBar: MatSnackBar, private testCaseService: TestCaseService, private auth: AuthenticationService, private httpClientService: HttpClientService, public router: ActivatedRoute) {
     this.minDate = moment().add(1,'day').format('YYYY-MM-DDTHH:mm');
     this.selectedTestCase = "";
+    this.projectName = "";
     this.listTestCase = [];
+    this.watcherList = [];
+    this.userList = [];
     this.dataSource = new MatTableDataSource();
+    this.dataSource2 = new MatTableDataSource();
+    this.selectedUserID = 0;
     this.projectId = parseInt(this.router.snapshot.paramMap.get('projectId'),10);
     this.authorizedUserId = parseInt(auth.getId(), 10);
+
+    this.filteredWatchers = this.watchersCtrl.valueChanges
+        .pipe(
+          startWith(''),
+          map(user => user ? this._filterUserList(user) : this.userList.slice())
+        );
 
   }
 
   ngOnInit(): void {
     this.reloadTestCases();
+    this.reloadUsers('');
+    this.loadProjectName();
+  }
+
+  openSnackBar(message: string, type: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 3500,
+      panelClass: [type],
+    });
+  }
+
+  _filterUserList(value: string): UserListModel[] {
+    const filterValue = value.toLowerCase();
+    return this.userList.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  updateUserID(index:any){
+    this.selectedUserID = index;
+  }
+
+  reloadWatchers(index: number): void {
+    this.testCaseService.getWatcherByTestCaseId(index).subscribe(
+      response => {
+        this.watcherList = response;
+        this.dataSource2 = new MatTableDataSource(this.watcherList);
+      },
+      error => console.log(error)
+    );
+  }
+
+  reloadUsers(name: string): void {
+    this.testCaseService.getSearchedUsers(name).subscribe(
+      response => {
+        this.userList = response;
+      },
+      error => console.log(error)
+    );
+  }
+
+  addWatcher(test_case_id: number): boolean {
+    if (!this.watcherList.some(element => element.userId === this.selectedUserID) && (this.selectedUserID != 0)){
+      const watcher: WatcherModel = {user_id: this.selectedUserID, test_case_id: test_case_id};
+      console.log(watcher);
+
+      this.testCaseService.postWatcher(watcher)
+        .subscribe(
+          response => {console.log(response);this.reloadWatchers(test_case_id);},
+          error => console.log(error)
+        );
+        return true;
+    } else {
+      return false;
+    }
   }
 
   reloadTestCases(): void {
@@ -89,7 +180,19 @@ export class ListTestCaseComponent implements OnInit {
           this.listTestCase = response.list;
           this.dataSource = new MatTableDataSource(this.listTestCase);
           this.length = response.size;
-          // console.log(JSON.stringify(this.listUsers));
+        },
+        error => console.log(error)
+      );
+  }
+
+  loadProjectName(): void {
+    console.log(123);
+    this.httpClientService.getProjectName(this.projectId)
+      .subscribe(
+        response => {
+          console.log(response);
+          this.projectName = response;
+          console.log(this.projectName);
         },
         error => console.log(error)
       );
@@ -150,10 +253,12 @@ export class ListTestCaseComponent implements OnInit {
   }
 
   change(index: number) {
-    this.listTestCase[index].edit = !this.listTestCase[index].edit;
-
-    if (!this.listTestCase[index].edit) {
-      this.testCaseService.updateTestCase(this.listTestCase[index])
+    const testCase = this.listTestCase.find(element => element.id === index);
+    testCase.edit = !testCase.edit;
+    const newListTestCase = {...testCase};
+    newListTestCase.startDate = moment.utc(new Date(newListTestCase.startDate)).format().substr(0,16);
+    if (!newListTestCase.edit) {
+      this.testCaseService.updateTestCase(newListTestCase)
         .subscribe(
           response => console.log(response),
           error => console.log(error)
