@@ -1,5 +1,5 @@
-import {NgModule} from '@angular/core';
-import {Routes, RouterModule} from '@angular/router';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import {CreateUserComponent} from './components/create-user/create-user.component';
 import {ListUsersComponent} from './components/list-users/list-users.component';
 import {MainPageComponent} from './components/main-page/main-page.component';
@@ -38,7 +38,7 @@ import {TestCaseViewComponent} from './components/test-case/test-case-view/test-
 import {TestCaseResolverService} from './services/testCase/test-case-resolver.service';
 import {TestCaseActionsResolverService} from './services/testCase/test-case-actions-resolver.service';
 import {ReportComponent} from "./components/report/report.component";
-
+import {DashboardComponent} from './components/dashboard/dashboard.component';
 
 
 const routes: Routes = [
@@ -220,6 +220,10 @@ const routes: Routes = [
         resolve: {dataSet: DataSetResolverService}
       }
     ]
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent
   },
   {
     path: '**',

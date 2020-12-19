@@ -1,0 +1,79 @@
+<div class="row">
+  <div class="col-8">
+    <div class="mat-elevation-z8">
+      <table [dataSource]="dataSource" mat-table>
+        <ng-container matColumnDef="TestCaseId">
+          <th [hidden]="true" mat-header-cell *matHeaderCellDef></th>
+          <td [hidden]="true" mat-cell *matCellDef="let testCase"><p>{{testCase.id}}</p></td>
+        </ng-container>
+        <ng-container matColumnDef="name">
+          <th *matHeaderCellDef mat-header-cell>
+            <h4>Name</h4>
+          </th>
+          <td *matCellDef="let testCase" mat-cell>
+            <p [hidden]="testCase.edit">
+              <a [routerLink]="['/testCase/',testCase.id]" class="stretched-link" style="position: relative;">
+                {{testCase.name}}</a>
+            </p>
+            <!--        <div [hidden]="!testCase.edit">-->
+            <!--          <div class="input-group w-50">-->
+            <!--            <input #inputName type="text" class="form-control" (change)="updateName(i, inputName.value)"-->
+            <!--            [value]="testCase.name" placeholder="Element name">-->
+            <!--          </div>-->
+            <!--        </div>-->
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="created">
+          <th *matHeaderCellDef mat-header-cell>
+            <h4>Started</h4>
+          </th>
+          <td *matCellDef="let testCase" mat-cell> {{testCase.startDate | date: 'short' }} </td>
+        </ng-container>
+        <ng-container matColumnDef="finished">
+          <th *matHeaderCellDef mat-header-cell>
+            <h4>Finished</h4>
+          </th>
+          <td *matCellDef="let testCase" mat-cell> {{testCase.finishDate | date: 'short'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="project">
+          <th *matHeaderCellDef mat-header-cell>
+            <h4>Project</h4>
+          </th>
+          <td *matCellDef="let testCase" mat-cell>
+            <p [hidden]="testCase.edit">
+              <a [routerLink]="['/testCase/list/',testCase.project.projectId]" class="stretched-link"
+                 style="position: relative;">
+                {{testCase.project.name}}</a>
+            </p>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th *matHeaderCellDef mat-header-cell>
+            <h4>Status</h4>
+          </th>
+          <td *matCellDef="let testCase" mat-cell> {{testCase.status}} </td>
+        </ng-container>
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+      </table>
+      <mat-paginator #paginator (page)="onPaginationChange($event)"
+                     [length]="length"
+                     [pageSizeOptions]="pageSizeOptions"
+                     [pageSize]="pageSize" showFirstLastButtons>
+      </mat-paginator>
+
+      <div class="chart-wrapper">
+        <canvas baseChart
+                [datasets]="barChartData"
+                [labels]="barChartLabels"
+                [options]="barChartOptions"
+                [plugins]="barChartPlugins"
+                [legend]="true"
+                [chartType]="barChartType">
+        </canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+

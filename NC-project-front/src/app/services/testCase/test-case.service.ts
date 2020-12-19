@@ -3,8 +3,8 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {apiPath} from '../../../../globals';
 import {TestCaseModel} from '../../../models/TestCaseModel';
-import {DetailsTestCaseModel} from "../../../models/DetailsTestCaseModel";
-import {ActionInstRun} from "../../../models/ActionInstRun";
+import {DetailsTestCaseModel} from '../../../models/DetailsTestCaseModel';
+import {ActionInstRun} from '../../../models/ActionInstRun';
 import {ActionInstanceModel} from '../../../models/ActionInstanceModel';
 
 @Injectable({
@@ -21,7 +21,7 @@ export class TestCaseService {
     return this.http.get<number[]>(apiPath + 'api/ncp/test-case/user/' + userId);
   }
 
-  getAllActionInstRun(tcId):Observable<ActionInstRun[]>{
+  getAllActionInstRun(tcId): Observable<ActionInstRun[]>{
     return this.http.get<ActionInstRun[]>(apiPath + 'api/ncp/test-case/' + tcId + '/run-details');
   }
 
