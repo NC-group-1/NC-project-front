@@ -26,7 +26,7 @@
           <th *matHeaderCellDef mat-header-cell mat-sort-header>
             <h4>Name Test Case</h4>
           </th>
-          <td *matCellDef="let testCase" mat-cell> {{testCase.name}} </td>
+          <td *matCellDef="let testCase" mat-cell [routerLink]="['../', 'details',testCase.id]"> {{testCase.name}} </td>
         </ng-container>
         <ng-container matColumnDef="role">
           <th *matHeaderCellDef mat-header-cell mat-sort-header>

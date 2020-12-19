@@ -47,7 +47,7 @@
           <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 30%;"> Link</th>
           <td mat-cell *matCellDef="let element;let i = index;">
             <p [hidden]="element.edit">
-              <a href="#" class="stretched-link" style="position: relative;" (click)="open()">
+              <a [routerLink]="['/testCase/list',element.projectId]" href="#" class="stretched-link" style="position: relative;">
                 {{element.link}}
               </a>
             </p>
@@ -67,16 +67,16 @@
         </ng-container>
 
         <ng-container matColumnDef="role">
-          <th width="10%" mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;"> Creator</th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;"> Creator</th>
           <td mat-cell *matCellDef="let element">
-            <a href="#" class="stretched-link" style="position: relative;" (click)="openProfile(element.user.id)">
+            <a [routerLink]="['/user',element.user.id]" href="#" class="stretched-link" style="position: relative;" >
               {{element.user.name + ' ' + element.user.surname}}
             </a>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="archived">
-          <th width="30%" mat-header-cell *matHeaderCellDef style="width: 15%;"> Archived</th>
+          <th mat-header-cell *matHeaderCellDef style="width: 15%;"> Archived</th>
           <td mat-cell *matCellDef="let element">
             <p [hidden]="element.edit">{{element.archived ? 'Archived' : 'Not archived'}}</p>
 
@@ -93,7 +93,7 @@
         </ng-container>
 
         <ng-container matColumnDef="editBtn">
-          <th width="5%" mat-header-cell *matHeaderCellDef style="width: 5%;"></th>
+          <th mat-header-cell *matHeaderCellDef style="width: 5%;"></th>
           <td mat-cell *matCellDef="let element; let i =index">
             <button class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-hover-white"
                     (click)="change(i)"><i class="fa fa-pencil"></i></button>

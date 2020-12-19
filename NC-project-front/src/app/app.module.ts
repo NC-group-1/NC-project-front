@@ -53,6 +53,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {CreateScenarioComponent} from './components/create-scenario/create-scenario.component';
 import { TestCaseViewComponent } from './components/test-case/test-case-view/test-case-view.component';
 import { TestCaseHistoryComponent } from './components/test-case-history/test-case-history.component';
+import { ReportComponent } from './components/report/report.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { TestCaseHistoryComponent } from './components/test-case-history/test-ca
     TestCaseHistoryComponent,
     CreateScenarioComponent,
     DetailsComponent,
+    ReportComponent,
     TestCaseViewComponent
   ],
     imports: [

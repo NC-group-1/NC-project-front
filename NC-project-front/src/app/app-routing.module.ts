@@ -37,6 +37,7 @@ import {DetailsComponent} from "./components/details/details.component";
 import {TestCaseViewComponent} from './components/test-case/test-case-view/test-case-view.component';
 import {TestCaseResolverService} from './services/testCase/test-case-resolver.service';
 import {TestCaseActionsResolverService} from './services/testCase/test-case-actions-resolver.service';
+import {ReportComponent} from "./components/report/report.component";
 
 
 
@@ -139,6 +140,12 @@ const routes: Routes = [
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       },
       {
+        path: 'edit/:testScenarioId',
+        component: CreateScenarioComponent,
+        resolve: {actionPage: ActionPageResolverService},
+        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+      },
+      {
         path: ':projectId',
         component: TestScenariosComponent,
         resolve: {testScenarios: TestScenarioListResolverService},
@@ -176,6 +183,10 @@ const routes: Routes = [
       {
         path: 'history/:projectId',
         component: TestCaseHistoryComponent
+      },
+      {
+        path: 'report/:testCaseId',
+        component: ReportComponent
       },
       {
         path: ':testCaseId',
