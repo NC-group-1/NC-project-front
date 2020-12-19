@@ -6,7 +6,6 @@ import {Action} from '../../../models/action';
 import {ActionOfCompound} from '../../../models/ActionOfCompound';
 import {PageEvent} from '@angular/material/paginator';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {CompoundService} from '../../services/compound/compound.service';
 import {state, style, trigger} from '@angular/animations';
 import {CompoundPage} from '../../../models/CompoundPage';
 import {ScenarioService} from '../../services/scenario/scenario.service';
@@ -42,7 +41,6 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   compoundActions: ActionOfCompound[];
   actionsAsCompActionsFiltered: ActionOfCompound[];
   actionsAsCompActions: ActionOfCompound[];
-  compoundActionsDto: ActionOfCompound[];
   size: number;
   page: number;
   creating: boolean;
@@ -70,7 +68,6 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.clearQuery();
     this.compoundActions = [];
-    this.compoundActionsDto = [];
     this.creating = this.router.url.startsWith('/testScenarios/new');
     this.activatedRoute.queryParams.subscribe(value => {
       this.size = !value.actionSize ? 10 : value.actionSize;
@@ -108,11 +105,13 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    fromEvent(this.search.nativeElement, 'keydown').pipe(
-      debounceTime(550),
-      map(x => x['target']['value'])).subscribe(value => {
-      this.updateFilter(value);
-    });
+    if (this.creating){
+      fromEvent(this.search.nativeElement, 'keydown').pipe(
+        debounceTime(550),
+        map(x => x['target']['value'])).subscribe(value => {
+        this.updateFilter(value);
+      });
+    }
     this.changeDetector.detectChanges();
   }
 
@@ -131,12 +130,10 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     // console.log(event);
     if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer === event.container) {
       moveItemInArray(this.compoundActions, event.previousIndex, event.currentIndex);
-      moveItemInArray(this.compoundActionsDto, event.previousIndex, event.currentIndex);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer !== event.container) {
       this.compoundActions.splice(event.previousIndex, 1);
-      this.compoundActionsDto.splice(event.previousIndex, 1);
     } else {
       this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
     }
@@ -156,6 +153,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       );
       this.scenarioService.createTestScenario(
         {
+          testScenarioId: this.scenario.testScenarioId,
           name: this.scenarioForm.value.name,
           description: this.scenarioForm.value.description,
           user: {
@@ -167,16 +165,16 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           listActionCompoundId: actions_id
         }
       ).subscribe(() => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
-    } else if (!this.emptyInvalid && this.scenarioForm.valid) {
+    } else if (!this.emptyInvalid && !this.scenarioForm.valid) {
       const actions_id = [];
-      this.compoundActionsDto.forEach(
+      this.compoundActions.forEach(
         element => actions_id.push(element.action.id)
       );
       this.scenarioService.updateScenario(
         {
-          testScenarioId: this.scenario.testScenarioId,
-          name: this.scenarioForm.value.name,
-          description: this.scenarioForm.value.description,
+          testScenarioId: this.compound.id,
+          name: this.scenario.name,
+          description: this.scenario.description,
           user: {
             id: this.userId
           },
@@ -190,11 +188,6 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     } else {
       this.isError = true;
     }
-  }
-
-  delete(): void {
-    this.scenarioService.deleteScenario(this.scenario.testScenarioId).subscribe();
-    this.router.navigate(['testScenarios']);
   }
 
   pageParamsChange(event: PageEvent): void {
@@ -224,7 +217,10 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
 
   navToCompound(action: Action): void {
     if (action.type === 'COMPOUND') {
-      this.router.navigate(['testScenarios', 'edit', action.id]);
+      this.router.navigate(['compounds', 'edit', action.id]);
+    }
+    else{
+      this.router.navigate(['manageAction']);
     }
   }
 
