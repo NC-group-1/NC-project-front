@@ -9,7 +9,7 @@ import {AuthenticationService} from '../../services/auth/authentication.service'
 import {TestCaseResponseModel} from '../../../models/TestCaseResponseModel';
 import {TestCaseModel} from '../../../models/TestCaseModel';
 import {UserListModel} from '../../../models/UserListModel';
-import {HttpClientService} from '../../services/projects/http-client.service';
+import {ProjectService} from '../../services/projects/project.service';
 import {Sort} from '@angular/material/sort';
 import {ThemePalette} from '@angular/material/core';
 import {MatSort} from '@angular/material/sort';
@@ -94,7 +94,7 @@ export class ListTestCaseComponent implements OnInit {
   ];
 
 
-  constructor(private _snackBar: MatSnackBar, private testCaseService: TestCaseService, private auth: AuthenticationService, private httpClientService: HttpClientService, public router: ActivatedRoute) {
+  constructor(private _snackBar: MatSnackBar, private testCaseService: TestCaseService, private auth: AuthenticationService, private httpClientService: ProjectService, public router: ActivatedRoute) {
     this.minDate = moment().add(1,'day').format('YYYY-MM-DDTHH:mm');
     this.selectedTestCase = "";
     this.projectName = "";
