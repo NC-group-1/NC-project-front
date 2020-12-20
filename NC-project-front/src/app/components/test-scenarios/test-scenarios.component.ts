@@ -33,7 +33,7 @@ export class TestScenariosComponent implements OnInit {
   //   {id: 2, name: 'Name 2', user: {id: 13, email: 'clayn130@gmail.com'}, description: 'Description 1', active: false},
   //   {id: 3, name: 'Name 3', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: false},
   //   {id: 4, name: 'Name 4', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true}];
-  constructor(private router: Router, public activatedRoute: ActivatedRoute, private httpClientService: ProjectService, private scService: ScenarioService) {
+  constructor(private router: Router, public activatedRoute: ActivatedRoute, private projectService: ProjectService, private scService: ScenarioService) {
     this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'),10)
     this.projectName = "";
   }
@@ -54,7 +54,7 @@ export class TestScenariosComponent implements OnInit {
 
   loadProjectName(): void {
     console.log(this.projectId);
-    this.httpClientService.getProjectName(this.projectId)
+    this.projectService.getProjectName(this.projectId)
       .subscribe(
         response => {
           this.projectName = response;
