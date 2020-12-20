@@ -142,7 +142,7 @@ const routes: Routes = [
       {
         path: 'edit/:testScenarioId',
         component: CreateScenarioComponent,
-        resolve: {actionPage: ActionPageResolverService},
+        resolve: {compound: CompoundResolverService, actionPage: ActionPageResolverService},
         runGuardsAndResolvers: 'paramsOrQueryParamsChange'
       },
       {

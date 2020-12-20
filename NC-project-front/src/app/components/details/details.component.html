@@ -45,7 +45,7 @@
                   [routerLink]="['testCase/', 'edit',activatedRoute.snapshot.paramMap.get('testCaseId')]"> Change
             dataset
           </button>
-          <button class="btn btn-nc m-3 px-5 py-3" [routerLink]="['../../','report', testCase.id]" [disabled]="tcProgress[0]?.progress != 1"> Send Report</button>
+          <button class="btn btn-nc m-3 px-5 py-3" [routerLink]="['../../','report', testCase?.id]" [state]="testCase" [disabled]="tcProgress[0]?.progress != 1"> Send Report</button>
         </div>
 
         <br/>

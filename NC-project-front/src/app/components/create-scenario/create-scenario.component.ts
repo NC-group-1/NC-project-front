@@ -38,7 +38,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   compound: CompoundModel;
   actions: ActionPage;
   scenario: ScenarioModel;
-  compoundActions: ActionOfCompound[];
+  scenarioActions: ActionOfCompound[];
   actionsAsCompActionsFiltered: ActionOfCompound[];
   actionsAsCompActions: ActionOfCompound[];
   size: number;
@@ -67,7 +67,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.clearQuery();
-    this.compoundActions = [];
+    this.scenarioActions = [];
     this.creating = this.router.url.startsWith('/testScenarios/new');
     this.activatedRoute.queryParams.subscribe(value => {
       this.size = !value.actionSize ? 10 : value.actionSize;
@@ -75,12 +75,11 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     });
     this.activatedRoute.params.subscribe(() => {
       this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'), 10);
-      this.compound = this.activatedRoute.snapshot.data.compound;
+      this.compound = this.activatedRoute.snapshot.data.compoundPage;
       if (!!this.compound) {
-        this.compoundActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
+        this.scenarioActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
       }
     });
-
     this.activatedRoute.data.subscribe(() => {
       this.actions = this.activatedRoute.snapshot.data.actionPage;
       this.actionsAsCompActions = this.actions.list.map<ActionOfCompound>(value1 => ({
@@ -105,7 +104,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.creating){
+    if (this.creating) {
       fromEvent(this.search.nativeElement, 'keydown').pipe(
         debounceTime(550),
         map(x => x['target']['value'])).subscribe(value => {
@@ -129,26 +128,26 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   drop(event: CdkDragDrop<any[]>): void {
     // console.log(event);
     if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer === event.container) {
-      moveItemInArray(this.compoundActions, event.previousIndex, event.currentIndex);
+      moveItemInArray(this.scenarioActions, event.previousIndex, event.currentIndex);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else if (event.previousContainer.id === 'cdk-drop-list-0' && event.previousContainer !== event.container) {
-      this.compoundActions.splice(event.previousIndex, 1);
+      this.scenarioActions.splice(event.previousIndex, 1);
     } else {
-      this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
+      this.scenarioActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
     }
     if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer !== event.container) {
-      this.adjustOrder(this.compoundActions);
+      this.adjustOrder(this.scenarioActions);
     }
-    this.adjustOrder(this.compoundActions);
+    this.adjustOrder(this.scenarioActions);
     this.updateFilter(this.search.nativeElement.value);
   }
 
   submit(): void {
-    this.emptyInvalid = this.compoundActions.length === 0;
+    this.emptyInvalid = this.scenarioActions.length === 0;
     if (this.creating && !this.emptyInvalid && this.scenarioForm.valid) {
       const actions_id = [];
-      this.compoundActions.forEach(
+      this.scenarioActions.forEach(
         element => actions_id.push(element.action.id)
       );
       this.scenarioService.createTestScenario(
@@ -167,7 +166,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       ).subscribe(() => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
     } else if (!this.emptyInvalid && !this.scenarioForm.valid) {
       const actions_id = [];
-      this.compoundActions.forEach(
+      this.scenarioActions.forEach(
         element => actions_id.push(element.action.id)
       );
       this.scenarioService.updateScenario(
@@ -218,11 +217,9 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   navToCompound(action: Action): void {
     if (action.type === 'COMPOUND') {
       this.router.navigate(['compounds', 'edit', action.id]);
-    }
-    else{
+    } else {
       this.router.navigate(['manageAction']);
     }
   }
-
 }
 

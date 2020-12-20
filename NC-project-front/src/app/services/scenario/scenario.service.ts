@@ -43,6 +43,27 @@ export class ScenarioService {
       }));
   }
 
+  getPaginatedLibrary(pageSize: string,
+                       pageIndex: string,
+                       filter: string,
+                       orderBy: string,
+                       order: string): Observable<PageModel<ScenarioModel>> {
+    return this.http.get<PageModel<ScenarioModel>>(
+      apiPath + 'api/ncp/test-scenario/list/'
+      + '?pageSize=' + (!pageSize ? '' : pageSize)
+      + '&pageIndex=' + (!pageIndex ? '' : pageIndex)
+      + '&filter=' + (!filter ? '' : filter)
+      + '&orderBy=' + (!orderBy ? '' : orderBy)
+      + '&order=' + (!order ? '' : order)
+    )
+      .pipe(tap(() => {
+      }, e => {
+        if (e.status) {
+          this.router.navigate(['404']);
+        }
+      }));
+  }
+
   createTestScenario(scenario: ScenarioModel): Observable<any> {
     return this.http.post(apiPath + 'api/ncp/test-scenario', scenario);
   }

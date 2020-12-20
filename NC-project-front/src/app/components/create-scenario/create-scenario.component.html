@@ -28,11 +28,11 @@
           <h2 class="color-nc font-italic font-weight-bold">Set of Test Scenario</h2>
           <div [@invalidForm]="emptyInvalid ? 'invalid': ''"
                cdkDropList [id]="'cdk-drop-list-0'"
-               [cdkDropListData]="compoundActions"
+               [cdkDropListData]="scenarioActions"
                class="action-list" (cdkDropListDropped)="drop($event)">
             <div class="action-box"
                  [class]="action.action.type === 'COMPOUND' ? 'border border-success' : ''"
-                 *ngFor="let action of compoundActions"
+                 *ngFor="let action of scenarioActions"
                  (click)="showActionDetails(action)" cdkDrag>
               {{action.action.name}}
             </div>
@@ -55,9 +55,9 @@
               </div>
 
             </div>
+            <mat-paginator [pageSizeOptions]="[10, 20, 30]" pageSize="{{size}}" length="{{actions.size}}"
+                           (page)="pageParamsChange($event)" showFirstLastButtons></mat-paginator>
           </div>
-          <mat-paginator [pageSizeOptions]="[10, 20, 30]" pageSize="{{size}}" length="{{actions.size}}"
-                         (page)="pageParamsChange($event)" showFirstLastButtons></mat-paginator>
         </div>
 
       </div>

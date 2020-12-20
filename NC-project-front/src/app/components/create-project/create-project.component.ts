@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {HttpClientService} from '../../services/projects/http-client.service';
+import {ProjectService} from '../../services/projects/project.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from "../../services/auth/authentication.service";
 import {ProjectModel} from "../../../models/ProjectModel";
@@ -34,7 +34,7 @@ export class CreateProjectComponent implements OnInit {
   creating = false;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private httpClientService: HttpClientService,
+              private httpClientService: ProjectService,
               private router: Router,
               private auth: AuthenticationService) {
     // console.log(auth.getRole().toString());

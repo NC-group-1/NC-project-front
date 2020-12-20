@@ -1,10 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AuthenticationService} from "../../services/auth/authentication.service";
-import {ResetPasswordService} from "../../services/reset-pass/reset-password.service";
 import {Router} from "@angular/router";
 import {ThemePalette} from "@angular/material/core";
+import {HttpClientService} from "../../services/users/http-client.service";
+import {ProjectService} from "../../services/projects/project.service";
+import {DetailsTestCaseModel} from "../../../models/DetailsTestCaseModel";
+import {ReportModel} from "../../../models/ReportModel";
+import {ActionInstRun} from "../../../models/ActionInstRun";
 
+declare var $: any;
 
 export interface Task {
   name: string;
@@ -20,64 +25,149 @@ export interface Task {
 })
 export class ReportComponent implements OnInit {
 
+  emptyInvalid = false;
+  creating: boolean;
   reportFormGroup = new FormGroup({
-    emailUser: new FormControl('', [Validators.required, Validators.email]),
-    roleUser: new FormControl('', [Validators.required]),
+    emailUser: new FormControl('', [Validators.required, Validators.email])
   });
 
-  task: Task = {
-    name: 'Indeterminate',
+  project: Task = {
+    name: 'Project',
     completed: false,
     color: 'primary',
     subtasks: [
-      {name: 'Primary', completed: false, color: 'primary'},
-      {name: 'Accent', completed: false, color: 'accent'},
-      {name: 'Warn', completed: false, color: 'warn'}
+      {name: 'Name', completed: false, color: 'primary'},
+      {name: 'Link', completed: false, color: 'primary'},
+      {name: 'Creator', completed: false, color: 'primary'}
+    ]
+  };
+  testCase: Task = {
+    name: 'TestCase',
+    completed: false,
+    color: 'primary',
+    subtasks: [
+      {name: 'Name', completed: false, color: 'primary'},
+      {name: 'Creator', completed: false, color: 'primary'},
+      {name: 'Starter', completed: false, color: 'primary'},
+      {name: 'Created date', completed: false, color: 'primary'},
+      {name: 'Started date', completed: false, color: 'primary'},
+      {name: 'Finished date', completed: false, color: 'primary'},
+      {name: 'Status', completed: false, color: 'primary'}
+    ]
+  };
+  actionInst: Task = {
+    name: 'Action and Compound',
+    completed: false,
+    color: 'primary',
+    subtasks: [
+      {name: 'Name', completed: false, color: 'primary'},
+      {name: 'Status', completed: false, color: 'primary'}
     ]
   };
 
-  allComplete: boolean = false;
+  allCompleteProjects: boolean = false;
+  allCompleteTestCase: boolean = false;
+  allCompleteActionInst: boolean = false;
+  isError: boolean;
+  emails: string[] = [];
+
+  reportModel: ReportModel = {};
+
   constructor(private auth: AuthenticationService,
-              private passwordService: ResetPasswordService,
-              private router: Router) { }
+            private projectService: ProjectService,
+            private router: Router) {
+    console.log(this.router.getCurrentNavigation().extras.state);
+    //this.reportModel.testCaseDetailsDto = new DetailsTestCaseModel();
+    this.reportModel.testCaseDetailsDto = this.router.getCurrentNavigation().extras.state;
+  }
+
+
 
   ngOnInit(): void {
   }
 
-  updateAllComplete() {
-    this.allComplete = this.task.subtasks != null && this.task.subtasks.every(t => t.completed);
+  updateAllCompleteProject() {
+    this.allCompleteProjects = this.project.subtasks != null && this.project.subtasks.every(t => t.completed);
+  }
+  updateAllCompleteTestCase() {
+    this.allCompleteTestCase = this.testCase.subtasks != null && this.testCase.subtasks.every(t => t.completed);
+  }
+  updateAllCompleteAction() {
+    this.allCompleteActionInst = this.actionInst.subtasks != null && this.actionInst.subtasks.every(t => t.completed);
   }
 
-  someComplete(): boolean {
-    if (this.task.subtasks == null) {
+  someCompleteProject(): boolean {
+    if (this.project.subtasks == null) {
       return false;
     }
-    return this.task.subtasks.filter(t => t.completed).length > 0 && !this.allComplete;
+    return this.project.subtasks.filter(t => t.completed).length > 0 && !this.allCompleteProjects;
+  }
+  someCompleteTestCase(): boolean {
+    if (this.testCase.subtasks == null) {
+      return false;
+    }
+    return this.testCase.subtasks.filter(t => t.completed).length > 0 && !this.allCompleteTestCase;
+  }
+  someCompleteAction(): boolean {
+    if (this.actionInst.subtasks == null) {
+      return false;
+    }
+    return this.actionInst.subtasks.filter(t => t.completed).length > 0 && !this.allCompleteActionInst;
   }
 
-  setAll(completed: boolean) {
-    this.allComplete = completed;
-    if (this.task.subtasks == null) {
+  setAllProject(completed: boolean) {
+    this.allCompleteProjects = completed;
+    if (this.project.subtasks == null) {
       return;
     }
-    this.task.subtasks.forEach(t => t.completed = completed);
+    this.project.subtasks.forEach(t => t.completed = completed);
   }
 
-  sendReport(email: string): void {
-    this.auth.register({
-      email: email,
-    }).subscribe(() => {
-        this.passwordService.sendCodeOnEmail(email).subscribe(
-          () => {
-          },
-          error => console.log(error)
-        );
-      }, error => console.log(error)
-    );
-    this.router.navigate(['testCase/details/2'], {queryParams: {created: true}});
+  setAllTestCase(completed: boolean) {
+    this.allCompleteTestCase = completed;
+    if (this.testCase.subtasks == null) {
+      return;
+    }
+    this.testCase.subtasks.forEach(t => t.completed = completed);
   }
+
+  setAllAction(completed: boolean) {
+    this.allCompleteActionInst = completed;
+    if (this.actionInst.subtasks == null) {
+      return;
+    }
+    this.actionInst.subtasks.forEach(t => t.completed = completed);
+  }
+
 
   modalShow() {
     this.router.navigateByUrl('testCase/details/2');
+  }
+
+  sendReport(email: string): void {
+    if (!this.emptyInvalid && this.reportFormGroup.valid) {
+      // this.project.subtasks[0].completed ? this.reportModel.testCaseDetailsDto.project.name =
+      this.reportModel.email = email;
+      this.projectService.sendReport(this.reportModel).subscribe(
+            () => {},
+            error => console.log(error)
+          );
+      // this.router.navigate(['testCase/details/2'], {queryParams: {created: true}});
+    } else {
+      this.isError = true;
+    }
+  }
+
+  closeAlert(): void {
+    $('.alert').alert('close');
+  }
+
+  addRecipient(emailUser: any) {
+    this.emails.push(emailUser);
+    console.log(this.emails);
+  }
+
+  deleteSkill(i: number) {
+    this.emails.splice(i, 1);
   }
 }
