@@ -1,0 +1,70 @@
+<div>
+  <form [formGroup]="testCaseTableForm" name="dataSetTableForm">
+
+    <div class="mat-elevation-z8">
+      <nav mat-tab-nav-bar>
+        <h4 class="p-1 pl-3 mt-2" style="font-family: Roboto; font-weight: 400; color: rgba(0,0,0,.65);">{{projectName}}</h4>
+        <a mat-tab-link [routerLink]="['/testScenarios',router.snapshot.paramMap.get('projectId')]">Test Scenarios</a>
+        <a mat-tab-link [routerLink]="['/testCase/list',router.snapshot.paramMap.get('projectId')]" >Test Cases</a>
+        <a mat-tab-link [routerLink]="['/testCase/runningList',router.snapshot.paramMap.get('projectId')]">Running Test Cases</a>
+        <a mat-tab-link [routerLink]="['/testCase/history',router.snapshot.paramMap.get('projectId')]" [active]="true">History Test Cases</a>
+      </nav>
+      <h1 class="p-0 header m-3 ng-tns-c142-7">History of test case</h1>
+      <div class="col-md-12">
+        <div class="mb-3">
+          <label>Filter</label>
+          <input (input)="applyFilter()"
+                 aria-label="Filter"
+                 class="form-control"
+                 formControlName="filter"
+                 placeholder="Search by test scenario name..."
+                 type="text">
+        </div>
+      </div>
+      <table (matSortChange)="sortData()" [dataSource]="dataSource" mat-table matSort>
+        <ng-container matColumnDef="tc.name">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Name Test Case</h4>
+          </th>
+          <td *matCellDef="let testCase" mat-cell [routerLink]="['../', 'details',testCase.id]"> {{testCase.name}} </td>
+        </ng-container>
+        <ng-container matColumnDef="role">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Creator</h4>
+          </th>
+          <td *matCellDef="let testCase" mat-cell> {{testCase.role}} </td>
+        </ng-container>
+        <ng-container matColumnDef="finish_date">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Finish date</h4>
+          </th>
+          <td *matCellDef="let testCase" mat-cell> {{testCase.finishDate}} </td>
+        </ng-container>
+        <ng-container matColumnDef="ts.name">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Name Test scenario</h4>
+          </th>
+          <td *matCellDef="let testCase" mat-cell> {{testCase.tsName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>
+            <h4>Status</h4>
+          </th>
+          <td *matCellDef="let dataSet" mat-cell> {{dataSet.status}} </td>
+        </ng-container>
+
+        <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+        <tr *matRowDef="let row; columns: displayedColumns;" [matTooltip]="row.description" mat-row></tr>
+        <tr *matNoDataRow class="mat-row">
+          <td class="mat-cell" colspan="7">No data matching the filter "{{testCaseTableForm.value.filter}}"</td>
+        </tr>
+      </table>
+      <mat-paginator #paginator (page)="onPaginationChange($event)"
+                     [length]="length"
+                     [pageSizeOptions]="pageSizeOptions"
+                     [pageSize]="pageSize" showFirstLastButtons>
+      </mat-paginator>
+
+    </div>
+  </form>
+</div>

@@ -1,17 +1,18 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {ProjectModel} from '../../../models/ProjectModel';
 import {Observable} from 'rxjs';
 import {Router} from '@angular/router';
 import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
 import {tap} from 'rxjs/operators';
 import {apiPath} from "../../../../globals";
+import {ReportModel} from "../../../models/ReportModel";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class HttpClientService {
+export class ProjectService {
 
   constructor(private httpClient: HttpClient, private router: Router) {
   }
@@ -41,8 +42,18 @@ export class HttpClientService {
       }));
   }
 
+  getProjectName(projectId: number) :Observable<string> {
+    //const httpOption = {responseType:'text' as 'text'}
+    return this.httpClient.get(
+      apiPath + 'api/ncp/project' + '?projectId=' + projectId, {responseType:'text' as 'text'});
+  }
+
   updateProject(project: ProjectModel) {
     return this.httpClient.put(apiPath + 'api/ncp/project', project);
+  }
+
+  sendReport(reportDto: ReportModel): Observable<any>{
+    return this.httpClient.post(apiPath + 'api/ncp/project/send-report', reportDto);
   }
 
 }

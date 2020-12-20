@@ -1,0 +1,121 @@
+<div class="bg-white shadow-lg p-5">
+  <div *ngIf="isError" class="alert alert-danger alert-dismissible fade show" role="alert">
+    Please, make sure to fill all the fields
+    <button (click)="closeAlert()" aria-label="Close" class="close" data-dismiss="alert" type="button">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="example-container">
+    <h2 class="p-0 header m-3">Send report</h2>
+  </div>
+
+  <div class="container p-0 m-3">
+    <div class="row">
+      <div class="col">
+        <form [formGroup]="reportFormGroup">
+          <div class="input-group">
+            <input #emailUser class="form-control" name="email" type="text" formControlName="emailUser"
+                   placeholder="Recipient's email" aria-label="Recipient's username" aria-describedby="basic-addon2"
+                   required>
+            <div class="input-group-append">
+              <button [disabled]="reportFormGroup.invalid" class="btn btn-nc btn-outline-secondary"
+                      (click)="addRecipient(emailUser.value)" type="button">Add
+              </button>
+            </div>
+          </div>
+          <mat-error
+            *ngIf="reportFormGroup.controls['emailUser'].hasError('email') && !reportFormGroup.controls['emailUser'].hasError('required')">
+            Please enter a valid email address
+          </mat-error>
+          <mat-error *ngIf="reportFormGroup.controls['emailUser'].hasError('required')">
+            Email is <strong>required</strong>
+          </mat-error>
+        </form>
+        <!--        <button (click)="sendReport(emailUser.value)" [disabled]="reportFormGroup.invalid"-->
+        <!--                class="btn btn-nc m-3 px-5"> Add </button>-->
+        <br>
+
+        <section class="example-section">
+          <span class="example-list-section">
+            <mat-checkbox class="example-margin"
+                          [checked]="allCompleteProjects"
+                          [color]="project.color"
+                          [indeterminate]="someCompleteProject()"
+                          (change)="setAllProject($event.checked)">
+              {{project.name}}
+            </mat-checkbox>
+          </span>
+            <span class="example-list-section">
+            <ul>
+              <li *ngFor="let subtask of project.subtasks">
+                <mat-checkbox [(ngModel)]="subtask.completed"
+                              [color]="subtask.color"
+                              (ngModelChange)="updateAllCompleteProject()">
+                  {{subtask.name}}
+                </mat-checkbox>
+              </li>
+            </ul>
+          </span>
+          <span class="example-list-section">
+            <mat-checkbox class="example-margin"
+                          [checked]="allCompleteTestCase"
+                          [color]="testCase.color"
+                          [indeterminate]="someCompleteTestCase()"
+                          (change)="setAllTestCase($event.checked)">
+              {{testCase.name}}
+            </mat-checkbox>
+          </span>
+            <span class="example-list-section">
+            <ul>
+              <li *ngFor="let subtask of testCase.subtasks">
+                <mat-checkbox [(ngModel)]="subtask.completed"
+                              [color]="subtask.color"
+                              (ngModelChange)="updateAllCompleteTestCase()">
+                  {{subtask.name}}
+                </mat-checkbox>
+              </li>
+            </ul>
+          </span>
+          <span class="example-list-section">
+            <mat-checkbox class="example-margin"
+                          [checked]="allCompleteActionInst"
+                          [color]="actionInst.color"
+                          [indeterminate]="someCompleteAction()"
+                          (change)="setAllAction($event.checked)">
+              {{actionInst.name}}
+            </mat-checkbox>
+          </span>
+            <span class="example-list-section">
+            <ul>
+              <li *ngFor="let subtask of actionInst.subtasks">
+                <mat-checkbox [(ngModel)]="subtask.completed"
+                              [color]="subtask.color"
+                              (ngModelChange)="updateAllCompleteAction()">
+                  {{subtask.name}}
+                </mat-checkbox>
+              </li>
+            </ul>
+          </span>
+        </section>
+      </div>
+      <div class="col">
+        <ul class="list-group">
+          <li class="list-group-item" (click)="deleteSkill(i)" *ngFor="let email of emails; let i = index">
+            <span>{{email}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <p>
+    <button (click)="sendReport(emailUser.value)" [disabled]="reportFormGroup.invalid"
+            class="btn btn-nc m-3 px-5"> Send Report
+    </button>
+    <button class="btn btn-nc m-3 px-5" data-toggle="modal" data-target="discardModal"
+            (click)="modalShow()"> Discard
+    </button>
+  </p>
+</div>
+
+

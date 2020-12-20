@@ -21,6 +21,7 @@
                    placeholder="Search by name and surname...">
           </div>
           <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData()">
+
             <ng-container matColumnDef="user_id">
               <th *matHeaderCellDef [hidden]="true" mat-header-cell></th>
               <td *matCellDef="let element" [hidden]="true" mat-cell><p>{{element.user_id}}</p></td>
@@ -80,7 +81,11 @@
 <!--              <td mat-cell *matCellDef="let element">-->
 <!--                <a class="btn m-0 p-0" (click)="$event.stopPropagation()" routerLink="../../user/{{element.user.id}}">{{element.user.email}}</a>-->
 <!--              </td>-->
-              <td *matCellDef="let element" mat-cell> {{element.email}} </td>
+              <td *matCellDef="let element" mat-cell>
+                <a [routerLink]="['/user',element.userId]" href="#" class="stretched-link" style="position: relative;" >
+                  {{element.email}}
+                </a>
+              </td>
             </ng-container>
 
             <ng-container matColumnDef="role">

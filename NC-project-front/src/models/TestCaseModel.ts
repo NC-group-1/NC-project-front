@@ -6,6 +6,7 @@ import {TimeInterval} from 'rxjs';
 import {ActionInstanceModel} from './ActionInstanceModel';
 
 export class TestCaseModel{
+  id?: number;
   testCaseId?: number;
   user: { id: number, name?: string, surname?: string, email?: string };
   starter?: UserDataModel;
@@ -14,10 +15,13 @@ export class TestCaseModel{
   name: string;
   role?: string;
   description: string;
-  creationTime?: Date;
-  startDate?: Date;
+  creationDate?: Date;
+  startDate?: any;
   finishDate?: Date;
   status?: string;
-  recurringTime?: TimeInterval<Date>;
+  //recurringTime?: TimeInterval<Date>;
+  recurringTime?: string;
   iterationsAmount?: number;
+  watcherNumb?: number;
+  edit?: boolean;
 }
