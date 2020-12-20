@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
-import {HttpClientService} from '../../services/projects/http-client.service';
+import {ProjectService} from '../../services/projects/project.service';
 import {ProjectModel} from '../../../models/ProjectModel';
 import {PageEvent} from '@angular/material/paginator';
 import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
@@ -34,7 +34,7 @@ export class ListProjectComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private httpClientService: HttpClientService,
+  constructor(private httpClientService: ProjectService,
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private formBuilder: FormBuilder) {

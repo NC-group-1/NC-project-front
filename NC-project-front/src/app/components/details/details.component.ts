@@ -70,7 +70,8 @@ export class DetailsComponent implements OnInit {
     this.stompCase = this.webSocketService.connect();
     this.stompCase.connect({}, () => {
       this.tcService.getAllActionInstRun(this.id).subscribe(value => {
-        console.log(value);
+        this.testCase.actionInstRunDtos = value;
+        console.log(this.testCase);
         this.dataSource = new MatTableDataSource(value);
         this.dataSource.paginator = this.paginator;
         this.subscribeOnTcProgress(this.id);

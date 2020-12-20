@@ -37,6 +37,7 @@ export class ActionService {
       + (!pageIndex ? '' : pageIndex) + '&size=' + (!pageSize ? '' : pageSize))
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
+
   getPaginatedActionsWithoutTarget(targetId, pageSize, pageIndex): Observable<ActionPage> {
     if (!targetId){
       return this.getPaginatedActions(pageSize, pageIndex);

@@ -7,7 +7,7 @@ import {TestCaseHistoryService} from '../../services/test-case-history/test-case
 import {MatPaginator, PageEvent} from '@angular/material/paginator';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthenticationService} from '../../services/auth/authentication.service';
-import {HttpClientService} from '../../services/projects/http-client.service';
+import {ProjectService} from '../../services/projects/project.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {PageModel} from "../../../models/PageModel";
 
@@ -35,7 +35,7 @@ export class TestCaseHistoryComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private testCaseHistoryService: TestCaseHistoryService,
-              private httpClientService: HttpClientService,
+              private httpClientService: ProjectService,
               private authenticationService: AuthenticationService,
               private formBuilder: FormBuilder,
               public router: ActivatedRoute) {
@@ -67,7 +67,7 @@ export class TestCaseHistoryComponent implements OnInit {
         error => console.log(error)
       );
   }
-  
+
   reloadTestCases(): void {
     this.testCaseHistoryService.getPaginatedCaseHistory(
       this.pageSize,

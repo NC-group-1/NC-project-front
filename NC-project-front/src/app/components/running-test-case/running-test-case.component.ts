@@ -5,7 +5,7 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {PageEvent} from '@angular/material/paginator';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RunningTestCaseService} from '../../services/running-test-case/running-test-case.service';
-import {HttpClientService} from '../../services/projects/http-client.service';
+import {ProjectService} from '../../services/projects/project.service';
 import {TestCaseResponseModel} from '../../../models/TestCaseResponseModel';
 import {TestCaseModel} from '../../../models/TestCaseModel';
 import {WatcherModel} from '../../../models/WatcherModel';
@@ -46,10 +46,10 @@ export class RunningTestCaseComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private _snackBar: MatSnackBar, private runningTestCaseService: RunningTestCaseService, private httpClientService: HttpClientService, public router: ActivatedRoute) {
+  constructor(private _snackBar: MatSnackBar, private runningTestCaseService: RunningTestCaseService, private httpClientService: ProjectService, public router: ActivatedRoute) {
     this.runningListTestCase = [];
     this.dataSource = new MatTableDataSource();
-    this.projectId = parseInt(this.router.snapshot.paramMap.get('projectId'),10);
+    this.projectId = parseInt(this.router.snapshot.paramMap.get('projectId'), 10);
 
   }
 
@@ -94,7 +94,7 @@ export class RunningTestCaseComponent implements OnInit {
     this.reloadRunningTestCases();
   }
 
-  sortData(): void{
+  sortData(): void {
     this.order = this.sort.direction.toUpperCase();
     this.orderBy = this.sort.active;
     this.reloadRunningTestCases();
@@ -106,7 +106,7 @@ export class RunningTestCaseComponent implements OnInit {
     this.reloadRunningTestCases();
   }
 
-  updateStatus(value, test_case_id){
+  updateStatus(value, test_case_id) {
     const test_case = this.runningListTestCase.find(element => element.id === test_case_id);
     console.log(test_case);
     if (value.checked === true) {
@@ -119,11 +119,10 @@ export class RunningTestCaseComponent implements OnInit {
   onChangeStatus(test_case_id) {
     const body = this.runningListTestCase.find(element => element.id === test_case_id);
     console.log(body);
-      this.runningTestCaseService.updateRunningTestCase(body)
-        .subscribe(
-          response => console.log(response),
-          error => console.log(error)
-        );
+    this.runningTestCaseService.updateRunningTestCase(body)
+      .subscribe(
+        response => console.log(response),
+        error => console.log(error)
+      );
   }
-
 }

@@ -6,12 +6,13 @@ import {Router} from '@angular/router';
 import {ProjectResponseModel} from '../../../models/ProjectResponseModel';
 import {tap} from 'rxjs/operators';
 import {apiPath} from "../../../../globals";
+import {ReportModel} from "../../../models/ReportModel";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class HttpClientService {
+export class ProjectService {
 
   constructor(private httpClient: HttpClient, private router: Router) {
   }
@@ -49,6 +50,10 @@ export class HttpClientService {
 
   updateProject(project: ProjectModel) {
     return this.httpClient.put(apiPath + 'api/ncp/project', project);
+  }
+
+  sendReport(reportDto: ReportModel): Observable<any>{
+    return this.httpClient.post(apiPath + 'api/ncp/project/send-report', reportDto);
   }
 
 }
