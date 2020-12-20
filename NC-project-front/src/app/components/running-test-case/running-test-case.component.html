@@ -43,18 +43,31 @@
 
              <ng-container matColumnDef="status">
                <th mat-header-cell style="width: 20%;" *matHeaderCellDef>Status</th>
-               <td mat-cell *matCellDef="let element"> {{element.status}} </td>
+               <td mat-cell *matCellDef="let element" [ngStyle]="{'color': element.status==='SCHEDULED' ? '#cca300' :
+                element.status==='STOPPED' ? '#8c8c8c' :
+                element.status==='IN_PROGRESS' ? 'blue' :
+                'red'}"> {{element.status}} </td>
              </ng-container>
 
              <ng-container matColumnDef="stop/run">
                <th mat-header-cell style="width: 7%;" *matHeaderCellDef >Stop/Run</th>
                <td mat-cell style="padding-left: 1%;" *matCellDef="let element;">
                  <div *ngIf="element.status === 'STOPPED'">
-                    <mat-slide-toggle color='primary' [checked]="false" (change)="updateStatus($event, element.id); onChangeStatus(element.id)" ></mat-slide-toggle>
+                    <mat-slide-toggle color='primary' [checked]="false" (change)="onChangeStatus($event,element.id)" ></mat-slide-toggle>
                 </div>
-                <div *ngIf="element.status != 'STOPPED'">
-                   <mat-slide-toggle color='primary' [checked]="true" (change)="updateStatus($event, element.id); onChangeStatus(element.id)" ></mat-slide-toggle>
+                <div *ngIf="element.status === 'IN_PROGRESS'">
+                   <mat-slide-toggle color='primary' [checked]="true" (change)="onChangeStatus($event,element.id)" ></mat-slide-toggle>
                </div>
+               <div *ngIf="element.status != 'IN_PROGRESS' && element.status != 'STOPPED' ">
+                  <mat-slide-toggle color='primary' [checked]="false" [disabled]="true"></mat-slide-toggle>
+              </div>
+               </td>
+             </ng-container>
+
+             <ng-container matColumnDef="cancel">
+               <th mat-header-cell style="width: 7%;" *matHeaderCellDef>Cancel</th>
+               <td mat-cell style="padding-bottom: 0.5%;" *matCellDef="let element; let i = index;" mat-cell>
+                 <button (click)="cancelTestCase(element.id)" style="color: #ff4d4d;" class="w3-button w3-large w3-circle w3-ripple w3-hover-white"><i class="fa fa-times"></i></button>
                </td>
              </ng-container>
 

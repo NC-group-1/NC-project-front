@@ -38,8 +38,12 @@ export class TestCaseService {
     return this.httpClient.delete(apiPath + 'api/ncp/test-case/' + id);
   }
 
-  runTestCase(id: number, startedById: number): Observable<any> {
-    return this.httpClient.post(apiPath + 'api/ncp/test-case/' + id + '/run' + '?startedById=' + startedById,null);
+  runTestCase(id: number, operation: string, startedById: number): Observable<any> {
+    return this.httpClient.put(apiPath + 'api/ncp/test-case/' + id + '?operation=' + operation + '&startedById=' + startedById,null);
+  }
+
+  scheduleTestCase(id: number, startedById: number): Observable<any> {
+    return this.httpClient.post(apiPath + 'api/ncp/test-case/' + id + '/schedule' + '?startedById=' + startedById,null);
   }
 
   getWatcherByTestCaseId(test_case_id: number): Observable<UserListModel[]>{

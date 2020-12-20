@@ -35,7 +35,7 @@ export class TestCaseHistoryComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
 
   constructor(private testCaseHistoryService: TestCaseHistoryService,
-              private httpClientService: ProjectService,
+              private projectService: ProjectService,
               private authenticationService: AuthenticationService,
               private formBuilder: FormBuilder,
               public router: ActivatedRoute) {
@@ -59,7 +59,7 @@ export class TestCaseHistoryComponent implements OnInit {
   }
 
   loadProjectName(): void {
-    this.httpClientService.getProjectName(this.projectId)
+    this.projectService.getProjectName(this.projectId)
       .subscribe(
         response => {
           this.projectName = response;
