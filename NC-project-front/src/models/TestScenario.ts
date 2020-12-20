@@ -1,6 +1,6 @@
 import {ProjectModel} from './ProjectModel';
 import {UserDataModel} from './UserDataModel';
-import {ActionInstanceModel} from "./ActionInstanceModel";
+import {ActionOfCompound} from "./ActionOfCompound";
 
 export class ScenarioModel{
   testScenarioId?: number;
@@ -9,5 +9,5 @@ export class ScenarioModel{
   user? : UserDataModel;
   project? : ProjectModel;
   listActionCompoundId?: number[];
-  // actions?: ActionInstanceModel[];
+  actions?: ActionOfCompound[];
 }
