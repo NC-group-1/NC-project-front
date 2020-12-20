@@ -186,13 +186,10 @@ export class ListTestCaseComponent implements OnInit {
   }
 
   loadProjectName(): void {
-    console.log(123);
     this.httpClientService.getProjectName(this.projectId)
       .subscribe(
         response => {
-          console.log(response);
           this.projectName = response;
-          console.log(this.projectName);
         },
         error => console.log(error)
       );
