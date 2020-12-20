@@ -75,8 +75,8 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     });
     this.activatedRoute.params.subscribe(() => {
       this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'), 10);
-      this.compound = this.activatedRoute.snapshot.data.compoundPage;
-      if (!!this.compound) {
+      this.scenario = this.activatedRoute.snapshot.data.testScenarios;
+      if (!!this.scenario) {
         this.scenarioActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
       }
     });
@@ -152,7 +152,6 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       );
       this.scenarioService.createTestScenario(
         {
-          testScenarioId: this.scenario.testScenarioId,
           name: this.scenarioForm.value.name,
           description: this.scenarioForm.value.description,
           user: {
@@ -163,27 +162,27 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           },
           listActionCompoundId: actions_id
         }
-      ).subscribe(() => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
-    } else if (!this.emptyInvalid && !this.scenarioForm.valid) {
-      const actions_id = [];
-      this.scenarioActions.forEach(
-        element => actions_id.push(element.action.id)
-      );
-      this.scenarioService.updateScenario(
-        {
-          testScenarioId: this.compound.id,
-          name: this.scenario.name,
-          description: this.scenario.description,
-          user: {
-            id: this.userId
-          },
-          project: {
-            projectId: this.projectId
-          },
-          listActionCompoundId: actions_id
-        }).subscribe(() => {
-        this.router.navigate(['testScenarios'], {queryParams: {created: true}});
-      });
+      ).subscribe(() => this.router.navigate(['testScenarios',this.projectId], {queryParams: {created: true}}));
+    // } else if (!this.emptyInvalid && this.scenarioForm.valid) {
+    //   const actions_id = [];
+    //   this.scenarioActions.forEach(
+    //     element => actions_id.push(element.action.id)
+    //   );
+    //   this.scenarioService.updateScenario(
+    //     {
+    //       testScenarioId: this.scenario.testScenarioId,
+    //       name: this.scenario.name,
+    //       description: this.scenario.description,
+    //       user: {
+    //         id: this.userId
+    //       },
+    //       project: {
+    //         projectId: this.projectId
+    //       },
+    //       listActionCompoundId: actions_id
+    //     }).subscribe(() => {
+    //     this.router.navigate(['testScenarios',this.projectId], {queryParams: {created: true}});
+    //   });
     } else {
       this.isError = true;
     }
@@ -199,15 +198,12 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   modalShow(): void {
-    $('#discardModal').modal('show');
+    // $('#discardModal').modal('show');
+    this.router.navigate(['testScenarios', this.projectId]);
   }
 
   closeAlert(): void {
     $('.alert').alert('close');
-  }
-
-  modalDelShow(): void {
-    $('#deleteModal').modal('show');
   }
 
   showActionDetails(action: ActionOfCompound): void {
