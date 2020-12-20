@@ -36,20 +36,4 @@ export class RunningTestCaseService {
     return this.httpClient.put(apiPath + 'api/ncp/running-test-case/edit', JSON.stringify(testCase),httpOption);
   }
 
-  getWatcherByTestCaseId(test_case_id: number): Observable<UserListModel[]>{
-    return this.httpClient.get<UserListModel[]>(
-      apiPath + 'api/ncp/running-test-case/?test_case_id=' + test_case_id)
-      .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
-  }
-
-  getSearchedUsers(searchStr: string): Observable<UserListModel[]>{
-    return this.httpClient.get<UserListModel[]>(
-      apiPath + 'api/ncp/running-test-case/users/?name=' + searchStr)
-      .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
-  }
-
-  postWatcher(watcher: WatcherModel) {
-    return this.httpClient.post(apiPath + 'api/ncp/running-test-case/add-watcher', watcher);
-  }
-
 }

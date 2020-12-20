@@ -94,7 +94,7 @@ export class ListTestCaseComponent implements OnInit {
   ];
 
 
-  constructor(private _snackBar: MatSnackBar, private testCaseService: TestCaseService, private auth: AuthenticationService, private httpClientService: ProjectService, public router: ActivatedRoute) {
+  constructor(private _snackBar: MatSnackBar, private testCaseService: TestCaseService, private auth: AuthenticationService, private projectService: ProjectService, public router: ActivatedRoute) {
     this.minDate = moment().add(1,'day').format('YYYY-MM-DDTHH:mm');
     this.selectedTestCase = "";
     this.projectName = "";
@@ -186,13 +186,10 @@ export class ListTestCaseComponent implements OnInit {
   }
 
   loadProjectName(): void {
-    console.log(123);
-    this.httpClientService.getProjectName(this.projectId)
+    this.projectService.getProjectName(this.projectId)
       .subscribe(
         response => {
-          console.log(response);
           this.projectName = response;
-          console.log(this.projectName);
         },
         error => console.log(error)
       );
@@ -225,12 +222,12 @@ export class ListTestCaseComponent implements OnInit {
   run(){
     this.selection.selected
       .forEach(element => {
-          this.testCaseService.runTestCase(element.id, this.authorizedUserId)
+          this.testCaseService.runTestCase(element.id, !element.startDate ? "RUN" : "SCHEDULE", this.authorizedUserId)
             .subscribe(
               response => {console.log(response);
               this.reloadTestCases();this.selection.clear();},
               error => console.log(error)
-            );
+            )
         }
       );
   }

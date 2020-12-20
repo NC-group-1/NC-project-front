@@ -5,7 +5,9 @@ import {FormBuilder, FormGroup} from '@angular/forms';
 import {PageEvent} from '@angular/material/paginator';
 import {ActivatedRoute, Router} from '@angular/router';
 import {RunningTestCaseService} from '../../services/running-test-case/running-test-case.service';
+import {TestCaseService} from '../../services/list-test-case/list-test-case.service';
 import {ProjectService} from '../../services/projects/project.service';
+import {AuthenticationService} from '../../services/auth/authentication.service';
 import {TestCaseResponseModel} from '../../../models/TestCaseResponseModel';
 import {TestCaseModel} from '../../../models/TestCaseModel';
 import {WatcherModel} from '../../../models/WatcherModel';
@@ -31,7 +33,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 export class RunningTestCaseComponent implements OnInit {
   projectId: number;
   projectName: string;
-  columnsToDisplay = ['id', 'name', 'starter', 'startDate', 'status', 'stop/run'];
+  authorizedUserId: number;
+  columnsToDisplay = ['id', 'name', 'starter', 'startDate', 'status', 'stop/run', 'cancel'];
   responseRunningTestCase?: TestCaseResponseModel;
   runningListTestCase: TestCaseModel[];
   dataSource: any;
@@ -46,11 +49,11 @@ export class RunningTestCaseComponent implements OnInit {
 
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private _snackBar: MatSnackBar, private runningTestCaseService: RunningTestCaseService, private httpClientService: ProjectService, public router: ActivatedRoute) {
+  constructor(private auth: AuthenticationService, private runningTestCaseService: RunningTestCaseService, private testCaseService: TestCaseService, private projectService: ProjectService, public router: ActivatedRoute) {
     this.runningListTestCase = [];
     this.dataSource = new MatTableDataSource();
     this.projectId = parseInt(this.router.snapshot.paramMap.get('projectId'), 10);
-
+    this.authorizedUserId = parseInt(auth.getId(), 10);
   }
 
   ngOnInit(): void {
@@ -59,7 +62,7 @@ export class RunningTestCaseComponent implements OnInit {
   }
 
   loadProjectName(): void {
-    this.httpClientService.getProjectName(this.projectId)
+    this.projectService.getProjectName(this.projectId)
       .subscribe(
         response => {
           this.projectName = response;
@@ -82,13 +85,6 @@ export class RunningTestCaseComponent implements OnInit {
       );
   }
 
-  openSnackBar(message: string, type: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 3500,
-      panelClass: [type],
-    });
-  }
-
   applyFilter(event: Event) {
     this.filter = (event.target as HTMLInputElement).value;
     this.reloadRunningTestCases();
@@ -106,6 +102,15 @@ export class RunningTestCaseComponent implements OnInit {
     this.reloadRunningTestCases();
   }
 
+  cancelTestCase(test_case_id){
+    this.testCaseService.runTestCase(test_case_id,"CANCEL", this.authorizedUserId)
+      .subscribe(
+        response => {console.log(response);
+        this.reloadRunningTestCases();},
+        error => console.log(error)
+      )
+  }
+
   updateStatus(value, test_case_id) {
     const test_case = this.runningListTestCase.find(element => element.id === test_case_id);
     console.log(test_case);
@@ -116,13 +121,22 @@ export class RunningTestCaseComponent implements OnInit {
     }
   }
 
-  onChangeStatus(test_case_id) {
+  onChangeStatus(value, test_case_id) {
     const body = this.runningListTestCase.find(element => element.id === test_case_id);
     console.log(body);
-    this.runningTestCaseService.updateRunningTestCase(body)
+    console.log(this.authorizedUserId);
+    console.log(body.id);
+    this.testCaseService.runTestCase(body.id, (value.checked === true) ? "RESUME" : "STOP", this.authorizedUserId)
+      .subscribe(
+        response => {console.log(response);
+        this.reloadRunningTestCases();},
+        error => console.log(error)
+      )
+
+    /*this.runningTestCaseService.updateRunningTestCase(body)
       .subscribe(
         response => console.log(response),
         error => console.log(error)
-      );
+      );*/
   }
 }
