@@ -1,4 +1,4 @@
-<app-navbar></app-navbar>
+<app-navbar *ngIf="loggedIn"></app-navbar>
 <div [class]="loggedIn ? 'row ' : ''">
 <!--  <app-main-menu *ngIf="loggedIn" class="col ml-5"></app-main-menu>-->
 <!--  <div [class]="loggedIn ? 'col-8' : ''">-->
