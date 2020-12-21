@@ -1,14 +1,14 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {MatTableDataSource} from "@angular/material/table";
-import {ActivatedRoute, Router} from "@angular/router";
-import {MatPaginator} from "@angular/material/paginator";
-import {WebSocketService} from "../../services/webSocket/web-socket.service";
-import {AuthenticationService} from "../../services/auth/authentication.service";
+import {MatTableDataSource} from '@angular/material/table';
+import {ActivatedRoute, Router} from '@angular/router';
+import {MatPaginator} from '@angular/material/paginator';
+import {WebSocketService} from '../../services/webSocket/web-socket.service';
+import {AuthenticationService} from '../../services/auth/authentication.service';
 import {DetailsTestCaseModel} from '../../../models/DetailsTestCaseModel';
 import {ActionInstRun} from '../../../models/ActionInstRun';
-import {animate, state, style, transition, trigger} from "@angular/animations";
-import {TestCaseService} from "../../services/testCase/test-case.service";
-import {TestCaseProgressModel} from "../../../models/TestCaseProgressModel";
+import {animate, state, style, transition, trigger} from '@angular/animations';
+import {TestCaseService} from '../../services/testCase/test-case.service';
+import {TestCaseProgressModel} from '../../../models/TestCaseProgressModel';
 
 // export interface TestCase {
 //   id: number;
@@ -43,12 +43,12 @@ export class DetailsComponent implements OnInit {
   testCase: DetailsTestCaseModel;
   size: number;
   dataSource: any;
-  columnToDisplay = ['actionName','dataSetName', 'status'];
-  expandedElement:  ActionInstRun[] | null;
+  columnToDisplay = ['actionName', 'dataSetName', 'status'];
+  expandedElement: ActionInstRun[] | null;
   length: number;
   stompCase;
   username: string;
-  detailsProgress: ActionInstRun[] ;
+  detailsProgress: ActionInstRun[];
   id: number;
   tcProgress: TestCaseProgressModel[] = [];
 
@@ -60,7 +60,7 @@ export class DetailsComponent implements OnInit {
               public activatedRoute: ActivatedRoute,
               private webSocketService: WebSocketService,
               private tcService: TestCaseService) {
-    this.id = parseInt(this.router.url.split("/")[3],10);
+    this.id = parseInt(this.router.url.split('/')[3], 10);
     this.dataSource = new MatTableDataSource();
     this.detailsProgress = [];
     this.tcService.getTestCaseDetailsById(this.id)
@@ -75,15 +75,15 @@ export class DetailsComponent implements OnInit {
         this.dataSource = new MatTableDataSource(value);
         this.dataSource.paginator = this.paginator;
         this.subscribeOnTcProgress(this.id);
-        this.stompCase.send('/api/test-case/actionInst/tc', {}, + this.id);
-        this.stompCase.subscribe('/topic/actionInst/'+ this.id, response => {
+        this.stompCase.send('/app/actionInst/tc', {}, +this.id);
+        this.stompCase.subscribe('/topic/actionInst/' + this.id, response => {
           this.detailsProgress.push(JSON.parse(response.body));
         });
       });
     });
   }
 
-  private subscribeOnTcProgress(id: number){
+  private subscribeOnTcProgress(id: number) {
     this.stompCase.send('/app/progress/tc', {}, id);
     this.stompCase.subscribe('/topic/progress/' + id, progress => {
       console.log(progress);
