@@ -23,6 +23,10 @@ tr.example-element-row:not(.example-expanded-row):active {
   display: block;
 }
 
+#mat-autocomplete-0 {
+  max-height: 150px;
+}
+
 .example-element-diagram {
   min-width: 80px;
   border: 2px solid black;
