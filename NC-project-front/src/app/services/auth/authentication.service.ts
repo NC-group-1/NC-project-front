@@ -57,6 +57,18 @@ export class AuthenticationService {
     console.log(parse.userId);
     return parse.userId;
   }
+  isTokenExpired(): boolean{
+    const temp = this.getToken().toString().substr(8);
+    const s = atob(temp.split('.')[1]);
+    const parse = JSON.parse(s);
+    if (parse.exp <= (Math.floor((new Date()).getTime() / 1000))){
+      this.logout();
+      return false;
+    }
+    else{
+      return true;
+    }
+  }
 
   getUsername(): string {
     const temp = this.getToken().toString().substr(8);
@@ -66,7 +78,7 @@ export class AuthenticationService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return !!this.getToken() && this.isTokenExpired();
   }
 
   authSubscribe(): Observable<boolean> {

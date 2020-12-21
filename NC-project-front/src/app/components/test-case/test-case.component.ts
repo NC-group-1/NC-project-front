@@ -52,9 +52,14 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.creating = this.router.url.startsWith('/testCase/new/');
+
     this.activatedRoute.params.subscribe(value => {
       this.datasetPage = this.activatedRoute.snapshot.data.dataSets;
       this.testCaseData = this.activatedRoute.snapshot.data.testCase;
+      if (!this.creating && this.testCaseData.status !== 'READY' && this.testCaseData.status !== 'NOT_STARTED' &&
+        this.testCaseData.status !== 'UNKNOWN'){
+        this.router.navigate(['testCase', 'details', this.testCaseData.id]);
+      }
       this.datasets = this.datasetPage.list.map(value1 => new DatasetModel(value1));
       this.actionsSource = this.creating ?
         this.activatedRoute.snapshot.data.testScenario.actions
@@ -188,7 +193,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       description: this.testCaseForm.value.description,
       user: {id: parseInt(this.auth.getId(), 10)},
       actions: this.flattenedActions,
-    }).subscribe();
+    }).subscribe(value => this.router.navigate(['testScenarios'], {queryParams: {edited: true}}));
   }
 
   initParamsCreation() {
