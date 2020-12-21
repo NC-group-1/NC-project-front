@@ -48,9 +48,9 @@ export class NavbarComponent implements OnInit {
       this.stompClient.subscribe('/topic/notification/' + this.auth.getId(), notifications => {
         this.notifications = JSON.parse(notifications.body);
         for (const notification of this.notifications) {
-          const find = this.tcProgress.find(value => value.testCaseId === notification.notification.testCase.testCaseId);
+          const find = this.tcProgress.find(value => value.testCaseId === notification.notification.testCase.id);
           if (!find) {
-            this.subscribeOnTc(notification.notification.testCase.testCaseId);
+            this.subscribeOnTc(notification.notification.testCase.id);
           }
         }
       });
