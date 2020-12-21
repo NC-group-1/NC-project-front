@@ -53,7 +53,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.creating = this.router.url.startsWith('/testCase/new/');
 
-    this.activatedRoute.params.subscribe(value => {
+    this.activatedRoute.data.subscribe(value => {
       this.datasetPage = this.activatedRoute.snapshot.data.dataSets;
       this.testCaseData = this.activatedRoute.snapshot.data.testCase;
       if (!this.creating && this.testCaseData.status !== 'READY' && this.testCaseData.status !== 'NOT_STARTED' &&

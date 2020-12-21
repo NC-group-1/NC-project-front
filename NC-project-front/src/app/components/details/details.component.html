@@ -43,8 +43,10 @@
                   class="btn btn-nc m-3 px-5 py-3"> Change
             dataset
           </button>
-          <button [disabled]="tcProgress?.progress != 1" [routerLink]="['../../','report', testCase?.id]" [state]="testCase"
-                  class="btn btn-nc m-3 px-5 py-3"> Send Report
+          <button
+            [disabled]="tcProgress?.status !== 'PASSED' && tcProgress?.status !== 'FAILED' && tcProgress?.status !== 'CANCEL'"
+            [routerLink]="['../../','report', testCase?.id]" [state]="testCase"
+            class="btn btn-nc m-3 px-5 py-3"> Send Report
           </button>
         </div>
 
@@ -71,7 +73,8 @@
             </ng-container>
 
             <tr *matHeaderRowDef="columnToDisplay" mat-header-row></tr>
-            <tr (click)="expandedElement = expandedElement === element ? null : element" *matRowDef="let element; columns: columnToDisplay;"
+            <tr (click)="expandedElement = expandedElement === element ? null : element"
+                *matRowDef="let element; columns: columnToDisplay;"
                 [class.example-expanded-row]="expandedElement === element"
                 class="example-element-row"
                 mat-row>

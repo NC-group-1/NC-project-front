@@ -61,7 +61,7 @@
                   <ng-container matColumnDef="name">
                     <th style="width: 15%;" *matHeaderCellDef mat-header-cell mat-sort-header> Name </th>
                     <td  class="w3-link w3-text-blue" style="max-width:100px; cursor: pointer;"  *matCellDef="let element;let i = index;" [matTooltip]="element.description" mat-cell>
-                      <a  [routerLink]="['/testCase/',element.id]"  [hidden]="element.edit">{{element.name}}</a>
+                      <a  [routerLink]="['/testCase/edit/',element.id]"  [hidden]="element.edit">{{element.name}}</a>
 
                       <div [hidden]="!element.edit" style="width: 95%">
                         <mat-form-field>
