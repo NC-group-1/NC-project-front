@@ -39,9 +39,9 @@ import {MatRadioModule} from '@angular/material/radio';
 import {MatSelectModule} from '@angular/material/select';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatTabsModule} from '@angular/material/tabs';
-import {MatSnackBarModule} from "@angular/material/snack-bar";
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { TestScenariosComponent } from './components/test-scenarios/test-scenarios.component';
-import { TestCaseComponent } from './components/test-case/test-case-create/test-case.component';
+import { TestCaseComponent } from './components/test-case/test-case.component';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ListDataSetComponent } from './components/data-set/list-data-set/list-data-set.component';
@@ -51,7 +51,6 @@ import { DetailsComponent } from './components/details/details.component';
 import {WebSocketService} from './services/webSocket/web-socket.service';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {CreateScenarioComponent} from './components/create-scenario/create-scenario.component';
-import { TestCaseViewComponent } from './components/test-case/test-case-view/test-case-view.component';
 import { TestCaseHistoryComponent } from './components/test-case-history/test-case-history.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {ChartsModule} from 'ng2-charts';
@@ -89,7 +88,6 @@ import { ReportComponent } from './components/report/report.component';
     CreateScenarioComponent,
     DetailsComponent,
     ReportComponent,
-    TestCaseViewComponent
   ],
   imports: [
     BrowserModule,

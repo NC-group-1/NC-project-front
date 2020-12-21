@@ -97,11 +97,11 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
       if (dataAct.action.type === 'COMPOUND'){
         this.compService.getCompoundById(dataAct.action.id).subscribe(value => {
           dataAct.compoundActions = value.actions.sort((a, b) => a.orderNum - b.orderNum);
-          this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
+          this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(dataAct)));
           this.adjustOrder(this.compoundActions);
         });
       }else {
-        this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(event.previousContainer.data[event.previousIndex])));
+        this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(dataAct)));
         this.adjustOrder(this.compoundActions);
       }
     }
@@ -126,22 +126,6 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
         }
       ).subscribe(value => this.router.navigate(['compounds'], {queryParams: {created: true}}));
     }
-      // else if (!this.emptyInvalid && this.compoundForm.valid) {
-      //   this.compService.updateCompound(
-      //     {
-      //       id: this.compound.id,
-      //       name: this.compoundForm.value.name,
-      //       description: this.compoundForm.value.description,
-      //       type: 'COMPOUND'
-      //     }).subscribe(value => {
-      //     this.compService.changeActions(this.compound.id, this.compoundActions).subscribe(
-      //       value1 => {
-      //         this.router.navigate(['compounds'], {queryParams: {created: true}});
-      //       }, error => {
-      //       }
-      //     );
-      //   });
-    // }
     else {
       this.isError = true;
     }
@@ -198,6 +182,6 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
 
   changeCompoundActionKey(event: any, action: ActionOfCompound, id: number) {
     this.compoundActions.find(compound => compound.action.id === id).compoundActions
-      .find(cAction => action.orderNum === cAction.orderNum).key.key = event;
+      .find(cAction => action.orderNum === cAction.orderNum).parameterKey.key = event;
   }
 }
