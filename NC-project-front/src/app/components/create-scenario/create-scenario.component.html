@@ -44,15 +44,15 @@
         <div class="col-6 float-left">
           <div class="example-container">
             <h2 class="color-nc font-italic font-weight-bold" *ngIf="!nameSearch">Manage library</h2>
-            <input #search id="search" type="text" class="form-control form-control-lg" placeholder="Search by name...">
+<!--            <input #search id="search" type="text" class="form-control form-control-lg" placeholder="Search by name...">-->
             <br/>
             <div cdkDropList [id]="'cdk-drop-list-1'"
-                 [cdkDropListData]="actionsAsCompActionsFiltered"
+                 [cdkDropListData]="actionsAsCompActions"
                  class="action-list" (cdkDropListDropped)="drop($event)">
 
               <div class="action-box"
                    [class]="item.action.type === 'COMPOUND' ? 'border border-success' : ''"
-                   *ngFor="let item of actionsAsCompActionsFiltered" (click)="showActionDetails(item)" cdkDrag>
+                   *ngFor="let item of actionsAsCompActions" (click)="showActionDetails(item)" cdkDrag>
                 {{item.action.name}}
               </div>
 

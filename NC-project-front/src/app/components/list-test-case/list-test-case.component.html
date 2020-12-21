@@ -189,13 +189,13 @@
                           </tr>
                         </table>
 
-                         <mat-form-field  class="example-full-width  float-left ml-5" style="width: 32%;">
+                         <mat-form-field id="mat-autocomplete-height"  class="example-full-width  float-left ml-5" style="width: 32%;">
 
-                            <input matInput #inputName (change)="reloadUsers(inputName.value);" placeholder="Search watcher" [matAutocomplete]="auto" [formControl]="watchersCtrl">
+                            <input matInput #inputName (keyup)="reloadUsers(inputName.value)" placeholder="Search watcher" [matAutocomplete]="auto" [formControl]="watchersCtrl">
 
-                            <mat-autocomplete #auto="matAutocomplete" >
+                            <mat-autocomplete class="mat-autocomplete-height" #auto="matAutocomplete">
                               <mat-option *ngFor="let watcher of filteredWatchers | async" [value]="watcher.name+' '+watcher.surname"
-                              (onSelectionChange)="updateUserID(watcher.userId)">
+                              (onSelectionChange)="updateUserID(watcher.userId)" style="max-height: 35px;">
 
                                 <span>{{watcher.name}} {{watcher.surname}}</span>
                                 <small> [{{watcher.role}}]</small>

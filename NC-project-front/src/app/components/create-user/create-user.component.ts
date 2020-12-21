@@ -42,9 +42,9 @@ export class CreateUserComponent implements OnInit {
   });
 
   users: Role[] = [
-    {role: 'Admin'},
-    {role: 'Manager'},
-    {role: 'Engineer'}
+    {role: 'ROLE_ADMIN'},
+    {role: 'ROLE_MANAGER'},
+    {role: 'ROLE_ENGINEER'}
   ];
 
   displayedColumns: string[] = ['role', 'first', 'second', 'third', 'fourth', 'fifth', 'sixth', 'seventh', 'eighth', 'ninth'];
@@ -73,6 +73,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   sendCode(email: string): void {
+    console.log(this.role);
       this.auth.register({
         email: email,
         role: this.role,

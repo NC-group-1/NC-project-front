@@ -18,7 +18,7 @@ import {WatcherModel} from '../../../models/WatcherModel';
 import {MatSnackBar} from "@angular/material/snack-bar";
 import { Observable } from 'rxjs';
 import {animate, state, style, transition, trigger} from '@angular/animations';
-import { map, startWith } from 'rxjs/operators';
+import { map, startWith, debounceTime } from 'rxjs/operators';
 import * as moment from 'moment';
 
 
@@ -110,9 +110,9 @@ export class ListTestCaseComponent implements OnInit {
     this.filteredWatchers = this.watchersCtrl.valueChanges
         .pipe(
           startWith(''),
-          map(user => user ? this._filterUserList(user) : this.userList.slice())
+          debounceTime(200),
+          map(user => user ? this.userList : this.userList.slice())
         );
-
   }
 
   ngOnInit(): void {
@@ -126,11 +126,6 @@ export class ListTestCaseComponent implements OnInit {
       duration: 3500,
       panelClass: [type],
     });
-  }
-
-  _filterUserList(value: string): UserListModel[] {
-    const filterValue = value.toLowerCase();
-    return this.userList.filter(state => state.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
   updateUserID(index:any){
@@ -150,7 +145,9 @@ export class ListTestCaseComponent implements OnInit {
   reloadUsers(name: string): void {
     this.testCaseService.getSearchedUsers(name).subscribe(
       response => {
+        console.log(response);
         this.userList = response;
+        //this.filteredWatchers = this.userList;
       },
       error => console.log(error)
     );

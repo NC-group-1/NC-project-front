@@ -39,7 +39,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   actions: ActionPage;
   scenario: ScenarioModel;
   scenarioActions: ActionOfCompound[];
-  actionsAsCompActionsFiltered: ActionOfCompound[];
+  // actionsAsCompActionsFiltered: ActionOfCompound[];
   actionsAsCompActions: ActionOfCompound[];
   size: number;
   page: number;
@@ -79,7 +79,6 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       this.scenario = this.activatedRoute.snapshot.data.scenario;
       if (!!this.scenario) {
         this.scenarioActions = this.scenario.actions.sort((a, b) => a.orderNum - b.orderNum);
-        // this.scenarioActions = this.scenario.actions.sort((a, b) => a.orderNum - b.orderNum);
       }
     });
     this.activatedRoute.data.subscribe(() => {
@@ -94,7 +93,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       name: new FormControl(null, [Validators.required]),
       description: new FormControl(null, [Validators.required])
     });
-    this.actionsAsCompActionsFiltered = this.actionsAsCompActions;
+    // this.actionsAsCompActionsFiltered = this.actionsAsCompActions;
   }
 
   clearQuery(): void {
@@ -106,22 +105,22 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.creating) {
-      fromEvent(this.search.nativeElement, 'keydown').pipe(
-        debounceTime(550),
-        map(x => x['target']['value'])).subscribe(value => {
-        this.updateFilter(value);
-      });
-    }
+    // if (this.creating) {
+    //   fromEvent(this.search.nativeElement, 'keydown').pipe(
+    //     debounceTime(550),
+    //     map(x => x['target']['value'])).subscribe(value => {
+    //     this.updateFilter(value);
+    //   });
+    // }
     this.changeDetector.detectChanges();
   }
 
-  updateFilter(val: any) {
-    this.actionsAsCompActionsFiltered = [];
-    this.actionsAsCompActionsFiltered = this.actionsAsCompActions.filter(item => {
-      return !!item.action.name.toLocaleLowerCase().trim().match(val.toLocaleLowerCase().trim());
-    });
-  }
+  // updateFilter(val: any) {
+  //   this.actionsAsCompActionsFiltered = [];
+  //   this.actionsAsCompActionsFiltered = this.actionsAsCompActions.filter(item => {
+  //     return !!item.action.name.toLocaleLowerCase().trim().match(val.toLocaleLowerCase().trim());
+  //   });
+  // }
 
   adjustOrder(actions: ActionOfCompound[]): void {
     actions.forEach((value, index) => value.orderNum = index + 1);
@@ -142,7 +141,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       this.adjustOrder(this.scenarioActions);
     }
     this.adjustOrder(this.scenarioActions);
-    this.updateFilter(this.search.nativeElement.value);
+    // this.updateFilter(this.search.nativeElement.value);
   }
 
   submit(): void {

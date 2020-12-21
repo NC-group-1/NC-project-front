@@ -56,13 +56,11 @@ export class ListProjectComponent implements OnInit {
     this.httpClientService.getPaginatedProjects(this.pageSize, this.pageIndex + 1, this.filter, this.projectForm.value.orderBy, this.projectForm.value.order)
       .subscribe(
         response => {
-          // console.log(JSON.stringify(response));
           this.responseProject = response;
           this.listProjects = response.list;
           console.log(this.listProjects);
           this.dataSource = new MatTableDataSource(this.listProjects);
           this.length = response.size;
-          // console.log(JSON.stringify(this.listUsers));
         },
         error => console.log(error)
       );
@@ -80,7 +78,6 @@ export class ListProjectComponent implements OnInit {
   }
 
   open() {
-    // console.log(this.selectedProject);
     this.router.navigateByUrl('/testCase');
   }
 
@@ -120,7 +117,4 @@ export class ListProjectComponent implements OnInit {
     $('.alert').alert('close');
   }
 
-  openProfile(id: number) {
-    this.router.navigateByUrl('/user/profile');
-  }
 }
