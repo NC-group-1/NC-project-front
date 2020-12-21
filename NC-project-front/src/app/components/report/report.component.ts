@@ -167,7 +167,7 @@ export class ReportComponent implements OnInit {
             () => {},
             error => console.log(error)
           );
-          // this.router.navigate(['testCase/details/2'], {queryParams: {created: true}});
+          this.router.navigate(['dashboard']);
         }
       );
     } else {
@@ -180,8 +180,17 @@ export class ReportComponent implements OnInit {
   }
 
   addRecipient(emailUser: any) {
-    this.emails.push(emailUser);
-    console.log(this.emails);
+    let f = true;
+    for (let i = 0; i < this.emails.length; i++) {
+      if(emailUser == this.emails[i]) {
+        f = false;
+        break;
+      }
+    }
+
+    if(f) {
+      this.emails.push(emailUser);
+    }
   }
 
   deleteSkill(i: number) {
