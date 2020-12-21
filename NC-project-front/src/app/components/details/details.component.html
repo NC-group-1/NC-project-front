@@ -18,16 +18,14 @@
           </p>
         </div>
 
-        <div *ngFor="let progress of tcProgress">
+        <div>
           <p><span class="text-secondary text-shadow-gray mr-2">Status:</span><span
-            class="text-shadow-gray">{{progress.status}}</span>
+            class="text-shadow-gray">{{tcProgress?.status}}</span>
           </p>
           <p><span class="text-secondary text-shadow-gray mr-2"> Completed: </span>
-            <span class="text-shadow-gray">Test case completed in <b>{{progress.progress * 100}}%</b></span></p>
+            <span class="text-shadow-gray">Test case completed in <b>{{tcProgress?.progress * 100}}%</b></span></p>
           <mat-progress-bar mode="determinate"
-                            value="{{progress.progress*100}}"></mat-progress-bar>
-
-
+                            value="{{tcProgress?.progress*100}}"></mat-progress-bar>
         </div>
         <br/>
 
@@ -41,27 +39,29 @@
         </p>
 
         <div class="btn-toolbar">
-          <button class="btn btn-nc m-3 px-5 py-3"
-                  [routerLink]="['testCase/', 'edit',activatedRoute.snapshot.paramMap.get('testCaseId')]"> Change
+          <button [routerLink]="['testCase/', 'edit',activatedRoute.snapshot.paramMap.get('testCaseId')]"
+                  class="btn btn-nc m-3 px-5 py-3"> Change
             dataset
           </button>
-          <button class="btn btn-nc m-3 px-5 py-3" [routerLink]="['../../','report', testCase?.id]" [state]="testCase" [disabled]="tcProgress[0]?.progress != 1"> Send Report</button>
+          <button [disabled]="tcProgress?.progress != 1" [routerLink]="['../../','report', testCase?.id]" [state]="testCase"
+                  class="btn btn-nc m-3 px-5 py-3"> Send Report
+          </button>
         </div>
 
         <br/>
 
-        <div>
+        <div class="action-details-block">
           <mat-table [dataSource]="dataSource" multiTemplateDataRows>
 
-            <ng-container matColumnDef="{{column}}" *ngFor="let column of columnToDisplay">
-              <th mat-header-cell *matHeaderCellDef style="width: 45%;"> {{column}} </th>
-              <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+            <ng-container *ngFor="let column of columnToDisplay" matColumnDef="{{column}}">
+              <th *matHeaderCellDef mat-header-cell style="width: 45%;"> {{column}} </th>
+              <td *matCellDef="let element" mat-cell> {{element[column]}} </td>
             </ng-container>
 
             <ng-container matColumnDef="expandedDetail">
-              <td mat-cell *matCellDef="let element" [attr.colspan]="columnToDisplay.length">
-                <div class="example-element-detail"
-                     [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+              <td *matCellDef="let element" [attr.colspan]="columnToDisplay.length" mat-cell>
+                <div [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'"
+                     class="example-element-detail">
                   <div class="example-element-diagram">
                     {{element.actionName + ' have a result: ' + element.result}}
                   </div>
@@ -70,16 +70,16 @@
               </td>
             </ng-container>
 
-            <tr mat-header-row *matHeaderRowDef="columnToDisplay"></tr>
-            <tr mat-row *matRowDef="let element; columns: columnToDisplay;"
-                class="example-element-row"
+            <tr *matHeaderRowDef="columnToDisplay" mat-header-row></tr>
+            <tr (click)="expandedElement = expandedElement === element ? null : element" *matRowDef="let element; columns: columnToDisplay;"
                 [class.example-expanded-row]="expandedElement === element"
-                (click)="expandedElement = expandedElement === element ? null : element">
+                class="example-element-row"
+                mat-row>
             </tr>
-            <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+            <tr *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" mat-row></tr>
           </mat-table>
 
-          <mat-paginator class="float-left" [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+          <mat-paginator [pageSizeOptions]="[5, 10, 20]" class="float-left" showFirstLastButtons></mat-paginator>
 
         </div>
 
@@ -89,7 +89,7 @@
     <div class="col-4">
       <div class="panel">
         <p><span class="text-secondary text-shadow-gray mr-2">Name of project:</span><span
-          class="text-shadow-gray" [routerLink]="['/testCase/list',testCase?.id]">{{testCase?.project.name}}</span></p>
+          [routerLink]="['/testCase/list',testCase?.id]" class="text-shadow-gray">{{testCase?.project.name}}</span></p>
         <p><span class="text-secondary text-shadow-gray mr-2">Link:</span><span
           class="text-shadow-gray"> {{testCase?.project.link}} </span></p>
 
@@ -99,7 +99,7 @@
           <ng-container *ngFor="let watcher of testCase?.watchers">
             <div class="list-item" data-id="1">
               <div class="project-people">
-                <a href="" data-abc="true"><span><img alt="image" class="img-circle"
+                <a data-abc="true" href=""><span><img alt="image" class="img-circle"
                                                       src="{{watcher.imageLink}}"></span><span><a> {{watcher.name + ' ' + watcher.surname}}</a></span></a>
               </div>
             </div>

@@ -51,6 +51,10 @@ tr.example-element-row:not(.example-expanded-row):active {
   border-radius: 8px;
 }
 
+.action-details-block {
+  max-height: 400px;
+  overflow: auto;
+}
 
 
 
