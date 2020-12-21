@@ -57,7 +57,7 @@ export class CreateProjectComponent implements OnInit {
         name: this.form.value.name,
         link: this.form.value.link,
         user: {
-          id: this.userId
+          userId: this.userId
         },
       }).subscribe(() => this.router.navigate(['listProject'],
         {queryParams: {created: true}}));

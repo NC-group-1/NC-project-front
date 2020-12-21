@@ -156,7 +156,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           name: this.scenarioForm.value.name,
           description: this.scenarioForm.value.description,
           user: {
-            id: this.userId
+            userId: this.userId
           },
           project: {
             projectId: this.projectId
@@ -175,7 +175,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           name: this.scenario.name,
           description: this.scenario.description,
           user: {
-            id: this.userId
+            userId: this.userId
           },
           project: {
             projectId: this.projectId

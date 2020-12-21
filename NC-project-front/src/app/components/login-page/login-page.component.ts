@@ -29,7 +29,7 @@ export class LoginPageComponent implements OnInit {
   login(): void {
     this.form.disable();
     this.authenticationService.login(this.form.value).subscribe((result) => {
-      this.router.navigate(['/']);
+      this.router.navigate(['/user/profile']);
     }, (error: HttpErrorResponse) => {
       this.wrongUsernamePassword = true;
     });

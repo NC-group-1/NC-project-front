@@ -62,7 +62,7 @@ const routes: Routes = [
     path: '', canActivate: [LoginActivateGuard], children: [
       {
         path: '',
-        component: MainPageComponent
+        component: DashboardComponent
       },
       {
         path: 'compounds',
