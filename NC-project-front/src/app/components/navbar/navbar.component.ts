@@ -23,7 +23,7 @@ export class NavbarComponent implements OnInit {
   stompClient;
   tcProgress: TestCaseProgressModel[] = [];
 
-  constructor(private auth: AuthenticationService,
+  constructor(public auth: AuthenticationService,
               private profileService: ProfileService,
               private router: Router,
               private webSocketService: WebSocketService,
