@@ -4,16 +4,18 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {MatTableDataSource} from '@angular/material/table';
 import {flatten} from '@angular/compiler';
 import {MatSelectChange} from '@angular/material/select';
-import {DatasetModel} from '../../../../models/DatasetModel';
-import {ActionInstanceModel} from '../../../../models/ActionInstanceModel';
-import {ScenarioModel} from '../../../../models/TestScenario';
-import {DataSetGeneralInfoDto} from '../../../../models/data-set-general-info-dto';
-import {DataSetService} from '../../../services/data-set/data-set.service';
-import {PageModel} from '../../../../models/PageModel';
-import {TestCaseService} from '../../../services/testCase/test-case.service';
+import {DatasetModel} from '../../../models/DatasetModel';
+import {ActionInstanceModel} from '../../../models/ActionInstanceModel';
+import {ScenarioModel} from '../../../models/TestScenario';
+import {DataSetGeneralInfoDto} from '../../../models/data-set-general-info-dto';
+import {DataSetService} from '../../services/data-set/data-set.service';
+import {PageModel} from '../../../models/PageModel';
+import {TestCaseService} from '../../services/testCase/test-case.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AuthenticationService} from '../../../services/auth/authentication.service';
-import {TestCaseModel} from '../../../../models/TestCaseModel';
+import {AuthenticationService} from '../../services/auth/authentication.service';
+import {TestCaseModel} from '../../../models/TestCaseModel';
+import {MatOption} from '@angular/material/core';
+import {getNeedParams} from '../../../../globals';
 
 declare var $: any;
 
@@ -57,7 +59,6 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       this.actionsSource = this.creating ?
         this.activatedRoute.snapshot.data.testScenario.actions
         : this.activatedRoute.snapshot.data.actions;
-      console.log(this.actionsSource);
       if (this.creating) {
         this.initParamsCreation();
       } else {
@@ -81,7 +82,9 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   }
 
   fieldsEmpty(): void {
-    this.empty = !!this.flattenedActions.find(value => value.parameterKey.key === '' || value.datasetId === null);
+    this.empty = !!this.flattenedActions.find(value =>
+      value.parameterKey.key === '' &&  getNeedParams(value.action.type) !== 0
+      || value.datasetId === null && getNeedParams(value.action.type) === 2);
   }
 
   showDatasets() {
@@ -104,7 +107,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
           this.selectedDatasets.push(dataset);
         }
         this.flattenedActions.map(action => {
-          if (!action.value) {
+          if (!action.value && getNeedParams(action.action.type) === 2) {
             const datasetKeyVal = !!action.datasetId
               ? dataset.parameters.find(value => value.dataSetId === action.datasetId)?.value
               : dataset.parameters.find(value1 => value1.parameterKey.key === action.parameterKey.key)?.value;
@@ -137,7 +140,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   }
 
   isSelected(dataset: DatasetModel): boolean {
-    return !!this.selectedDatasets.find(value => value === dataset);
+    return !!this.selectedDatasets.find(value => value.id === dataset.id);
   }
 
   matchingDatasets(paramKey: string): DatasetModel[] {
@@ -146,19 +149,19 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
 
   filter(event: any, action: any) {
     if (event !== ''){
-      action.dataset = null;
+      action.datasetId = null;
       action.value = null;
     }
     this.filteredKeys = this.keys.filter(value => value.toLowerCase().includes(event.toLowerCase()));
   }
 
-  select(action: ActionInstanceModel, event: MatSelectChange) {
+  select(action: ActionInstanceModel, event: MatSelectChange | MatOption) {
     const dsId = event.value;
     action.datasetId = dsId;
     const matchingParam = this.selectedDatasets.find(ds => ds.id === dsId)
       .parameters.find(value => value.parameterKey.key === action.parameterKey.key);
-    action.parameterKey.id = matchingParam.parameterKey.id;
-    action.value = matchingParam.value;
+    action.parameterKey.id = matchingParam?.parameterKey.id;
+    action.value = matchingParam?.value;
     this.fieldsEmpty();
   }
 
@@ -202,19 +205,23 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
     for (const action of this.actions) {
       if (action.action.type === 'COMPOUND') {
         this.flattenedActions.push(...action.action.actions.map((value1) => {
-          if (value1.parameterKey === null) {
-            value1.parameterKey = {key: ''};
-          } else if (value1.parameterKey?.key === null) {
-            value1.parameterKey.key = '';
+          if (getNeedParams(action.action.type) !== 0){
+            if (value1.parameterKey === null) {
+              value1.parameterKey = {key: ''};
+            } else if (value1.parameterKey?.key === null) {
+              value1.parameterKey.key = '';
+            }
           }
           value1.compoundId = action.action.id;
           return value1;
         }));
       } else {
-        if (action.parameterKey === null) {
-          action.parameterKey = {key: ''};
-        } else if (action.parameterKey?.key === null) {
-          action.parameterKey.key = '';
+        if (getNeedParams(action.action.type) !== 0){
+          if (action.parameterKey === null) {
+            action.parameterKey = {key: ''};
+          } else if (action.parameterKey?.key === null) {
+            action.parameterKey.key = '';
+          }
         }
         this.flattenedActions.push(action);
       }
@@ -229,5 +236,8 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       });
       this.flattenedActions.push(action);
     });
+  }
+  getNeedParams(type: string): number{
+    return getNeedParams(type);
   }
 }

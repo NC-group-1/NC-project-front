@@ -17,7 +17,7 @@ declare var $: any;
 export class TestScenariosComponent implements OnInit {
 
   currentPage: number;
-  selectedScenario: { testScenarioId: number, name: string, description: string, creatorName: string, active: boolean};
+  selectedScenario: ScenarioModel;
   size: number;
   dataSource: MatTableDataSource<any>;
   searchColumns = {columns:  ['name', 'creatorName', 'description'], selected: ''};
@@ -27,15 +27,12 @@ export class TestScenariosComponent implements OnInit {
   created: boolean;
   projectId: any;
   projectName: string;
-  testScenariosPage: PageModel<any>;
-  // testScenarios = [
-  //   {id: 1, name: 'Name 1', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true},
-  //   {id: 2, name: 'Name 2', user: {id: 13, email: 'clayn130@gmail.com'}, description: 'Description 1', active: false},
-  //   {id: 3, name: 'Name 3', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: false},
-  //   {id: 4, name: 'Name 4', user: {id: 1, email: 'quantum13man@gmail.com'}, description: 'Description 1', active: true}];
-  constructor(private router: Router, public activatedRoute: ActivatedRoute, private projectService: ProjectService, private scService: ScenarioService) {
-    this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'),10)
-    this.projectName = "";
+  constructor(private router: Router,
+              public activatedRoute: ActivatedRoute,
+              private projectService: ProjectService,
+              private scService: ScenarioService) {
+    this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'), 10);
+    this.projectName = '';
   }
 
   ngOnInit(): void {
@@ -43,6 +40,7 @@ export class TestScenariosComponent implements OnInit {
       this.testScenarios = this.activatedRoute.snapshot.data.testScenarios.list;
       this.length = this.activatedRoute.snapshot.data.testScenarios.size;
       this.dataSource = new MatTableDataSource<any>(this.testScenarios);
+      this.selectedScenario = this.testScenarios[0];
     });
     this.activatedRoute.queryParams.subscribe(value => {
       this.currentPage = !value.page ? 0 : value.page;
@@ -53,7 +51,6 @@ export class TestScenariosComponent implements OnInit {
   }
 
   loadProjectName(): void {
-    console.log(this.projectId);
     this.projectService.getProjectName(this.projectId)
       .subscribe(
         response => {
