@@ -23,7 +23,7 @@ export class DataSetDetailsComponent implements OnInit {
   creation = false;
   editing = false;
   parameterForm: FormGroup;
-  keys: ParameterKey[];
+  parameterKeys: ParameterKey[];
 
   constructor(private dataSetService: DataSetService,
               private parameterKeyService: ParameterKeyService,
@@ -34,7 +34,7 @@ export class DataSetDetailsComponent implements OnInit {
     });
     this.parameterForm = this.formBuilder.group({
       id: new FormControl(null),
-      key: this.formBuilder.group({
+      parameterKey: this.formBuilder.group({
         id: new FormControl(0),
         key: new FormControl('', [this.validateKeyInput(), Validators.required])
       }),
@@ -61,18 +61,18 @@ export class DataSetDetailsComponent implements OnInit {
 
   onKeyInputChange(): void {
     this.reloadKeys();
-    if (this.keys.length === 1 && this.keys[0].key === this.parameterForm.value.key.key) {
-      this.parameterForm.get('key.id').setValue(this.keys[0].id);
+    if (this.parameterKeys.length === 1 && this.parameterKeys[0].key === this.parameterForm.value.parameterKey.key) {
+      this.parameterForm.get('parameterKey.id').setValue(this.parameterKeys[0].id);
     } else {
-      this.parameterForm.get('key.id').setValue(0);
+      this.parameterForm.get('parameterKey.id').setValue(0);
     }
   }
 
   reloadKeys(): void {
-    this.parameterKeyService.getSearchedParameterKeys(this.parameterForm.value.key.key).subscribe(
-      (data: ParameterKey[]) => {this.keys = data; });
-    if (this.keys === null) {
-      this.keys = [];
+    this.parameterKeyService.getSearchedParameterKeys(this.parameterForm.value.parameterKey.key).subscribe(
+      (data: ParameterKey[]) => {this.parameterKeys = data; });
+    if (this.parameterKeys === null) {
+      this.parameterKeys = [];
     }
   }
 
@@ -115,13 +115,13 @@ export class DataSetDetailsComponent implements OnInit {
     this.creation = false;
     this.editing = false;
     this.parameterForm.reset({
-      key: {id: 0, key: '' },
+      parameterKey: {id: 0, key: '' },
       value: '',
       dataSetId: null,
       id: null
     });
     this.reloadKeys();
-    this.parameterForm.get('key.key').enable();
+    this.parameterForm.get('parameterKey.key').enable();
   }
 
   createParameter(): void {
@@ -136,9 +136,9 @@ export class DataSetDetailsComponent implements OnInit {
         this.parameterForm.get('dataSetId').setValue(this.dataSet.id);
         this.parameterForm.get('value').setValue(parameter.value);
         this.parameterForm.get('id').setValue(parameter.id);
-        this.parameterForm.get('key.id').setValue(parameter.parameterKey.id);
-        this.parameterForm.get('key.key').setValue(parameter.parameterKey.key);
-        this.parameterForm.get('key.key').disable();
+        this.parameterForm.get('parameterKey.id').setValue(parameter.parameterKey.id);
+        this.parameterForm.get('parameterKey.key').setValue(parameter.parameterKey.key);
+        this.parameterForm.get('parameterKey.key').disable();
       } else {
         this.errorMessage = 'Can not edit parameter! Parameter assigned to '
           + result + ' action(s).';

@@ -1,12 +1,12 @@
 <div *ngIf="errorMessage !== ''" class="alert alert-danger alert-dismissible fade show" role="alert">
   {{errorMessage}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeErrorAlert()">
+  <button (click)="closeErrorAlert()" aria-label="Close" class="close" data-dismiss="alert" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div *ngIf="okMessage !== ''" class="alert alert-success alert-dismissible fade show" role="alert">
   {{okMessage}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeOkAlert()">
+  <button (click)="closeOkAlert()" aria-label="Close" class="close" data-dismiss="alert" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -16,41 +16,43 @@
     Back to list
   </a>
 </h4>
-<div *ngIf="editing || creation">
-  <div class="mat-elevation-z8">
+<div *ngIf="editing || creation" class="row justify-content-md-center">
+  <div class="mat-elevation-z8 col-md-6">
     <h4 *ngIf="creation" class="header">Add parameter to dataset</h4>
     <h4 *ngIf="editing" class="header">Edit parameter of dataset</h4>
     <form [formGroup]="parameterForm" name="parameterForm">
       <div class="mb-3">
         <label>Key for Parameter</label>
-        <div formGroupName="key">
+        <div formGroupName="parameterKey">
           <input (input)="onKeyInputChange()"
                  [matAutocomplete]="auto"
-                 [ngClass]="{'is-invalid' : parameterForm.get('key.key').errors?.required
-                  || parameterForm.get('key.key').errors?.wrongKey,
-                  'is-valid' : !parameterForm.get('key.key').errors?.required
-                  && !parameterForm.get('key.key').errors?.wrongKey}"
+                 [ngClass]="{'is-invalid' : parameterForm.get('parameterKey.key').errors?.required
+                  || parameterForm.get('parameterKey.key').errors?.wrongKey,
+                  'is-valid' : !parameterForm.get('parameterKey.key').errors?.required
+                  && !parameterForm.get('parameterKey.key').errors?.wrongKey}"
                  aria-label="Key"
                  class="form-control custom-select"
                  formControlName="key"
                  placeholder="Pick existing key or type new"
                  type="text">
-          <small *ngIf="parameterForm.value.key.id === 0 && parameterForm.value.key.key !== ''">
+          <small *ngIf="parameterForm.value.parameterKey.id === 0 && parameterForm.value.parameterKey.key !== ''">
             Will be created new parameter key
           </small>
-          <small *ngIf="parameterForm.value.key.id !== 0 && !parameterForm.get('key.key').errors?.wrongKey">
+          <small
+            *ngIf="parameterForm.value.parameterKey.id !== 0 && !parameterForm.get('parameterKey.key').errors?.wrongKey">
             Will be used existing parameter key
           </small>
-          <div *ngIf="parameterForm.get('key.key').errors?.required" class="invalid-feedback">
+          <div *ngIf="parameterForm.get('parameterKey.key').errors?.required" class="invalid-feedback">
             Key is <strong>required</strong>!
           </div>
-          <div *ngIf="parameterForm.get('key.key').errors?.wrongKey" class="invalid-feedback">
+          <div *ngIf="parameterForm.get('parameterKey.key').errors?.wrongKey" class="invalid-feedback">
             Key is already exist in this data set!
           </div>
           <mat-autocomplete #auto="matAutocomplete">
-            <mat-option (click)="this.parameterForm.get('key.id').setValue( key.id)" *ngFor="let key of keys"
-                        [value]="key.key">
-              {{key.key}}
+            <mat-option (click)="this.parameterForm.get('parameterKey.id').setValue( parameterKey.id)"
+                        *ngFor="let parameterKey of parameterKeys"
+                        [value]="parameterKey.key">
+              {{parameterKey.key}}
             </mat-option>
           </mat-autocomplete>
         </div>
@@ -108,7 +110,7 @@
         <th *matHeaderCellDef mat-header-cell>
           <h4>Key</h4>
         </th>
-        <td *matCellDef="let parameter" mat-cell> {{parameter.key.key}} </td>
+        <td *matCellDef="let parameter" mat-cell> {{parameter.parameterKey.key}} </td>
       </ng-container>
       <ng-container matColumnDef="value">
         <th *matHeaderCellDef mat-header-cell>

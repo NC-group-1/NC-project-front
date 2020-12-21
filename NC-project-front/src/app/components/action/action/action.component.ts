@@ -32,7 +32,7 @@ export class ActionComponent implements OnInit {
   creation = false;
   editing = false;
   actionTypes: string[];
-  keys: ParameterKey[];
+  parameterKeys: ParameterKey[];
   filteredActionTypes: string[];
   manageActionForm: FormGroup;
 
@@ -48,7 +48,7 @@ export class ActionComponent implements OnInit {
     this.manageActionForm = this.formBuilder.group({
       id: new FormControl(null),
       name: new FormControl('', Validators.required),
-      key: this.formBuilder.group({id: new FormControl(0), key: new FormControl('') }),
+      parameterKey: this.formBuilder.group({id: new FormControl(0), key: new FormControl('') }),
       type: new FormControl('', [this.validateActionTypeInput(), Validators.required]),
       description: new FormControl('')
     });
@@ -81,7 +81,8 @@ export class ActionComponent implements OnInit {
       this.actionTableForm.value.filter,
       this.actionTableForm.value.filterTable,
       this.actionTableForm.value.orderBy,
-      this.actionTableForm.value.order)
+      this.actionTableForm.value.order,
+      false)
       .subscribe( (data: ActionPage) => {
           this.actionTableDS.data = data.list;
           this.length = data.size;
@@ -108,18 +109,18 @@ export class ActionComponent implements OnInit {
   onKeyInputChange(): void {
     // this.selectedKeyId = null;
     this.reloadKeys();
-    if (this.keys.length === 1 && this.keys[0].key === this.manageActionForm.value.key.key) {
-      this.manageActionForm.get('key.id').setValue(this.keys[0].id);
+    if (this.parameterKeys.length === 1 && this.parameterKeys[0].key === this.manageActionForm.value.parameterKey.key) {
+      this.manageActionForm.get('parameterKey.id').setValue(this.parameterKeys[0].id);
     } else {
-      this.manageActionForm.get('key.id').setValue(0);
+      this.manageActionForm.get('parameterKey.id').setValue(0);
     }
   }
 
   reloadKeys(): void {
-    this.parameterKeyService.getSearchedParameterKeys(this.manageActionForm.value.key.key).subscribe(
-      (data: ParameterKey[]) => {this.keys = data; });
-    if (this.keys === null) {
-      this.keys = [];
+    this.parameterKeyService.getSearchedParameterKeys(this.manageActionForm.value.parameterKey.key).subscribe(
+      (data: ParameterKey[]) => {this.parameterKeys = data; });
+    if (this.parameterKeys === null) {
+      this.parameterKeys = [];
     }
   }
 
@@ -131,9 +132,8 @@ export class ActionComponent implements OnInit {
 
   onSubmitButton(): void {
     this.manageActionForm.disable();
-    if (this.manageActionForm.value.key.key === '') {
-      // this.manageActionForm.get('key').setValue(null);
-      this.manageActionForm.value.key = null;
+    if (this.manageActionForm.value.parameterKey.key === '') {
+      this.manageActionForm.value.parameterKey = null;
     }
     if (this.manageActionForm.value.description === '') {
       this.manageActionForm.value.description = null;
@@ -178,7 +178,7 @@ export class ActionComponent implements OnInit {
       name: '',
       type: '',
       description: '',
-      key: {id: 0, key: '' }
+      parameterKey: {id: 0, key: '' }
     });
     this.manageActionForm.get('name').enable();
     this.manageActionForm.get('type').enable();
@@ -193,11 +193,11 @@ export class ActionComponent implements OnInit {
     this.manageActionForm.get('type').setValue(action.type);
     this.manageActionForm.get('description').setValue(action.description);
     if (action.parameterKey.key === null) {
-      this.manageActionForm.get('key.key').setValue('');
+      this.manageActionForm.get('parameterKey.key').setValue('');
     }
     else {
-      this.manageActionForm.get('key.key').setValue(action.parameterKey.key);
-      this.manageActionForm.get('key.id').setValue(action.parameterKey.id);
+      this.manageActionForm.get('parameterKey.key').setValue(action.parameterKey.key);
+      this.manageActionForm.get('parameterKey.id').setValue(action.parameterKey.id);
     }
     this.manageActionForm.get('name').disable();
     this.manageActionForm.get('type').disable();

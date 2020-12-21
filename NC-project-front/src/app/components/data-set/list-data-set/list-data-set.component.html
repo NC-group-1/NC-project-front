@@ -1,12 +1,12 @@
 <div *ngIf="errorMessage !== ''" class="alert alert-danger alert-dismissible fade show" role="alert">
   {{errorMessage}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeErrorAlert()">
+  <button (click)="closeErrorAlert()" aria-label="Close" class="close" data-dismiss="alert" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div *ngIf="okMessage !== ''" class="alert alert-success alert-dismissible fade show" role="alert">
   {{okMessage}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeOkAlert()">
+  <button (click)="closeOkAlert()" aria-label="Close" class="close" data-dismiss="alert" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -107,8 +107,8 @@
     </div>
   </form>
 </div>
-<div *ngIf="editing || creation">
-  <div class="mat-elevation-z8">
+<div *ngIf="editing || creation" class="row justify-content-md-center">
+  <div class="mat-elevation-z8 col-md-6">
     <h4 *ngIf="creation" class="header">Create data set</h4>
     <h4 *ngIf="editing" class="header">Edit data set</h4>
     <form [formGroup]="manageDataSetForm" class="create-action-form" name="manageDataSetForm">

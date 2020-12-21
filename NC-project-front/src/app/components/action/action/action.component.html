@@ -1,12 +1,12 @@
 <div *ngIf="errorMessage !== ''" class="alert alert-danger alert-dismissible fade show" role="alert">
   {{errorMessage}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeErrorAlert()">
+  <button (click)="closeErrorAlert()" aria-label="Close" class="close" data-dismiss="alert" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
 <div *ngIf="okMessage !== ''" class="alert alert-success alert-dismissible fade show" role="alert">
   {{okMessage}}
-  <button type="button" class="close" data-dismiss="alert" aria-label="Close" (click)="closeOkAlert()">
+  <button (click)="closeOkAlert()" aria-label="Close" class="close" data-dismiss="alert" type="button">
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
@@ -59,7 +59,7 @@
           <th *matHeaderCellDef mat-header-cell mat-sort-header>
             <h4>Key</h4>
           </th>
-          <td *matCellDef="let action" mat-cell> {{action.key?.key}} </td>
+          <td *matCellDef="let action" mat-cell> {{action.parameterKey?.key}} </td>
         </ng-container>
         <ng-container matColumnDef="edit">
           <th *matHeaderCellDef mat-header-cell>
@@ -88,8 +88,8 @@
     </div>
   </form>
 </div>
-<div *ngIf="editing || creation">
-  <div class="mat-elevation-z8">
+<div *ngIf="editing || creation" class="row justify-content-md-center">
+  <div class="mat-elevation-z8 col-md-6">
     <h4 *ngIf="creation" class="header">Create action</h4>
     <h4 *ngIf="editing" class="header">Edit action</h4>
     <form [formGroup]="manageActionForm" class="" name="manageActionForm">
@@ -109,7 +109,7 @@
           Key for Action
           <span class="text-muted">(Optional)</span>
         </label>
-        <div formGroupName="key">
+        <div formGroupName="parameterKey">
           <input (input)="onKeyInputChange()"
                  [matAutocomplete]="auto"
                  aria-label="Key"
@@ -118,19 +118,22 @@
                  placeholder="Pick existing key or type new"
                  type="text">
         </div>
-        <small *ngIf="manageActionForm.value.key.id === 0 && manageActionForm.value.key.key === ''" class="text-muted">
+        <small *ngIf="manageActionForm.value.parameterKey.id === 0 && manageActionForm.value.parameterKey.key === ''"
+               class="text-muted">
           Action will be without parameter key
         </small>
-        <small *ngIf="manageActionForm.value.key.id === 0 && manageActionForm.value.key.key !== ''" class="text-muted">
+        <small *ngIf="manageActionForm.value.parameterKey.id === 0 && manageActionForm.value.parameterKey.key !== ''"
+               class="text-muted">
           Will be created new parameter key
         </small>
-        <small *ngIf="manageActionForm.value.key.id !== 0" class="text-muted">
+        <small *ngIf="manageActionForm.value.parameterKey.id !== 0" class="text-muted">
           Will be used existing parameter key
         </small>
         <mat-autocomplete #auto="matAutocomplete">
-          <mat-option (click)="this.manageActionForm.get('key.id').setValue( key.id)" *ngFor="let key of keys"
-                      [value]="key.key">
-            {{key.key}}
+          <mat-option (click)="this.manageActionForm.get('parameterKey.id').setValue( parameterKey.id)"
+                      *ngFor="let parameterKey of parameterKeys"
+                      [value]="parameterKey.key">
+            {{parameterKey.key}}
           </mat-option>
         </mat-autocomplete>
       </div>

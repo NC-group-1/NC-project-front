@@ -20,7 +20,8 @@ export class ActionService {
                                 filter: string,
                                 filterTable: string,
                                 orderBy: string,
-                                order: string): Observable<ActionPage> {
+                                order: string,
+                                includeCompounds: boolean): Observable<ActionPage> {
     return this.http.get<ActionPage>(
       apiPath + 'api/ncp/actions'
       + '?page=' + page
@@ -28,7 +29,8 @@ export class ActionService {
       + '&filter=' + filter
       + '&filterTable=' + filterTable
       + '&orderBy=' + orderBy
-      + '&order=' + order)
+      + '&order=' + order
+      + '&includeCompounds=' + includeCompounds)
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 
