@@ -8,6 +8,7 @@ import {ProjectService} from "../../services/projects/project.service";
 import {DetailsTestCaseModel} from "../../../models/DetailsTestCaseModel";
 import {ReportModel} from "../../../models/ReportModel";
 import {ActionInstRun} from "../../../models/ActionInstRun";
+import {ProjectModel} from "../../../models/ProjectModel";
 
 declare var $: any;
 
@@ -37,8 +38,7 @@ export class ReportComponent implements OnInit {
     color: 'primary',
     subtasks: [
       {name: 'Name', completed: false, color: 'primary'},
-      {name: 'Link', completed: false, color: 'primary'},
-      {name: 'Creator', completed: false, color: 'primary'}
+      {name: 'Link', completed: false, color: 'primary'}
     ]
   };
   testCase: Task = {
@@ -49,7 +49,6 @@ export class ReportComponent implements OnInit {
       {name: 'Name', completed: false, color: 'primary'},
       {name: 'Creator', completed: false, color: 'primary'},
       {name: 'Starter', completed: false, color: 'primary'},
-      {name: 'Created date', completed: false, color: 'primary'},
       {name: 'Started date', completed: false, color: 'primary'},
       {name: 'Finished date', completed: false, color: 'primary'},
       {name: 'Status', completed: false, color: 'primary'}
@@ -71,6 +70,7 @@ export class ReportComponent implements OnInit {
   isError: boolean;
   emails: string[] = [];
 
+  reportModelReceive: ReportModel = {};
   reportModel: ReportModel = {};
 
   constructor(private auth: AuthenticationService,
@@ -78,7 +78,7 @@ export class ReportComponent implements OnInit {
             private router: Router) {
     console.log(this.router.getCurrentNavigation().extras.state);
     //this.reportModel.testCaseDetailsDto = new DetailsTestCaseModel();
-    this.reportModel.testCaseDetailsDto = this.router.getCurrentNavigation().extras.state;
+    this.reportModelReceive.testCaseDetailsDto = this.router.getCurrentNavigation().extras.state;
   }
 
 
@@ -144,15 +144,32 @@ export class ReportComponent implements OnInit {
     this.router.navigateByUrl('testCase/details/2');
   }
 
-  sendReport(email: string): void {
+  sendReport(): void {
     if (!this.emptyInvalid && this.reportFormGroup.valid) {
-      // this.project.subtasks[0].completed ? this.reportModel.testCaseDetailsDto.project.name =
-      this.reportModel.email = email;
-      this.projectService.sendReport(this.reportModel).subscribe(
+      this.emails.forEach(
+        email => {
+          this.reportModel = JSON.parse(JSON.stringify(this.reportModelReceive));
+          !this.project.subtasks[0].completed ? this.reportModel.testCaseDetailsDto.project.name = null : this.reportModel.testCaseDetailsDto.project.name;
+          !this.project.subtasks[1].completed ? this.reportModel.testCaseDetailsDto.project.link = null : this.reportModel.testCaseDetailsDto.project.link;
+
+          !this.testCase.subtasks[0].completed ? this.reportModel.testCaseDetailsDto.name = null : this.reportModel.testCaseDetailsDto.name;
+          !this.testCase.subtasks[1].completed ? this.reportModel.testCaseDetailsDto.creator = null : this.reportModel.testCaseDetailsDto.creator;
+          !this.testCase.subtasks[2].completed ? this.reportModel.testCaseDetailsDto.starter = null : this.reportModel.testCaseDetailsDto.starter;
+          !this.testCase.subtasks[3].completed ? this.reportModel.testCaseDetailsDto.startDate = null : this.reportModel.testCaseDetailsDto.startDate;
+          !this.testCase.subtasks[4].completed ? this.reportModel.testCaseDetailsDto.finishDate = null : this.reportModel.testCaseDetailsDto.finishDate;
+          !this.testCase.subtasks[5].completed ? this.reportModel.testCaseDetailsDto.status = null : this.reportModel.testCaseDetailsDto.status;
+
+          !this.actionInst.subtasks[0].completed ? this.reportModel.testCaseDetailsDto.actionInstRunDtos.map(value => {value.actionName = null; value.compoundName = null}) : this.reportModel.testCaseDetailsDto.actionInstRunDtos;
+          !this.actionInst.subtasks[1].completed ? this.reportModel.testCaseDetailsDto.actionInstRunDtos.map(value => value.status = null) : this.reportModel.testCaseDetailsDto.actionInstRunDtos;
+
+          this.reportModel.email = email;
+          this.projectService.sendReport(this.reportModel).subscribe(
             () => {},
             error => console.log(error)
           );
-      // this.router.navigate(['testCase/details/2'], {queryParams: {created: true}});
+          // this.router.navigate(['testCase/details/2'], {queryParams: {created: true}});
+        }
+      );
     } else {
       this.isError = true;
     }

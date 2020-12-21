@@ -75,9 +75,11 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     });
     this.activatedRoute.params.subscribe(() => {
       this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'), 10);
-      this.scenario = this.activatedRoute.snapshot.data.testScenarios;
+      console.log(this.activatedRoute.snapshot.data);
+      this.scenario = this.activatedRoute.snapshot.data.scenario;
       if (!!this.scenario) {
-        this.scenarioActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
+        this.scenarioActions = this.scenario.actions.sort((a, b) => a.orderNum - b.orderNum);
+        // this.scenarioActions = this.scenario.actions.sort((a, b) => a.orderNum - b.orderNum);
       }
     });
     this.activatedRoute.data.subscribe(() => {
@@ -163,26 +165,26 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
           listActionCompoundId: actions_id
         }
       ).subscribe(() => this.router.navigate(['testScenarios',this.projectId], {queryParams: {created: true}}));
-    // } else if (!this.emptyInvalid && this.scenarioForm.valid) {
-    //   const actions_id = [];
-    //   this.scenarioActions.forEach(
-    //     element => actions_id.push(element.action.id)
-    //   );
-    //   this.scenarioService.updateScenario(
-    //     {
-    //       testScenarioId: this.scenario.testScenarioId,
-    //       name: this.scenario.name,
-    //       description: this.scenario.description,
-    //       user: {
-    //         id: this.userId
-    //       },
-    //       project: {
-    //         projectId: this.projectId
-    //       },
-    //       listActionCompoundId: actions_id
-    //     }).subscribe(() => {
-    //     this.router.navigate(['testScenarios',this.projectId], {queryParams: {created: true}});
-    //   });
+    } else if (!this.emptyInvalid && this.scenarioForm.valid) {
+      const actions_id = [];
+      this.scenarioActions.forEach(
+        element => actions_id.push(element.action.id)
+      );
+      this.scenarioService.updateScenario(
+        {
+          testScenarioId: this.scenario.testScenarioId,
+          name: this.scenario.name,
+          description: this.scenario.description,
+          user: {
+            id: this.userId
+          },
+          project: {
+            projectId: this.projectId
+          },
+          listActionCompoundId: actions_id
+        }).subscribe(() => {
+        this.router.navigate(['testScenarios',this.projectId], {queryParams: {created: true}});
+      });
     } else {
       this.isError = true;
     }
@@ -198,7 +200,6 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   }
 
   modalShow(): void {
-    // $('#discardModal').modal('show');
     this.router.navigate(['testScenarios', this.projectId]);
   }
 
