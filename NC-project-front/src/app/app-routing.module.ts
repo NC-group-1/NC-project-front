@@ -42,11 +42,6 @@ import {DashboardComponent} from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   {
-    path: '',
-    canActivate: [LoginActivateGuard],
-    component: MainPageComponent
-  },
-  {
     path: 'login',
     component: LoginPageComponent
   },
@@ -64,164 +59,171 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'compounds',
-    canActivate: [LoginActivateGuard],
-    children: [
+    path: '', canActivate: [LoginActivateGuard], children: [
       {
         path: '',
-        redirectTo: '0',
-        pathMatch: 'full'
+        component: MainPageComponent
       },
       {
-        path: 'edit/:compoundId',
-        component: CompoundEditComponent,
-        resolve: {compound: CompoundResolverService, actionPage: ActionPageResolverService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+        path: 'compounds',
+        children: [
+          {
+            path: '',
+            redirectTo: '0',
+            pathMatch: 'full'
+          },
+          {
+            path: 'edit/:compoundId',
+            component: CompoundEditComponent,
+            resolve: {compound: CompoundResolverService, actionPage: ActionPageResolverService},
+            runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+          },
+          {
+            path: 'new',
+            component: CompoundEditComponent,
+            resolve: {actionPage: ActionPageResolverService},
+            runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+          },
+          {
+            path: ':page',
+            component: CompoundListComponent,
+            resolve: {compoundPage: CompoundListResolverService},
+            runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+          }
+        ]
       },
       {
-        path: 'new',
-        component: CompoundEditComponent,
-        resolve: {actionPage: ActionPageResolverService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+        path: 'signup',
+        component: SignupComponent
       },
       {
-        path: ':page',
-        component: CompoundListComponent,
-        resolve: {compoundPage: CompoundListResolverService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+        path: 'user',
+        children: [
+          {
+            path: 'profile',
+            component: ProfileComponent,
+            resolve: {user: MyProfileResolverService}
+          },
+          {
+            path: 'settings',
+            component: SettingsComponent
+          },
+          {
+            path: ':id',
+            component: ProfileComponent,
+            resolve: {user: ProfileResolverService}
+          }
+        ]
+      },
+      {
+        path: 'createProject',
+        component: CreateProjectComponent
+      },
+      {
+        path: 'listProject',
+        component: ListProjectComponent
+      },
+      {
+        path: 'testScenarios',
+        children: [
+          {
+            path: '',
+            redirectTo: '0',
+            pathMatch: 'full'
+          },
+          {
+            path: 'new/:projectId',
+            component: CreateScenarioComponent,
+            resolve: {actionPage: ActionPageResolverService},
+            runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+          },
+          {
+            path: ':projectId/edit/:testScenarioId',
+            component: CreateScenarioComponent,
+            resolve: {scenario: TestScenarioResolverService, actionPage: ActionPageResolverService},
+            runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+          },
+          {
+            path: ':projectId',
+            component: TestScenariosComponent,
+            resolve: {testScenarios: TestScenarioListResolverService},
+            runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+          }
+        ]
+      },
+      {
+        path: 'testCase',
+        children: [
+          {
+            path: 'list/:projectId',
+            component: ListTestCaseComponent
+          },
+          {
+            path: 'runningList/:projectId',
+            component: RunningTestCaseComponent
+          },
+          {
+            path: 'new/:testScenarioId',
+            component: TestCaseComponent,
+            resolve: {testScenario: TestScenarioResolverService, dataSets: DataSetListResolverServiceService},
+            runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+          },
+          {
+            path: 'edit/:testCaseId',
+            component: TestCaseComponent,
+            resolve: {testCase: TestCaseResolverService,
+              actions: TestCaseActionsResolverService, dataSets: DataSetListResolverServiceService},
+            runGuardsAndResolvers: 'paramsOrQueryParamsChange'
+          },
+          {
+            path: 'details/:testCaseId',
+            component: DetailsComponent
+          },
+          {
+            path: 'history/:projectId',
+            component: TestCaseHistoryComponent
+          },
+          {
+            path: 'report/:testCaseId',
+            component: ReportComponent
+          }
+        ]
+      },
+      {
+        path: 'createUser',
+        component: CreateUserComponent
+      },
+      {
+        path: 'listUsers',
+        component: ListUsersComponent
+      },
+      {
+        path: 'manageAction',
+        component: ActionComponent
+      },
+      {
+        path: 'dataSet',
+        children: [
+          {
+            path: 'list',
+            component: ListDataSetComponent
+          },
+          {
+            path: ':id',
+            component: DataSetDetailsComponent,
+            resolve: {dataSet: DataSetResolverService}
+          }
+        ]
+      },
+      {
+        path: 'dashboard',
+        component: DashboardComponent
+      },
+      {
+        path: '**',
+        component: PageNotFoundComponent
       }
     ]
-  },
-  {
-    path: 'signup',
-    component: SignupComponent
-  },
-  {
-    path: 'user',
-    canActivate: [LoginActivateGuard],
-    children: [
-      {
-        path: 'profile',
-        component: ProfileComponent,
-        resolve: {user: MyProfileResolverService}
-      },
-      {
-        path: 'settings',
-        component: SettingsComponent
-      },
-      {
-        path: ':id',
-        component: ProfileComponent,
-        resolve: {user: ProfileResolverService}
-      }
-    ]
-  },
-  {
-    path: 'createProject',
-    component: CreateProjectComponent
-  },
-  {
-    path: 'listProject',
-    component: ListProjectComponent
-  },
-  {
-    path: 'testScenarios',
-    children: [
-      {
-        path: '',
-        redirectTo: '0',
-        pathMatch: 'full'
-      },
-      {
-        path: 'new/:projectId',
-        component: CreateScenarioComponent,
-        resolve: {actionPage: ActionPageResolverService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
-      },
-      {
-        path: ':projectId/edit/:testScenarioId',
-        component: CreateScenarioComponent,
-        resolve: {scenario: TestScenarioResolverService, actionPage: ActionPageResolverService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
-      },
-      {
-        path: ':projectId',
-        component: TestScenariosComponent,
-        resolve: {testScenarios: TestScenarioListResolverService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
-      }
-    ]
-  },
-  {
-    path: 'testCase',
-    children: [
-      {
-        path: 'list/:projectId',
-        component: ListTestCaseComponent
-      },
-      {
-        path: 'runningList/:projectId',
-        component: RunningTestCaseComponent
-      },
-      {
-        path: 'new/:testScenarioId',
-        component: TestCaseComponent,
-        resolve: {testScenario: TestScenarioResolverService, dataSets: DataSetListResolverServiceService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
-      },
-      {
-        path: 'edit/:testCaseId',
-        component: TestCaseComponent,
-        resolve: {testCase: TestCaseResolverService, actions: TestCaseActionsResolverService, dataSets: DataSetListResolverServiceService},
-        runGuardsAndResolvers: 'paramsOrQueryParamsChange'
-      },
-      {
-        path: 'details/:testCaseId',
-        component: DetailsComponent
-      },
-      {
-        path: 'history/:projectId',
-        component: TestCaseHistoryComponent
-      },
-      {
-        path: 'report/:testCaseId',
-        component: ReportComponent
-      }
-    ]
-  },
-  {
-    path: 'createUser',
-    component: CreateUserComponent
-  },
-  {
-    path: 'listUsers',
-    component: ListUsersComponent
-  },
-  {
-    path: 'manageAction',
-    component: ActionComponent
-  },
-  {
-    path: 'dataSet',
-    children: [
-      {
-        path: 'list',
-        component: ListDataSetComponent
-      },
-      {
-        path: ':id',
-        component: DataSetDetailsComponent,
-        resolve: {dataSet: DataSetResolverService}
-      }
-    ]
-  },
-  {
-    path: 'dashboard',
-    component: DashboardComponent
-  },
-  {
-    path: '**',
-    component: PageNotFoundComponent
   }
 ];
 

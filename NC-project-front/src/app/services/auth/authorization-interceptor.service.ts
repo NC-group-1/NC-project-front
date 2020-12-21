@@ -7,7 +7,7 @@ import {
 } from '@angular/common/http';
 import {Observable, throwError} from 'rxjs';
 import {catchError} from 'rxjs/operators';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AuthenticationService} from './authentication.service';
 
 @Injectable()
@@ -15,7 +15,7 @@ export class AuthorizationInterceptor implements HttpInterceptor {
 
   private authenticationService: AuthenticationService;
 
-  constructor(authenticationService: AuthenticationService, private router: Router) {
+  constructor(authenticationService: AuthenticationService, private router: Router, private route: ActivatedRoute) {
     this.authenticationService = authenticationService;
   }
 
@@ -36,6 +36,10 @@ export class AuthorizationInterceptor implements HttpInterceptor {
           sessionFailed: true
         }
       });
+    }
+    if (err.status === 403){
+      this.router.navigate([],
+        {relativeTo: this.route, queryParams: {unauthorized: true}, queryParamsHandling: 'merge'});
     }
     return throwError(err);
   }

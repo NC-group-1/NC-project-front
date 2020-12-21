@@ -16,7 +16,7 @@ export class CompoundService {
   constructor(private http: HttpClient, private router: Router) { }
 
   getCompoundPage(page, size, name, description, orderBy, direction): Observable<PageModel<CompoundModel>>{
-    return this.http.get<PageModel<CompoundModel>>(apiPath + 'compound?page=' + page +
+    return this.http.get<PageModel<CompoundModel>>(apiPath + 'api/ncp/compound?page=' + page +
       '&size=' + (!size ? '' : size) +
       '&name=' + (!name ? '' : name) +
       '&description=' + (!description ? '' : description) +
@@ -24,24 +24,24 @@ export class CompoundService {
       '&direction=' + (!direction ? '' : direction));
   }
   createCompound(compound: CompoundModel): Observable<any>{
-    return this.http.post(apiPath + 'compound', compound);
+    return this.http.post(apiPath + 'api/ncp/compound', compound);
   }
   getCompoundById(compoundId): Observable<CompoundModel>{
-    return this.http.get<CompoundModel>(apiPath + 'compound/' + compoundId);
+    return this.http.get<CompoundModel>(apiPath + 'api/ncp/compound/' + compoundId);
   }
   updateCompound(action: Action): Observable<any>{
-    return this.http.put(apiPath + 'compound/update', action);
+    return this.http.put(apiPath + 'api/ncp/compound/update', action);
   }
   deleteCompound(compoundId: number): Observable<any>{
-    return this.http.delete(apiPath + 'compound/delete/' + compoundId);
+    return this.http.delete(apiPath + 'api/ncp/compound/delete/' + compoundId);
   }
   postActionInCompound(action: ActionOfCompound, id: number): Observable<any>{
-    return this.http.post(apiPath + 'compound/actions/' + id, action);
+    return this.http.post(apiPath + 'api/ncp/compound/actions/' + id, action);
   }
   removeActionFromCompound(actionId: number, compoundId: number): Observable<any>{
-    return this.http.post(apiPath + 'compound/actions/' + compoundId, actionId);
+    return this.http.post(apiPath + 'api/ncp/compound/actions/' + compoundId, actionId);
   }
   changeActions(compoundId: number, actions: ActionOfCompound[]): Observable<any>{
-    return this.http.put(apiPath + 'compound/actions/' + compoundId, actions);
+    return this.http.put(apiPath + 'api/ncp/compound/actions/' + compoundId, actions);
   }
 }

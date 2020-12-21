@@ -39,6 +39,8 @@ export class NavbarComponent implements OnInit {
             this.user = user;
           });
         }, 50);
+      } else {
+        this.router.navigate(['login']);
       }
     });
     this.stompClient.connect({}, () => {
