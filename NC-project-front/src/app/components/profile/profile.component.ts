@@ -5,6 +5,8 @@ import {DatePipe} from '@angular/common';
 import {FormControl, FormGroup} from '@angular/forms';
 import {ProfileService} from '../../services/profile/profile.service';
 import {AuthenticationService} from '../../services/auth/authentication.service';
+import {TestCaseStatisticModel} from "../../../models/TestCaseStatisticModel";
+import {DashboardService} from "../../services/dashboard/dashboard.service";
 
 @Component({
   selector: 'app-profile',
@@ -20,8 +22,12 @@ export class ProfileComponent implements OnInit {
   surnameEditing: boolean;
   aboutMeEditing: boolean;
   form: FormGroup;
+  statistic: TestCaseStatisticModel;
 
-  constructor(private activatedRoute: ActivatedRoute, private profileService: ProfileService, private auth: AuthenticationService) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private profileService: ProfileService,
+              private dashboardService: DashboardService,
+              private auth: AuthenticationService) {
     this.activatedRoute.params.subscribe(param => {
       this.user = this.activatedRoute.snapshot.data.user;
       if (auth.getRole() === 'ROLE_ADMIN' || auth.getUsername() === this.user.email ){
@@ -37,6 +43,10 @@ export class ProfileComponent implements OnInit {
       surname: new FormControl(null),
       aboutMe: new FormControl(null)
     });
+    this.dashboardService.getTestCasesStatistic(this.user.userId)
+      .subscribe((statistic: TestCaseStatisticModel) => {
+        this.statistic = statistic;
+      });
   }
 
   setEditFalse(): void {

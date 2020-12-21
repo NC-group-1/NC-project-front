@@ -69,7 +69,7 @@
         <ng-container matColumnDef="role">
           <th mat-header-cell *matHeaderCellDef mat-sort-header style="width: 15%;"> Creator</th>
           <td mat-cell *matCellDef="let element">
-            <a [routerLink]="['/user',element.user.id]" href="#" class="stretched-link" style="position: relative;" >
+            <a [routerLink]="['/user',element.user.userId]" href="#" class="stretched-link" style="position: relative;" >
               {{element.user.name + ' ' + element.user.surname}}
             </a>
           </td>
