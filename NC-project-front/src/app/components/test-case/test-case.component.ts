@@ -179,6 +179,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
 
   createTestCase() {
     this.testCaseService.createTestCase({
+
       name: this.testCaseForm.value.name,
       description: this.testCaseForm.value.description,
       actions: this.flattenedActions,

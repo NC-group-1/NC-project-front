@@ -58,7 +58,7 @@ export class CreateUserComponent implements OnInit {
     this.role = '';
     this.activatedRoute.params.subscribe(() => {
       this.user = this.activatedRoute.snapshot.data.user;
-      if (auth.getRole().includes('admin'))
+      if (auth.getRole().includes('ROLE_ADMIN'))
         this.hasCreatingPermission = true;
     });
   }
