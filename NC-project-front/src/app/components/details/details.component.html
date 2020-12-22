@@ -40,7 +40,7 @@
 
         <div class="btn-toolbar">
           <button [routerLink]="['testCase/', 'edit',activatedRoute.snapshot.paramMap.get('testCaseId')]"
-                  class="btn btn-nc m-3 px-5 py-3"> Change
+                  class="btn btn-nc m-3 px-5 py-3" [hidden]="true"> Change
             dataset
           </button>
           <button
@@ -82,7 +82,7 @@
             <tr *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row" mat-row></tr>
           </mat-table>
 
-          <mat-paginator [pageSizeOptions]="[5, 10, 20]" class="float-left" showFirstLastButtons></mat-paginator>
+          <mat-paginator [hidden]="true" [pageSizeOptions]="[5, 10, 20]" class="float-left" showFirstLastButtons></mat-paginator>
 
         </div>
 
