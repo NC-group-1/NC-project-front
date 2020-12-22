@@ -7,19 +7,19 @@ import {ActionInstanceModel} from './ActionInstanceModel';
 
 export class TestCaseModel{
   id?: number;
-  testCaseId?: number;
+  // testCaseId?: number;
   user: { id: number, name?: string, surname?: string, email?: string };
   starter?: UserDataModel;
   testScenarioId?: number;
   actions?: ActionInstanceModel[];
   name: string;
-  role?: string;
+  // role?: string;
   description: string;
   creationDate?: Date;
   startDate?: any;
   finishDate?: Date;
   status?: string;
-  //recurringTime?: TimeInterval<Date>;
+  // recurringTime?: TimeInterval<Date>;
   recurringTime?: string;
   iterationsAmount?: number;
   watcherNumb?: number;

@@ -65,11 +65,11 @@ export class CompoundListComponent implements OnInit {
     this.descriptionSearch = !this.descriptionSearch;
   }
   findName(event: any): void{
-    this.router.navigate([], {relativeTo: this.activatedRoute,
+    this.router.navigate(['../0'], {relativeTo: this.activatedRoute,
       queryParams: {name: event.target.value}, queryParamsHandling: 'merge'});
   }
   findDescription(event: any): void{
-    this.router.navigate([], {relativeTo: this.activatedRoute,
+    this.router.navigate(['../0'], {relativeTo: this.activatedRoute,
       queryParams: {description: event.target.value}, queryParamsHandling: 'merge'});
   }
 

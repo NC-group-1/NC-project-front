@@ -60,6 +60,6 @@
         routerLink="../edit/{{row.id}}"></tr>
   </table>
   <mat-paginator [pageSizeOptions]="[10, 20, 30]" pageSize="{{size}}" length="{{compoundPage.size}}"
-                 (page)="pageParamsChange($event)" showFirstLastButtons></mat-paginator>
+                 (page)="pageParamsChange($event)" pageIndex="{{currentPage}}" showFirstLastButtons></mat-paginator>
   <button class="btn btn-nc m-3 px-5" routerLink="../new">New</button>
 </div>

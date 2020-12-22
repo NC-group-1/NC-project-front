@@ -57,20 +57,22 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       this.datasetPage = this.activatedRoute.snapshot.data.dataSets;
       this.testCaseData = this.activatedRoute.snapshot.data.testCase;
       if (!this.creating && this.testCaseData.status !== 'READY' && this.testCaseData.status !== 'NOT_STARTED' &&
-        this.testCaseData.status !== 'UNKNOWN'){
+        this.testCaseData.status !== 'UNKNOWN') {
         this.router.navigate(['testCase', 'details', this.testCaseData.id]);
       }
       this.datasets = this.datasetPage.list.map(value1 => new DatasetModel(value1));
-      this.actionsSource = this.creating ?
-        this.activatedRoute.snapshot.data.testScenario.actions
-        : this.activatedRoute.snapshot.data.actions;
-      if (this.creating) {
-        this.initParamsCreation();
-      } else {
-        this.initParamsEdit();
+      if (this.flattenedActions.length === 0){
+        this.actionsSource = this.creating ?
+          this.activatedRoute.snapshot.data.testScenario.actions
+          : this.activatedRoute.snapshot.data.actions;
+        if (this.creating) {
+          this.initParamsCreation();
+        } else {
+          this.initParamsEdit();
+        }
+        this.flattenedActions.forEach((value1, index) => value1.orderNum = index + 1);
+        this.dataSource = new MatTableDataSource<any>(this.flattenedActions);
       }
-      this.flattenedActions.forEach((value1, index) => value1.orderNum = index + 1);
-      this.dataSource = new MatTableDataSource<any>(this.flattenedActions);
     });
     this.activatedRoute.queryParams.subscribe(value => {
       this.dsPage = !value.dsPage ? 0 : value.dsPage;
@@ -88,7 +90,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
 
   fieldsEmpty(): void {
     this.empty = !!this.flattenedActions.find(value =>
-      value.parameterKey.key === '' &&  getNeedParams(value.action.type) !== 0
+      value.parameterKey.key === '' && getNeedParams(value.action.type) !== 0
       || value.datasetId === null && getNeedParams(value.action.type) === 2);
   }
 
@@ -108,7 +110,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
     this.datasetService.getParametersByDataSetId(dataset.id)
       .subscribe(parameters => {
         dataset.parameters = parameters;
-        if (!this.selectedDatasets.find(value => value.id === dataset.id)){
+        if (!this.selectedDatasets.find(value => value.id === dataset.id)) {
           this.selectedDatasets.push(dataset);
         }
         this.flattenedActions.map(action => {
@@ -153,7 +155,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   }
 
   filter(event: any, action: any) {
-    if (event !== ''){
+    if (event !== '') {
       action.datasetId = null;
       action.value = null;
     }
@@ -181,14 +183,14 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       description: this.testCaseForm.value.description,
       actions: this.flattenedActions,
       user: {id: parseInt(this.auth.getId(), 10)},
-      role: this.auth.getRole(),
+      // role: this.auth.getRole(),
       testScenarioId: parseInt(this.activatedRoute.snapshot.paramMap.get('testScenarioId'), 10)
     }).subscribe(value => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
   }
 
   editTestCase() {
     this.testCaseService.editTestCase({
-      testCaseId: +this.activatedRoute.snapshot.paramMap.get('testCaseId'),
+      id: +this.activatedRoute.snapshot.paramMap.get('testCaseId'),
       name: this.testCaseForm.value.name,
       description: this.testCaseForm.value.description,
       user: {id: parseInt(this.auth.getId(), 10)},
@@ -197,6 +199,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   }
 
   initParamsCreation() {
+    this.flattenedActions = [];
     this.actions = this.actionsSource.map(value1 => {
         return {
           action: value1.action,
@@ -207,10 +210,11 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
         };
       }
     ).sort((a, b) => a.orderNum - b.orderNum);
+    console.log(this.actions, this.flattenedActions);
     for (const action of this.actions) {
       if (action.action.type === 'COMPOUND') {
         this.flattenedActions.push(...action.action.actions.map((value1) => {
-          if (getNeedParams(action.action.type) !== 0){
+          if (getNeedParams(action.action.type) !== 0) {
             if (value1.parameterKey === null) {
               value1.parameterKey = {key: ''};
             } else if (value1.parameterKey?.key === null) {
@@ -221,7 +225,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
           return value1;
         }));
       } else {
-        if (getNeedParams(action.action.type) !== 0){
+        if (getNeedParams(action.action.type) !== 0) {
           if (action.parameterKey === null) {
             action.parameterKey = {key: ''};
           } else if (action.parameterKey?.key === null) {
@@ -234,15 +238,24 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   }
 
   initParamsEdit() {
-    this.actions = this.activatedRoute.snapshot.data.actions.sort((a, b) => a.orderNum - b.orderNum);
+    this.flattenedActions = [];
+    this.actions = this.actionsSource.sort((a, b) => a.orderNum - b.orderNum);
     this.actions.forEach(action => {
+      if (getNeedParams(action.action.type) !== 0) {
+        if (action.parameterKey === null) {
+          action.parameterKey = {key: ''};
+        } else if (action.parameterKey?.key === null) {
+          action.parameterKey.key = '';
+        }
+      }
       this.dsService.getDataSetById(action.datasetId).subscribe(ds => {
         this.addDataset(new DatasetModel(ds));
       });
       this.flattenedActions.push(action);
     });
   }
-  getNeedParams(type: string): number{
+
+  getNeedParams(type: string): number {
     return getNeedParams(type);
   }
 }

@@ -20,6 +20,7 @@ export class TestScenarioListResolverService implements Resolve<PageModel<Scenar
       route.queryParamMap.get('searchValue'),
       route.queryParamMap.get('orderBy'),
       route.queryParamMap.get('direction'),
+      route.queryParamMap.get('searchBy'),
       route.paramMap.get('projectId'));
   }
 }
