@@ -123,20 +123,18 @@ export class RunningTestCaseComponent implements OnInit {
 
   onChangeStatus(value, test_case_id) {
     const body = this.runningListTestCase.find(element => element.id === test_case_id);
-    console.log(body);
-    console.log(this.authorizedUserId);
+    console.log(new Date());
+    setTimeout(()=>{console.log(this.authorizedUserId)}, 3000);
+    console.log(new Date());
+    //console.log(this.authorizedUserId);
     console.log(body.id);
     this.testCaseService.runTestCase(body.id, (value.checked === true) ? "RESUME" : "STOP", this.authorizedUserId)
       .subscribe(
-        response => {console.log(response);
-        this.reloadRunningTestCases();},
+        response => {
+          console.log(response);
+          setTimeout(()=>{this.reloadRunningTestCases()}, 1000);
+          },
         error => console.log(error)
       )
-
-    /*this.runningTestCaseService.updateRunningTestCase(body)
-      .subscribe(
-        response => console.log(response),
-        error => console.log(error)
-      );*/
   }
 }

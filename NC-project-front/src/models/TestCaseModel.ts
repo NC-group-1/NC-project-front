@@ -24,5 +24,6 @@ export class TestCaseModel{
   iterationsAmount?: number;
   watcherNumb?: number;
   edit?: boolean;
+  expanded?: boolean = false;
   testScenario?: number;
 }
