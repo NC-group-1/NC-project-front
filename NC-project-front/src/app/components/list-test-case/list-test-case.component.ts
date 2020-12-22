@@ -46,10 +46,11 @@ export class ListTestCaseComponent implements OnInit {
   authorizedUserId: number;
 
   selectedTestCase: string;
-  displayedColumns: string[] = ['id', 'select', 'name', 'creator', 'creationDate', 'iterationsAmount', 'recurringTime',  'watcher_numb', 'startDate', 'status','editBtn'];
+  displayedColumns: string[] = ['id', 'select', 'name', 'creator', 'creationDate', 'iterationsAmount', 'recurringTime',  'watcherNumb', 'startDate', 'status','editBtn'];
   responseTestCase?: TestCaseResponseModel;
   listTestCase: TestCaseModel[];
   dataSource: any;
+  state: boolean = false;
 
   dataSource2: any;
   watcherList: UserListModel[];
@@ -57,6 +58,7 @@ export class ListTestCaseComponent implements OnInit {
   filteredWatchers: Observable<UserListModel[]>;
   userList: UserListModel[];
   selectedUserID: number;
+  inputName:string = '';
 
   length = 0;
   pageSize = 10;
@@ -95,7 +97,7 @@ export class ListTestCaseComponent implements OnInit {
 
 
   constructor(private _snackBar: MatSnackBar, private testCaseService: TestCaseService, private auth: AuthenticationService, private projectService: ProjectService, public router: ActivatedRoute) {
-    this.minDate = moment().add(1,'day').format('YYYY-MM-DDTHH:mm');
+    this.minDate = moment().add(1,'hour').format('YYYY-MM-DDTHH:mm');
     this.selectedTestCase = "";
     this.projectName = "";
     this.listTestCase = [];
@@ -156,17 +158,55 @@ export class ListTestCaseComponent implements OnInit {
   addWatcher(test_case_id: number): boolean {
     if (!this.watcherList.some(element => element.userId === this.selectedUserID) && (this.selectedUserID != 0)){
       const watcher: WatcherModel = {user_id: this.selectedUserID, test_case_id: test_case_id};
-      console.log(watcher);
 
       this.testCaseService.postWatcher(watcher)
         .subscribe(
-          response => {console.log(response);this.reloadWatchers(test_case_id);},
+          response => {console.log(response);
+            const testCase = this.listTestCase.find(element => element.id === test_case_id);
+            console.log(testCase);
+            if (testCase.watcherNumb === 0) {
+              testCase.status = "READY";
+              this.testCaseService.updateTestCase(testCase)
+                .subscribe(
+                  response => {console.log(response);this.reloadWatchers(test_case_id);this.reloadTestCases(); return true;},
+                  error => console.log(error)
+                );
+            }
+            this.reloadWatchers(test_case_id);this.reloadTestCases();},
           error => console.log(error)
         );
+        this.inputName = '';
         return true;
     } else {
+      this.inputName = '';
       return false;
     }
+  }
+
+  openDetails(index: number) {
+    //this.listTestCase.forEach(element => { element.expanded = false});
+    this.listTestCase.forEach(element => {
+        if (element.id === index) {
+          element.expanded = !element.expanded;
+        } else {
+          element.expanded = false;
+        }
+        return element;
+      }
+    );
+  }
+
+  showDetail(index: number) {
+    console.log(index);
+    console.log(this.listTestCase);
+    setTimeout(()=>{this.listTestCase.forEach(element => {
+            if (element.id === index) {
+              element.expanded = true;
+            }
+            return element;
+          }
+        );}, 500);
+
   }
 
   reloadTestCases(): void {
@@ -229,24 +269,42 @@ export class ListTestCaseComponent implements OnInit {
       );
   }
 
-  updateName(index: number, name: string) {
-    this.listTestCase[index].name = name;
+  updateProperty(index: number, value: any, property: string) {
+    this.listTestCase.forEach(element => {
+        if (element.id === index) {
+          element[property] = value;
+        }
+        return element;
+      }
+    );
   }
 
-  updateStartTime(index: number, startDate: any) {
-    this.listTestCase[index].startDate = startDate;
+  updateStartDate(index: number, value: any): boolean {
+    this.listTestCase.forEach(element => {
+        if (element.id === index) {
+          if (!moment(new Date()).isAfter(value)){
+            this.state = false;
+            console.log(this.state);
+            return this.state;
+          } else {
+            element.startDate = value;
+            this.state = true;
+            console.log(this.state);
+            return this.state;
+          }
+        }
+        console.log(this.state);
+        return this.state;
+      }
+    );
+    console.log(state);
+    return this.state;
   }
 
 
-  updateIterations(index: number, iterationsAmount: any) {
-    this.listTestCase[index].iterationsAmount = iterationsAmount;
-  }
-
-  updateRecTime(index: number, recurringTime: string) {
-    this.listTestCase[index].recurringTime = recurringTime;
-  }
 
   change(index: number) {
+    console.log(index);
     const testCase = this.listTestCase.find(element => element.id === index);
     testCase.edit = !testCase.edit;
     const newListTestCase = {...testCase};
