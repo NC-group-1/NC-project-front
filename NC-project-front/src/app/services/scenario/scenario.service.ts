@@ -25,6 +25,7 @@ export class ScenarioService {
                        filter: string,
                        orderBy: string,
                        order: string,
+                       searchBy: string,
                        projectId: string): Observable<PageModel<ScenarioModel>> {
     return this.http.get<PageModel<ScenarioModel>>(
       apiPath + 'api/ncp/test-scenario/list/' + projectId
@@ -34,6 +35,7 @@ export class ScenarioService {
       + '&filter=' + (!filter ? '' : filter)
       + '&orderBy=' + (!orderBy ? '' : orderBy)
       + '&order=' + (!order ? '' : order)
+      + '&filterBy=' + (!searchBy ? '' : searchBy)
       )
       .pipe(tap(() => {
       }, e => {

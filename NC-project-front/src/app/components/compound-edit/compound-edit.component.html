@@ -11,12 +11,12 @@
       <div [formGroup]="compoundForm">
         <label class="m-3 color-nc font-weight-bold"> Name
           <input [@invalidForm]="compoundForm.controls.name.invalid ? 'invalid': ''"
-                 [attr.disabled]="!creating ? '' : null" type="text" class="form-control"
+                 type="text" class="form-control"
                  formControlName="name" [ngModel]="compound?.name">
         </label>
         <label class="m-3 color-nc font-weight-bold"> Description
           <input [@invalidForm]="compoundForm.controls.description.invalid ? 'invalid': ''"
-                 [attr.disabled]="!creating ? '' : null" type="text"
+                 type="text"
                  class="form-control" formControlName="description" [ngModel]="compound?.description">
         </label>
       </div>
@@ -64,12 +64,12 @@
       <button (click)="modalShow()" class="btn btn-outline-danger m-3 px-5 py-3" data-target="discardModal"
               data-toggle="modal">Discard
       </button>
-      <button (click)="modalDelShow()" *ngIf="!creating" class="btn btn-outline-danger m-3 px-5 py-3">DELETE
-      </button>
+<!--      <button (click)="modalDelShow()" *ngIf="!creating" class="btn btn-outline-danger m-3 px-5 py-3">DELETE-->
+<!--      </button>-->
     </div>
   </div>
   <div class="col">
-    <div class="position-fixed pre-scrollable mr-5">
+    <div class="mr-5">
       <div *ngIf="!!selectedAction" class="bg-white shadow-lg py-3 px-5">
         <h1>
           <strong class="color-nc">Action name: </strong>
@@ -82,8 +82,7 @@
           <div class="row" *ngFor="let action of selectedCompoundActions">
             <div class="col border">{{action.action.name}}</div>
             <input class="m-0 p-0 col border" matInput placeholder="Key"
-                   [(ngModel)]="action.parameterKey.key"
-                   (ngModelChange)="changeCompoundActionKey($event, action, selectedAction.action.id)">
+                   [ngModel]="action.parameterKey.key">
             <!--          <div >{{action.key.key || action.action.key.key}}</div>-->
           </div>
         </div>
@@ -126,7 +125,6 @@
           </div>
           <div class="modal-footer">
             <button class="btn btn-outline-secondary" data-dismiss="modal" type="button">Cancel</button>
-            <button (click)="delete()" class="btn btn-outline-danger" data-dismiss="modal" type="button">Delete</button>
           </div>
         </div>
       </div>

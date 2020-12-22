@@ -94,13 +94,13 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
       this.compoundActions.splice(event.previousIndex, 1);
     } else if (event.previousContainer.id === 'cdk-drop-list-1' && event.previousContainer !== event.container) {
       const dataAct = event.previousContainer.data[event.previousIndex];
-      if (dataAct.action.type === 'COMPOUND'){
+      if (dataAct.action.type === 'COMPOUND') {
         this.compService.getCompoundById(dataAct.action.id).subscribe(value => {
           dataAct.compoundActions = value.actions.sort((a, b) => a.orderNum - b.orderNum);
           this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(dataAct)));
           this.adjustOrder(this.compoundActions);
         });
-      }else {
+      } else {
         this.compoundActions.splice(event.currentIndex, 0, JSON.parse(JSON.stringify(dataAct)));
         this.adjustOrder(this.compoundActions);
       }
@@ -125,11 +125,26 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
           actions: this.compoundActions
         }
       ).subscribe(value => this.router.navigate(['compounds'], {queryParams: {created: true}}));
-    }
-    else {
+    } else if (!this.emptyInvalid && this.compoundForm.valid) {
+      this.compService.updateCompound(
+        {
+          id: this.compound.id,
+          name: this.compoundForm.value.name,
+          description: this.compoundForm.value.description,
+          type: 'COMPOUND'
+        }).subscribe(value => {
+        this.compService.changeActions(this.compound.id, this.compoundActions).subscribe(
+          value1 => {
+            this.router.navigate(['compounds'], {queryParams: {created: true}});
+          }, error => {
+          }
+        );
+      });
+    } else {
       this.isError = true;
     }
   }
+
   delete(): void {
     this.compService.deleteCompound(this.compound.id).subscribe(value => {
       this.router.navigate(['compounds']);
@@ -169,7 +184,7 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
       this.getCompoundActions(action.action).subscribe(value => {
         this.selectedCompoundActions = value.actions.sort((a, b) => a.orderNum - b.orderNum);
       });
-    }else {
+    } else {
       this.selectedCompoundActions = [];
     }
   }
