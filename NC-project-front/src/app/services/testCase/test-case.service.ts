@@ -40,4 +40,8 @@ export class TestCaseService {
   editTestCase(testCase: TestCaseModel): Observable<boolean> {
     return this.http.put<boolean>(apiPath + 'api/ncp/test-case', testCase);
   }
+
+  getProjectIdOfTestScenario(testScenarioId): Observable<number>{
+    return this.http.get<number>(apiPath + 'api/ncp/test-scenario/' + testScenarioId + '/projectId');
+  }
 }
