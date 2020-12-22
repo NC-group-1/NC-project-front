@@ -164,13 +164,13 @@ const routes: Routes = [
             component: RunningTestCaseComponent
           },
           {
-            path: ':projectId/new/:testScenarioId',
+            path: 'new/:testScenarioId',
             component: TestCaseComponent,
             resolve: {testScenario: TestScenarioResolverService, dataSets: DataSetListResolverServiceService},
             runGuardsAndResolvers: 'paramsOrQueryParamsChange'
           },
           {
-            path: ':projectId/edit/:testCaseId',
+            path: 'edit/:testCaseId',
             component: TestCaseComponent,
             resolve: {testCase: TestCaseResolverService,
               actions: TestCaseActionsResolverService, dataSets: DataSetListResolverServiceService},
