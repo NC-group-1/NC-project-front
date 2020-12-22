@@ -40,7 +40,8 @@ export class DashboardComponent implements OnInit {
     scales: {
       yAxes: [{
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
+          precision: 0
         }
       }]
     }
@@ -51,6 +52,7 @@ export class DashboardComponent implements OnInit {
 
   barChartData: ChartDataSets[] = [{
     data: [this.statistic.passedCount, this.statistic.failedCount],
+
   }];
 
   @ViewChild('paginator') paginator: MatPaginator;
@@ -90,6 +92,7 @@ export class DashboardComponent implements OnInit {
         this.statistic = statistic;
         this.barChartData = [{
           data: [statistic.passedCount, statistic.failedCount],
+          backgroundColor: ['#006600', '#ff5c33'],
         }];
       });
   }
