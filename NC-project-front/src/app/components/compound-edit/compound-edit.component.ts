@@ -72,6 +72,7 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
       name: new FormControl(null, [Validators.required]),
       description: new FormControl(null, [Validators.required])
     });
+    this.selectedAction = this.actionsAsCompActions[0];
   }
 
   ngOnInit(): void {

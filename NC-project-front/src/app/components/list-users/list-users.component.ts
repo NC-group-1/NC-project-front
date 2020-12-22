@@ -43,11 +43,11 @@ export class ListUsersComponent implements OnInit {
 
   constructor(private activatedRoute: ActivatedRoute,
               private httpClientService: HttpClientService,
-              private auth: AuthenticationService,
+              public auth: AuthenticationService,
               private formBuilder: FormBuilder) {
     this.activatedRoute.params.subscribe(param => {
       this.user = this.activatedRoute.snapshot.data.user;
-      if (!auth.getRole().includes('engineer')){
+      if (!auth.getRole().includes('ROLE_ENGINEER')){
         this.hasSearchingPermission = true;
       }
     });

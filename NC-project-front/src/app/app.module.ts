@@ -55,6 +55,7 @@ import { TestCaseHistoryComponent } from './components/test-case-history/test-ca
 import {DashboardComponent} from './components/dashboard/dashboard.component';
 import {ChartsModule} from 'ng2-charts';
 import { ReportComponent } from './components/report/report.component';
+import {TestCaseViewComponent} from './components/test-case/test-case-view/test-case-view.component';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { ReportComponent } from './components/report/report.component';
     CreateScenarioComponent,
     DetailsComponent,
     ReportComponent,
+    TestCaseViewComponent
   ],
   imports: [
     BrowserModule,

@@ -8,7 +8,7 @@
     <div class="w3-half w3-container w3-center">
       <img src="{{user.imageLink}}" (error)="img.src = 'assets/images/Default-user.png'" #img class="profile-pic-full shadow-lg">
       <div class="w-100"></div>
-      <a class="btn color-nc font-italic">Change photo</a>
+      <a *ngIf="hasEditingPermission" class="btn color-nc font-italic" (click)="modalShow()">Change photo</a>
 
       <h3 class="text-center mt-5">Statistics</h3>
       <div class="w3-row pb-5">
@@ -79,5 +79,24 @@
 
     </div>
 
+  </div>
+</div>
+<div aria-hidden="true" aria-labelledby="discardModalLabel" class="modal fade" id="imageModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="discardModalLabel">Change profile picture</h5>
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <input class="form-control" [(ngModel)]="user.imageLink">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" data-dismiss="modal" type="button" (click)="savePicture()">Save</button>
+        <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
+      </div>
+    </div>
   </div>
 </div>
