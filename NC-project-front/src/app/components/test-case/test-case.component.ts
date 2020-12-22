@@ -182,7 +182,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       name: this.testCaseForm.value.name,
       description: this.testCaseForm.value.description,
       actions: this.flattenedActions,
-      user: {id: parseInt(this.auth.getId(), 10)},
+      user: {userId: parseInt(this.auth.getId(), 10)},
       // role: this.auth.getRole(),
       testScenarioId: parseInt(this.activatedRoute.snapshot.paramMap.get('testScenarioId'), 10)
     }).subscribe(value => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
@@ -193,7 +193,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       id: +this.activatedRoute.snapshot.paramMap.get('testCaseId'),
       name: this.testCaseForm.value.name,
       description: this.testCaseForm.value.description,
-      user: {id: parseInt(this.auth.getId(), 10)},
+      user: {userId: parseInt(this.auth.getId(), 10)},
       actions: this.flattenedActions,
     }).subscribe(value => this.router.navigate(['testScenarios'], {queryParams: {edited: true}}));
   }
