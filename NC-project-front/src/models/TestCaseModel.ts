@@ -25,4 +25,5 @@ export class TestCaseModel{
   watcherNumb?: number;
   edit?: boolean;
   expanded?: boolean = false;
+  testScenario?: number;
 }

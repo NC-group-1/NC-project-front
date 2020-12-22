@@ -43,6 +43,7 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   flattenedActions: ActionInstanceModel[] = [];
   empty = true;
   creating = false;
+  projectId: number;
   private actionsSource: any;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private auth: AuthenticationService,
@@ -52,7 +53,6 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.creating = this.router.url.startsWith('/testCase/new/');
-
     this.activatedRoute.data.subscribe(value => {
       this.datasetPage = this.activatedRoute.snapshot.data.dataSets;
       this.testCaseData = this.activatedRoute.snapshot.data.testCase;
@@ -185,7 +185,10 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       user: {userId: parseInt(this.auth.getId(), 10)},
       // role: this.auth.getRole(),
       testScenarioId: parseInt(this.activatedRoute.snapshot.paramMap.get('testScenarioId'), 10)
-    }).subscribe(value => this.router.navigate(['testScenarios'], {queryParams: {created: true}}));
+    }).subscribe(value => {
+      this.testCaseService.getProjectIdOfTestScenario(this.activatedRoute.snapshot.paramMap.get('testScenarioId'))
+        .subscribe(prId => this.router.navigate(['../testCase/list', prId], {queryParams: {created: true}}));
+    });
   }
 
   editTestCase() {
@@ -195,7 +198,10 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       description: this.testCaseForm.value.description,
       user: {userId: parseInt(this.auth.getId(), 10)},
       actions: this.flattenedActions,
-    }).subscribe(value => this.router.navigate(['testScenarios'], {queryParams: {edited: true}}));
+    }).subscribe(value => {
+      this.testCaseService.getProjectIdOfTestScenario(this.testCaseData.testScenario)
+        .subscribe(prId => this.router.navigate(['../testCase/list', prId], {queryParams: {created: true}}));
+    });
   }
 
   initParamsCreation() {
@@ -210,7 +216,6 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
         };
       }
     ).sort((a, b) => a.orderNum - b.orderNum);
-    console.log(this.actions, this.flattenedActions);
     for (const action of this.actions) {
       if (action.action.type === 'COMPOUND') {
         this.flattenedActions.push(...action.action.actions.map((value1) => {
