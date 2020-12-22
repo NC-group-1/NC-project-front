@@ -59,14 +59,14 @@
                   </ng-container>
 
                   <ng-container matColumnDef="name">
-                    <th style="width: 15%;" *matHeaderCellDef mat-header-cell mat-sort-header> Name </th>
+                    <th style="width: 20%;" *matHeaderCellDef mat-header-cell mat-sort-header> Name </th>
                     <td  class="w3-link w3-text-blue" style="max-width:100px; cursor: pointer;"  *matCellDef="let element;let i = index;" [matTooltip]="element.description" mat-cell>
                       <a  [routerLink]="['/testCase/',element.id]"  [hidden]="element.edit">{{element.name}}</a>
 
                       <div [hidden]="!element.edit" style="width: 95%">
                         <mat-form-field>
                           <mat-label>Edit</mat-label>
-                          <input #inputName (change)="updateName(i, inputName.value)" [value]="element.name" matInput
+                          <input #inputName (change)="updateProperty(element.id, inputName.value,'name')" [value]="element.name" matInput
                                  placeholder="Element name">
                         </mat-form-field>
                       </div>
@@ -75,24 +75,24 @@
 
 
                   <ng-container matColumnDef="creator">
-                    <th style="width: 15%;" *matHeaderCellDef mat-header-cell mat-sort-header>Creator</th>
+                    <th style="width: 20%;" *matHeaderCellDef mat-header-cell mat-sort-header>Creator</th>
                     <td *matCellDef="let element" mat-cell> {{element.user.name + ' ' + element.user.surname}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="creationDate">
-                    <th style="width: 8%;" *matHeaderCellDef mat-header-cell mat-sort-header>Create</th>
+                    <th style="width: 20%;" *matHeaderCellDef mat-header-cell mat-sort-header>Create</th>
                     <td *matCellDef="let element" mat-cell> {{element.creationDate | date:"dd-MM-yyyy"}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="iterationsAmount">
-                    <th style="width: 8%;" *matHeaderCellDef mat-header-cell mat-sort-header> Iterations</th>
-                    <td style="padding-left: 2%; padding-top: 1%; max-width:35px; " *matCellDef="let element; let i = index;" mat-cell>
+                    <th [hidden]="true" style="width: 8%;" *matHeaderCellDef mat-header-cell mat-sort-header> Iterations</th>
+                    <td [hidden]="true" style="padding-left: 2%; padding-top: 1%; max-width:35px; " *matCellDef="let element; let i = index;" mat-cell>
                       <p [hidden]="element.edit">{{element.iterationsAmount}}</p>
 
                       <div [hidden]="!element.edit" style="width: 70%">
                         <mat-form-field>
                           <mat-label>Edit</mat-label>
-                          <input #inputIterations  type="number" min="0" (change)="updateIterations(i, inputIterations.value)" [value]="element.iterationsAmount" matInput
+                          <input #inputIterations  type="number" min="0" (change)="updateProperty(element.id, inputIterations.value, 'iterationsAmount')" [value]="element.iterationsAmount" matInput
                                  placeholder="Element iterationsAmount">
                         </mat-form-field>
                       </div>
@@ -100,8 +100,8 @@
                   </ng-container>
 
                   <ng-container matColumnDef="recurringTime">
-                    <th style="width: 11%;" *matHeaderCellDef mat-header-cell mat-sort-header> Recurring time</th>
-                    <td style="padding-left: 1%; padding-top: 1%; max-width:35px;" *matCellDef="let element;" mat-cell>
+                    <th [hidden]="true" style="width: 11%;" *matHeaderCellDef mat-header-cell mat-sort-header> Recurring time</th>
+                    <td [hidden]="true" style="padding-left: 1%; padding-top: 1%; max-width:35px;" *matCellDef="let element;" mat-cell>
                       <p [hidden]="element.edit">{{element.recurringTime}}</p>
 
                       <div [hidden]="!element.edit" style="width: 85%;">
@@ -115,22 +115,22 @@
                     </td>
                   </ng-container>
 
-                  <ng-container matColumnDef="watcher_numb">
-                    <th mat-header-cell style="width: 9%;" *matHeaderCellDef>Watcher</th>
+                  <ng-container matColumnDef="watcherNumb">
+                    <th mat-header-cell style="width: 20%;" *matHeaderCellDef>Watcher</th>
                     <td mat-cell *matCellDef="let element" style="cursor: pointer; font-style: italic;"
-                    (click)="reloadWatchers(element.id); expandedElement = expandedElement === element ? null : element"> List of {{element.watcherNumb}} </td>
+                    (click)="reloadWatchers(element.id);  openDetails(element.id);"> List of {{element.watcherNumb}} </td>
                   </ng-container>
 
                   <ng-container matColumnDef="startDate">
-                    <th style="width: 17%;" *matHeaderCellDef mat-header-cell mat-sort-header>Start</th>
-                    <td *matCellDef="let element; let i = index;" style="padding-top: 1%;" mat-cell>
+                    <th [hidden]="true" style="width: 17%;" *matHeaderCellDef mat-header-cell mat-sort-header>Start</th>
+                    <td [hidden]="true" *matCellDef="let element; let i = index;" style="padding-top: 1%;" mat-cell>
                       <p [hidden]="element.edit">{{element.startDate | date:'dd-MM-yyyy HH:mm'}}</p>
 
                       <div [hidden]="!element.edit" style="width: 95%">
                         <mat-form-field>
                           <mat-label>Edit</mat-label>
-                          <input matInput #inputStartDate type="datetime-local"  pattern="\d{1,2}-\d{1,2}-\d{4}" value="element.startDate" min="{{minDate}}" placeholder="Choose a date"
-                          (change)="updateStartTime(i, inputStartDate.value)" >
+                          <input matInput #inputStartDate type="datetime-local" value="element.startDate" min="{{minDate}}" placeholder="Choose a date"
+                          (change)="updateStartDate(element.id, inputStartDate.value)" >
                         </mat-form-field>
                       </div>
                     </td>
@@ -154,7 +154,7 @@
                     <td mat-cell *matCellDef="let element" [attr.colspan]="10">
 
                       <div style="display:block;" class="example-element-detail"
-                           [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                           [@detailExpand]="element.expanded ? 'expanded' : 'collapsed'">
                              <p >List of wachers</p>
                         <table mat-table [dataSource]="dataSource2" style="width: 50%; float:left;">
 
@@ -191,7 +191,7 @@
 
                          <mat-form-field id="mat-autocomplete-height"  class="example-full-width  float-left ml-5" style="width: 32%;">
 
-                            <input matInput #inputName (keyup)="reloadUsers(inputName.value)" placeholder="Search watcher" [matAutocomplete]="auto" [formControl]="watchersCtrl">
+                            <input matInput #inputName [(ngModel)]="inputName.value" (keyup)="reloadUsers(inputName.value)" placeholder="Search watcher" [matAutocomplete]="auto" [formControl]="watchersCtrl">
 
                             <mat-autocomplete class="mat-autocomplete-height" #auto="matAutocomplete">
                               <mat-option *ngFor="let watcher of filteredWatchers | async" [value]="watcher.name+' '+watcher.surname"
@@ -205,7 +205,8 @@
                           </mat-form-field>
                           <a  class="btn btn-nc ml-3 px-3" color='primary'
                              style="background-color: #0275B1;"
-                             (click)="addWatcher(element.id) ? openSnackBar('This user has been assigned as a watcher!','success', '') : openSnackBar('This user is already assigned or does not exist!','error', '')">Add</a>
+                             (click)="addWatcher(element.id) ? openSnackBar('This user has been assigned as a watcher!','success', '')
+                             : openSnackBar('This user is already assigned or does not exist!','error', ''); showDetail(element.id);">Add</a>
 
                       </div>
                     </td>
@@ -215,7 +216,7 @@
                   <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
                   <tr mat-row *matRowDef="let element; columns: displayedColumns;"
                     class="example-element-row"
-                    [class.example-expanded-row]="expandedElement === element">
+                    [class.example-expanded-row]="element.expanded">
                   </tr>
 
                   <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
