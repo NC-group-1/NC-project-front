@@ -8,6 +8,8 @@ import {AuthenticationService} from '../../services/auth/authentication.service'
 import {TestCaseStatisticModel} from "../../../models/TestCaseStatisticModel";
 import {DashboardService} from "../../services/dashboard/dashboard.service";
 
+declare var $: any;
+
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
@@ -78,9 +80,23 @@ export class ProfileComponent implements OnInit {
         userId: this.user.userId,
         name: this.form.value.name,
         surname: this.form.value.surname,
+        imageLink: this.user.imageLink,
         aboutMe: this.form.value.aboutMe,
       }).subscribe(value =>
       this.profileService.getUserById(this.user.userId)
         .subscribe(value1 => this.user = value1));
+  }
+
+  savePicture() {
+    this.profileService.updateUserProfile({
+      userId: this.user.userId,
+      name: this.form.value.name,
+      surname: this.form.value.surname,
+      imageLink: this.user.imageLink,
+      aboutMe: this.form.value.aboutMe,
+    }).subscribe();
+  }
+  modalShow() {
+    $('#imageModal').modal('show');
   }
 }

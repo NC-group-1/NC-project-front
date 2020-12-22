@@ -38,6 +38,7 @@ import {TestCaseResolverService} from './services/testCase/test-case-resolver.se
 import {TestCaseActionsResolverService} from './services/testCase/test-case-actions-resolver.service';
 import {ReportComponent} from './components/report/report.component';
 import {DashboardComponent} from './components/dashboard/dashboard.component';
+import {TestCaseViewComponent} from './components/test-case/test-case-view/test-case-view.component';
 
 
 const routes: Routes = [
@@ -186,6 +187,12 @@ const routes: Routes = [
           {
             path: 'report/:testCaseId',
             component: ReportComponent
+          },
+          {
+            path: ':testCaseId',
+            component: TestCaseViewComponent,
+            resolve: {testCase: TestCaseResolverService,
+              actions: TestCaseActionsResolverService}
           }
         ]
       },

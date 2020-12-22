@@ -34,6 +34,16 @@ export class DashboardComponent implements OnInit {
 
   barChartOptions: ChartOptions = {
     responsive: true,
+    legend: {
+      display: false
+    },
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true
+        }
+      }]
+    }
   };
   barChartLabels: Label[] = ['Passed', 'Failed'];
   barChartType: ChartType = 'bar';

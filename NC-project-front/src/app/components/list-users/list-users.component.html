@@ -29,7 +29,7 @@
 
             <ng-container matColumnDef="select">
               <th *matHeaderCellDef mat-header-cell style="width: 5%;">
-                <mat-checkbox (change)="$event ? masterToggle() : null"
+                <mat-checkbox *ngIf="auth.getRole() === 'ROLE_ADMIN'" (change)="$event ? masterToggle() : null"
                               [aria-label]="checkboxLabel()"
                               [checked]="selection.hasValue() && isAllSelected()"
                               [indeterminate]="selection.hasValue() && !isAllSelected()"
@@ -37,7 +37,7 @@
                 </mat-checkbox>
               </th>
               <td *matCellDef="let row" mat-cell>
-                <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                <mat-checkbox *ngIf="auth.getRole() === 'ROLE_ADMIN'" (change)="$event ? selection.toggle(row) : null"
                               (click)="$event.stopPropagation()"
                               [aria-label]="checkboxLabel(row)"
                               [checked]="selection.isSelected(row)"
@@ -96,13 +96,13 @@
 
             <ng-container matColumnDef="activated">
               <th *matHeaderCellDef mat-header-cell mat-sort-header style="width: 10%;"> Activated</th>
-              <td *matCellDef="let element" mat-cell> {{element.activated ? 'Deactivated' : 'Activated'}} </td>
+              <td *matCellDef="let element" mat-cell> {{!element.activated ? 'Deactivated' : 'Activated'}} </td>
             </ng-container>
 
             <ng-container matColumnDef="editBtn">
               <th *matHeaderCellDef mat-header-cell></th>
               <td *matCellDef="let element; let i = index;" mat-cell style="width: 10%;">
-                <button (click)="change(i)" class="w3-button w3-xlarge ml-4 p-0 rounded">
+                <button *ngIf="auth.getRole() === 'ROLE_ADMIN'" (click)="change(i)" class="w3-button w3-xlarge ml-4 p-0 rounded">
                   <i class="fa fa-pencil"></i></button>
               </td>
             </ng-container>
@@ -125,8 +125,8 @@
       </mat-paginator>
 
       <div class="w3-bar">
-        <a routerLink="/createUser" class="btn btn-nc m-3 px-5 w3-left"> +Add </a>
-        <button (click)="activate()" class="btn btn-nc m-3 px-5 w3-right"> Activate</button>
+        <a *ngIf="auth.getRole() === 'ROLE_ADMIN'" routerLink="/createUser" class="btn btn-nc m-3 px-5 w3-left"> +Add </a>
+        <button *ngIf="auth.getRole() === 'ROLE_ADMIN'" (click)="activate()" class="btn btn-nc m-3 px-5 w3-right"> Activate</button>
       </div>
       </form>
     </div>
