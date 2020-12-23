@@ -30,12 +30,12 @@
         <br/>
 
         <p><span class="text-secondary text-shadow-gray mr-2">Started:</span><span
-          class="text-shadow-gray">{{testCase?.startDate?.replace('00:00','02:00')}}</span>
+          class="text-shadow-gray">{{testCase?.startDate | date: 'short' }}</span>
         </p>
         <p [hidden]="true"><span class="text-secondary text-shadow-gray mr-2">Duration:</span><span
           class="text-shadow-gray"></span></p>
         <p><span class="text-secondary text-shadow-gray mr-2">Finished:</span><span
-          class="text-shadow-gray">{{testCase?.finishDate?.replace('00:00','02:00')}}</span>
+          class="text-shadow-gray">{{testCase?.finishDate | date: 'short' }}</span>
         </p>
 
         <div class="btn-toolbar">
