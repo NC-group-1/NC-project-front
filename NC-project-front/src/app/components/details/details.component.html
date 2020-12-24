@@ -11,10 +11,12 @@
           <p><span class="text-secondary text-shadow-gray mr-2">Name of test case:</span><span
             class="text-shadow-gray">{{testCase?.name}}</span></p>
           <p><span class="text-secondary text-shadow-gray mr-2">Creator:</span><span
-            class="text-shadow-gray">{{testCase?.creator.name + ' ' + testCase?.creator.surname}}</span>
+            class="text-shadow-gray"><a [routerLink]="['/user',testCase?.creator.userId]">
+            {{testCase?.creator.name + ' ' + testCase?.creator.surname}}</a></span>
           </p>
           <p><span class="text-secondary text-shadow-gray mr-2">Starter:</span><span
-            class="text-shadow-gray">{{testCase?.creator.name + ' ' + testCase?.creator.surname}}</span>
+            class="text-shadow-gray"><a [routerLink]="['/user',testCase?.starter.userId]">
+            {{testCase?.starter.name + ' ' + testCase?.starter.surname}}</a></span>
           </p>
         </div>
 
@@ -39,9 +41,9 @@
         </p>
 
         <div class="btn-toolbar">
-          <button [routerLink]="['testCase/', 'edit',activatedRoute.snapshot.paramMap.get('testCaseId')]"
-                  class="btn btn-nc m-3 px-5 py-3" [hidden]="true"> Change
-            dataset
+          <button [routerLink]="['../../', 'new',testCase?.id]"
+                  [disabled]="tcProgress?.status !== 'PASSED' && tcProgress?.status !== 'FAILED' && tcProgress?.status !== 'CANCEL'"
+                  class="btn btn-nc m-3 px-5 py-3"> Change dataset
           </button>
           <button
             [disabled]="tcProgress?.status !== 'PASSED' && tcProgress?.status !== 'FAILED' && tcProgress?.status !== 'CANCEL'"
@@ -91,10 +93,10 @@
 
     <div class="col-4">
       <div class="panel">
-        <p><span class="text-secondary text-shadow-gray mr-2">Name of project:</span><span
-          [routerLink]="['/testCase/list',testCase?.id]" class="text-shadow-gray">{{testCase?.project.name}}</span></p>
+        <p><span class="text-secondary text-shadow-gray mr-2">Name of project:</span><span class="text-shadow-gray">
+          <a [routerLink]="['/testCase/list',testCase?.id]">{{testCase?.project.name}}</a></span></p>
         <p><span class="text-secondary text-shadow-gray mr-2">Link:</span><span
-          class="text-shadow-gray"> {{testCase?.project.link}} </span></p>
+          class="text-shadow-gray"> <a [routerLink]="['/testCase/list',testCase?.id]">{{testCase?.project.link}}</a> </span></p>
 
         <p class="text-secondary text-shadow-gray mr-2"> Watchers: </p>
 
@@ -103,7 +105,7 @@
             <div class="list-item" data-id="1">
               <div class="project-people">
                 <a data-abc="true" href=""><span><img alt="image" class="img-circle"
-                                                      src="{{watcher.imageLink}}"></span><span><a> {{watcher.name + ' ' + watcher.surname}}</a></span></a>
+                                                      src="{{watcher.imageLink}}"></span><span><a [routerLink]="['/user',watcher.userId]">{{watcher.name + ' ' + watcher.surname}}</a></span></a>
               </div>
             </div>
             <br/>

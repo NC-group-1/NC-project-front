@@ -10,15 +10,16 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
+
 <div *ngIf="!editing && !creation">
   <form [formGroup]="dataSetTableForm" name="dataSetTableForm">
-    <div class="mat-elevation-z8">
+    <div class="mat-elevation-z8 bg-white shadow-lg p-5">
       <div class="row">
         <div class="col-md-9">
           <h4 class="header">List of data set</h4>
         </div>
         <div class="col-md-3">
-          <button (click)="createDataSet()" class="btn btn-primary btn-lg btn-block">Add data set</button>
+          <button (click)="createDataSet()" class="btn btn-nc m-3 px-5 float-right">Add data set</button>
         </div>
       </div>
       <div class="col-md-12">
@@ -34,33 +35,23 @@
       </div>
       <table (matSortChange)="sortData()" [dataSource]="dataSource" mat-table matSort>
         <ng-container matColumnDef="name">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>
-            <h4>Dataset name</h4>
-          </th>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header> Dataset name</th>
           <td *matCellDef="let dataSet" mat-cell> {{dataSet.name}} </td>
         </ng-container>
         <ng-container matColumnDef="role">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>
-            <h4>Creator role</h4>
-          </th>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Creator role</th>
           <td *matCellDef="let dataSet" mat-cell> {{dataSet.createdByRole}} </td>
         </ng-container>
         <ng-container matColumnDef="username">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>
-            <h4>Name</h4>
-          </th>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
           <td *matCellDef="let dataSet" mat-cell> {{dataSet.createdByName}} </td>
         </ng-container>
         <ng-container matColumnDef="surname">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>
-            <h4>Surname</h4>
-          </th>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Surname</th>
           <td *matCellDef="let dataSet" mat-cell> {{dataSet.createdBySurname}} </td>
         </ng-container>
         <ng-container matColumnDef="details">
-          <th *matHeaderCellDef mat-header-cell>
-            <h4>Details</h4>
-          </th>
+          <th *matHeaderCellDef mat-header-cell>Details</th>
           <td *matCellDef="let dataSet" mat-cell>
             <div class="example-flex-container">
               <button (click)="openDetails(dataSet)" aria-label="Icon button" mat-icon-button>
@@ -70,9 +61,7 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="edit">
-          <th *matHeaderCellDef mat-header-cell>
-            <h4>Edit</h4>
-          </th>
+          <th *matHeaderCellDef mat-header-cell>Edit</th>
           <td *matCellDef="let dataSet" mat-cell>
             <div class="example-flex-container">
               <button (click)="editDataSet(dataSet)" aria-label="Icon button" mat-icon-button>
@@ -82,9 +71,7 @@
           </td>
         </ng-container>
         <ng-container matColumnDef="delete">
-          <th *matHeaderCellDef mat-header-cell>
-            <h4>Delete</h4>
-          </th>
+          <th *matHeaderCellDef mat-header-cell>Delete</th>
           <td *matCellDef="let dataSet" mat-cell>
             <div class="example-flex-container">
               <button (click)="deleteDataSet(dataSet)" aria-label="Icon button" mat-icon-button>
@@ -107,8 +94,9 @@
     </div>
   </form>
 </div>
+
 <div *ngIf="editing || creation" class="row justify-content-md-center">
-  <div class="mat-elevation-z8 col-md-6">
+  <div class="mat-elevation-z8 col-md-6 bg-white">
     <h4 *ngIf="creation" class="header">Create data set</h4>
     <h4 *ngIf="editing" class="header">Edit data set</h4>
     <form [formGroup]="manageDataSetForm" class="create-action-form" name="manageDataSetForm">
@@ -134,23 +122,20 @@
                type="text">
       </div>
       <hr class="mb-4">
-      <div class="row">
-        <div class="col-md-4">
+
           <button (click)="onSubmitButton()"
                   [disabled]="manageDataSetForm.invalid"
-                  class="btn btn-primary btn-lg btn-block"
+                  class="btn btn-nc px-5 py-3 animation"
                   type="submit">
             <div *ngIf="editing">Edit</div>
             <div *ngIf="creation">Add</div>
           </button>
-        </div>
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-          <button (click)="cancelEdit()" class="btn btn-danger btn-lg btn-block">
+
+          <button (click)="cancelEdit()" class="btn btn-outline-danger m-3 px-5 py-3">
             Cancel
           </button>
-        </div>
-      </div>
+
     </form>
   </div>
 </div>
+
