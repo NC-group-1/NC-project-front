@@ -12,8 +12,6 @@
                 <h2 class="p-0 header mt-3">List of test case</h2>
               </div>
               <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
-
-
                 <div class="row">
                   <div class="col-6">
                     <div class="form-group">
@@ -34,13 +32,15 @@
                 </div>
 
                 <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData()" multiTemplateDataRows>
+                  <!-- Test case ID Column -->
                   <ng-container matColumnDef="id">
                     <th *matHeaderCellDef [hidden]="true" mat-header-cell></th>
                     <td *matCellDef="let element" [hidden]="true" mat-cell><p>{{element.id}}</p></td>
                   </ng-container>
 
+                  <!-- Checkbox Column -->
                   <ng-container  matColumnDef="select">
-                    <th style="padding-top: 1%; width: 5%;" *matHeaderCellDef mat-header-cell>
+                    <th style="padding-top: 0.5%; width: 5%;" *matHeaderCellDef mat-header-cell>
                       <mat-checkbox (change)="$event ? masterToggle() : null"
                                     [aria-label]="checkboxLabel()"
                                     [checked]="selection.hasValue() && isAllSelected()"
@@ -48,7 +48,7 @@
                                     class="w3-margin-left">
                       </mat-checkbox>
                     </th>
-                    <td style="padding-top: 1%;" *matCellDef="let row" mat-cell>
+                    <td style="padding-top: 0.5%;" *matCellDef="let row" mat-cell>
                       <mat-checkbox (change)="$event ? selection.toggle(row) : null"
                                     (click)="$event.stopPropagation()"
                                     [aria-label]="checkboxLabel(row)"
@@ -58,10 +58,11 @@
                     </td>
                   </ng-container>
 
+                  <!-- Name Column -->
                   <ng-container matColumnDef="name">
                     <th style="width: 20%;" *matHeaderCellDef mat-header-cell mat-sort-header> Name </th>
-                    <td  class="w3-link w3-text-blue" style="max-width:100px; cursor: pointer;"  *matCellDef="let element;let i = index;" [matTooltip]="element.description" mat-cell>
-                      <a  [routerLink]="['/testCase/edit/',element.id]"  [hidden]="element.edit">{{element.name}}</a>
+                    <td  class="w3-link w3-text-blue" style="max-width:100px; cursor: pointer;"  *matCellDef="let element;" [matTooltip]="element.description" mat-cell>
+                      <a  [routerLink]="['../../', 'details',element.id]"  [hidden]="element.edit">{{element.name}}</a>
 
                       <div [hidden]="!element.edit" style="width: 95%">
                         <mat-form-field>
@@ -73,77 +74,55 @@
                     </td>
                   </ng-container>
 
-
+                  <!-- Creator Column -->
                   <ng-container matColumnDef="creator">
-                    <th style="width: 20%;" *matHeaderCellDef mat-header-cell mat-sort-header>Creator</th>
-                    <td *matCellDef="let element" mat-cell> {{element.user.name + ' ' + element.user.surname}} </td>
+                    <th style="width: 15%;" *matHeaderCellDef mat-header-cell mat-sort-header>Creator</th>
+                    <td [routerLink]="['/user',element.user.userId]" style="cursor: pointer;" *matCellDef="let element" mat-cell> {{element.user.name + ' ' + element.user.surname}} </td>
                   </ng-container>
 
+                  <!-- Creation date Column -->
                   <ng-container matColumnDef="creationDate">
-                    <th style="width: 20%;" *matHeaderCellDef mat-header-cell mat-sort-header>Create</th>
-                    <td *matCellDef="let element" mat-cell> {{element.creationDate | date:"dd-MM-yyyy"}} </td>
+                    <th style="width: 18%;" *matHeaderCellDef mat-header-cell mat-sort-header>Create</th>
+                    <td *matCellDef="let element" mat-cell> {{element.creationDate | date:"dd-MM-yyyy HH:mm"}} </td>
                   </ng-container>
 
-                  <ng-container matColumnDef="iterationsAmount">
-                    <th [hidden]="true" style="width: 8%;" *matHeaderCellDef mat-header-cell mat-sort-header> Iterations</th>
-                    <td [hidden]="true" style="padding-left: 2%; padding-top: 1%; max-width:35px; " *matCellDef="let element; let i = index;" mat-cell>
-                      <p [hidden]="element.edit">{{element.iterationsAmount}}</p>
-
-                      <div [hidden]="!element.edit" style="width: 70%">
-                        <mat-form-field>
-                          <mat-label>Edit</mat-label>
-                          <input #inputIterations  type="number" min="0" (change)="updateProperty(element.id, inputIterations.value, 'iterationsAmount')" [value]="element.iterationsAmount" matInput
-                                 placeholder="Element iterationsAmount">
-                        </mat-form-field>
-                      </div>
-                    </td>
-                  </ng-container>
-
-                  <ng-container matColumnDef="recurringTime">
-                    <th [hidden]="true" style="width: 11%;" *matHeaderCellDef mat-header-cell mat-sort-header> Recurring time</th>
-                    <td [hidden]="true" style="padding-left: 1%; padding-top: 1%; max-width:35px;" *matCellDef="let element;" mat-cell>
-                      <p [hidden]="element.edit">{{element.recurringTime}}</p>
-
-                      <div [hidden]="!element.edit" style="width: 85%;">
-                        <mat-form-field style="color: #0275B1; max-height: 100px;">
-                          <mat-label>Select an option</mat-label>
-                          <mat-select style="color: #0275B1;" [(value)]="element.recurringTime">
-                            <mat-option  style="height:20px;" *ngFor="let rectime of rectimes" [value]="rectime.value" >{{rectime.viewValue}} </mat-option>
-                          </mat-select>
-                        </mat-form-field>
-                      </div>
-                    </td>
-                  </ng-container>
-
+                  <!-- Watcher number Column -->
                   <ng-container matColumnDef="watcherNumb">
-                    <th mat-header-cell style="width: 20%;" *matHeaderCellDef>Watcher</th>
+                    <th mat-header-cell style="width: 12%;" *matHeaderCellDef>Watcher</th>
                     <td mat-cell *matCellDef="let element" style="cursor: pointer; font-style: italic;"
-                    (click)="reloadWatchers(element.id);  openDetails(element.id);"> List of {{element.watcherNumb}} </td>
+                    (click)="reloadWatchers(element.id);  openDetails(element.id);"
+                    [ngStyle]="{'color': element.watcherNumb===0 ? '#ff6666' : 'rgba(0,0,0,.87)'}"> List of {{element.watcherNumb}} </td>
                   </ng-container>
 
+                  <!-- Start date Column -->
                   <ng-container matColumnDef="startDate">
-                    <th [hidden]="true" style="width: 17%;" *matHeaderCellDef mat-header-cell mat-sort-header>Start</th>
-                    <td [hidden]="true" *matCellDef="let element; let i = index;" style="padding-top: 1%;" mat-cell>
+                    <th  style="width: 17%;" *matHeaderCellDef mat-header-cell mat-sort-header>Start</th>
+                    <td  *matCellDef="let element;" style="padding-top: 1%;" mat-cell>
                       <p [hidden]="element.edit">{{element.startDate | date:'dd-MM-yyyy HH:mm'}}</p>
 
-                      <div [hidden]="!element.edit" style="width: 95%">
+                      <div [hidden]="!element.edit" style="width: 85%">
                         <mat-form-field>
                           <mat-label>Edit</mat-label>
                           <input matInput #inputStartDate type="datetime-local" value="element.startDate" min="{{minDate}}" placeholder="Choose a date"
-                          (change)="updateStartDate(element.id, inputStartDate.value)" >
+                          (change)="updateStartDate(element.id, inputStartDate.value) ?  '' : openSnackBar('Time can`t be in past!','error', '');" >
                         </mat-form-field>
                       </div>
                     </td>
                   </ng-container>
 
+                  <!-- Status Column -->
                   <ng-container matColumnDef="status">
                     <th style="width: 15%;" *matHeaderCellDef mat-header-cell mat-sort-header>Status</th>
-                    <td *matCellDef="let element" mat-cell [ngStyle]="{'color': element.status==='UNKNOWN' ? '#ff6666' : '#00cc00'}"> {{element.status}} </td>
+                    <td *matCellDef="let element" mat-cell [ngStyle]="{'color': element.status==='READY' ? '#00cc00' :
+                     element.status==='DRAFT' ? '#ff751a' :
+                     element.status==='UNKNOWN' ? '#ff6666' :
+                     'red'}" > {{element.status}} </td>
                   </ng-container>
 
+                  <!-- Edit Column -->
                   <ng-container matColumnDef="editBtn">
                     <th style="width: 10%;" style="padding-left: 1%; max-width:15px;" *matHeaderCellDef mat-header-cell> Edit</th>
-                    <td *matCellDef="let element; let i = index;" mat-cell>
+                    <td *matCellDef="let element;" mat-cell>
                       <button (click)="change(element.id)"
                               class="w3-button w3-large w3-circle w3-xlarge w3-ripple w3-white w3-color-blue w3-hover-white"><i class="fa fa-pencil"></i></button>
                     </td>
@@ -158,25 +137,25 @@
                              <p >List of wachers</p>
                         <table mat-table [dataSource]="dataSource2" style="width: 50%; float:left;">
 
-                          <!-- Position Column -->
+                          <!-- User ID Column -->
                           <ng-container matColumnDef="user_id">
                             <th mat-header-cell *matHeaderCellDef style="width: 15%;" [hidden]="true" > ID </th>
                             <td mat-cell *matCellDef="let element2" [hidden]="true"> {{element2.user_id}} </td>
                           </ng-container>
 
-                          <!-- Name Column -->
+                          <!-- User name Column -->
                           <ng-container matColumnDef="name">
                             <th mat-header-cell *matHeaderCellDef style="width: 30%;"> Name </th>
                             <td mat-cell *matCellDef="let element2"> {{element2.name}} </td>
                           </ng-container>
 
-                          <!-- Weight Column -->
+                          <!-- User surname Column -->
                           <ng-container matColumnDef="surname">
                             <th mat-header-cell *matHeaderCellDef style="width: 35%;"> Surname </th>
                             <td mat-cell *matCellDef="let element2"> {{element2.surname}} </td>
                           </ng-container>
 
-                          <!-- Symbol Column -->
+                          <!--User role Column -->
                           <ng-container matColumnDef="role">
                             <th mat-header-cell *matHeaderCellDef style="width: 2%;"> Role </th>
                             <td mat-cell *matCellDef="let element2"> {{element2.role}} </td>
@@ -190,19 +169,17 @@
                         </table>
 
                          <mat-form-field id="mat-autocomplete-height"  class="example-full-width  float-left ml-5" style="width: 32%;">
-
-                            <input matInput #inputName [(ngModel)]="inputName.value" (keyup)="reloadUsers(inputName.value)" placeholder="Search watcher" [matAutocomplete]="auto" [formControl]="watchersCtrl">
-
+                            <input matInput #inputName [(ngModel)]="inputName.value" (keyup)="reloadUsers(inputName.value)" placeholder="Search watcher"
+                            [matAutocomplete]="auto" [formControl]="watchersCtrl">
                             <mat-autocomplete class="mat-autocomplete-height" #auto="matAutocomplete">
                               <mat-option *ngFor="let watcher of filteredWatchers | async" [value]="watcher.name+' '+watcher.surname"
                               (onSelectionChange)="updateUserID(watcher.userId)" style="max-height: 35px;">
-
                                 <span>{{watcher.name}} {{watcher.surname}}</span>
                                 <small> [{{watcher.role}}]</small>
-
                               </mat-option>
                             </mat-autocomplete>
                           </mat-form-field>
+
                           <a  class="btn btn-nc ml-3 px-3" color='primary'
                              style="background-color: #0275B1;"
                              (click)="addWatcher(element.id) ? openSnackBar('This user has been assigned as a watcher!','success', '')

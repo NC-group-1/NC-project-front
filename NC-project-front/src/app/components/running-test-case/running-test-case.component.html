@@ -13,34 +13,39 @@
     </div>
 
     <div class="form-group">
-      <input type="text" class="form-control mt-4" style="width:400px" #input
-          placeholder="Search by name..." (keyup)="applyFilter($event)">
+      <input type="text" class="form-control"  (keyup)="applyFilter($event)"
+             placeholder="Search by name...">
     </div>
 
     <div cdkDropListGroup class="row actions-container w-100 p-0 m-0">
       <table mat-table [dataSource]="dataSource" class="float-left" matSort (matSortChange)="sortData()" >
 
+             <!-- Test case ID Column -->
              <ng-container matColumnDef="id">
                <th mat-header-cell *matHeaderCellDef [hidden]="true"></th>
                <td mat-cell *matCellDef="let element" [hidden]="true"> {{element.id}} </td>
              </ng-container>
 
+             <!-- Name Column -->
              <ng-container matColumnDef="name">
                <th mat-header-cell style="width: 20%;" class="pl-3" *matHeaderCellDef mat-sort-header>Name</th>
                <td mat-cell class="w3-link w3-text-blue pl-3" style="cursor: pointer;" [routerLink]="['../../', 'details',element.id]"
                    *matCellDef="let element" [matTooltip]="element.description"> {{element.name}} </td>
              </ng-container>
 
+              <!-- Starter Column -->
              <ng-container matColumnDef="starter">
                <th mat-header-cell style="width: 20%;" *matHeaderCellDef>Started by</th>
-               <td mat-cell *matCellDef="let element"> {{element.user.name + ' ' + element.user.surname}} </td>
+               <td [routerLink]="['/user',element.user.userId]" style="cursor: pointer;" mat-cell *matCellDef="let element"> {{element.user.name + ' ' + element.user.surname}} </td>
              </ng-container>
 
+             <!-- Start date Column -->
              <ng-container matColumnDef="startDate">
                <th mat-header-cell style="width: 20%;" *matHeaderCellDef> Start Time</th>
                <td mat-cell *matCellDef="let element"> {{element.startDate | date:'dd-MM-yyyy HH:mm'}} </td>
              </ng-container>
 
+             <!-- Statys Column -->
              <ng-container matColumnDef="status">
                <th mat-header-cell style="width: 20%;" *matHeaderCellDef>Status</th>
                <td mat-cell *matCellDef="let element" [ngStyle]="{'color': element.status==='SCHEDULED' ? '#cca300' :
@@ -49,6 +54,7 @@
                 'red'}"> {{element.status}} </td>
              </ng-container>
 
+             <!-- Stop/Run Column -->
              <ng-container matColumnDef="stop/run">
                <th mat-header-cell style="width: 7%;" *matHeaderCellDef >Stop/Run</th>
                <td mat-cell style="padding-left: 1%;" *matCellDef="let element;">
@@ -64,9 +70,10 @@
                </td>
              </ng-container>
 
+             <!-- Cancel Column -->
              <ng-container matColumnDef="cancel">
                <th mat-header-cell style="width: 7%;" *matHeaderCellDef>Cancel</th>
-               <td mat-cell style="padding-bottom: 0.5%;" *matCellDef="let element; let i = index;" mat-cell>
+               <td mat-cell style="padding-bottom: 0.5%;" *matCellDef="let element;" mat-cell>
                  <button (click)="cancelTestCase(element.id)" style="color: #ff4d4d;" class="w3-button w3-large w3-circle w3-ripple w3-hover-white"><i class="fa fa-times"></i></button>
                </td>
              </ng-container>

@@ -12,24 +12,22 @@
 </div>
 <div *ngIf="!editing && !creation">
   <form [formGroup]="actionTableForm" name="actionTableForm">
-    <div class="mat-elevation-z8">
+    <div class="bg-white mat-elevation-z8">
       <div class="row">
         <div class="col-md-9">
-          <h4 class="header">List of actions</h4>
+          <h4 class="p-0 header m-3">List of actions</h4>
         </div>
         <div class="col-md-3">
-          <button (click)="createAction()" class="btn btn-primary btn-lg btn-block">Add action</button>
+          <button (click)="createAction()" class="btn btn-nc m-3 px-5 float-right">Add action</button>
         </div>
       </div>
-      <div class="col-md-12">
-        <div class="mb-3">
-          <label>Filter by Action {{actionTableForm.value.filterTable}}</label>
-          <input (input)="applyFilter()" aria-label="Filter"
-                 class="form-control"
-                 formControlName="filter"
-                 placeholder="Type filter string"
-                 type="text">
-        </div>
+      <div class="col-md-12 mb-3">
+        <label>Filter by Action {{actionTableForm.value.filterTable}}</label>
+        <input (input)="applyFilter()" aria-label="Filter"
+               class="form-control"
+               formControlName="filter"
+               placeholder="Type filter string"
+               type="text">
       </div>
       <table (matSortChange)="sortData()" [dataSource]="actionTableDS" mat-table matSort>
         <mat-radio-group (change)="applyFilter()" aria-label="Select an option" formControlName="filterTable">
@@ -44,27 +42,19 @@
             </th>
           </ng-container>
           <ng-container matColumnDef="label-radio">
-            <th *matHeaderCellDef mat-header-cell>
-              <h4>filter options</h4>
-            </th>
+            <th *matHeaderCellDef mat-header-cell>Filter options</th>
           </ng-container>
         </mat-radio-group>
         <ng-container matColumnDef="name">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>
-            <h4>Name</h4>
-          </th>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Name</th>
           <td *matCellDef="let action" mat-cell> {{action.name}} </td>
         </ng-container>
         <ng-container matColumnDef="key">
-          <th *matHeaderCellDef mat-header-cell mat-sort-header>
-            <h4>Key</h4>
-          </th>
+          <th *matHeaderCellDef mat-header-cell mat-sort-header>Key</th>
           <td *matCellDef="let action" mat-cell> {{action.parameterKey?.key}} </td>
         </ng-container>
         <ng-container matColumnDef="edit">
-          <th *matHeaderCellDef mat-header-cell>
-            <h4>Edit</h4>
-          </th>
+          <th *matHeaderCellDef mat-header-cell>Edit</th>
           <td *matCellDef="let action" mat-cell>
             <div class="example-flex-container">
               <button (click)="editAction(action)" aria-label="Icon button" mat-icon-button>
@@ -88,8 +78,9 @@
     </div>
   </form>
 </div>
+
 <div *ngIf="editing || creation" class="row justify-content-md-center">
-  <div class="mat-elevation-z8 col-md-6">
+  <div class="mat-elevation-z8 col-md-6 bg-white">
     <h4 *ngIf="creation" class="header">Create action</h4>
     <h4 *ngIf="editing" class="header">Edit action</h4>
     <form [formGroup]="manageActionForm" class="" name="manageActionForm">
@@ -171,21 +162,14 @@
                type="text">
       </div>
       <hr class="mb-4">
-      <div class="row">
-        <div class="col-md-4">
-          <button (click)="onSubmitButton()"
-                  [disabled]="manageActionForm.invalid"
-                  class="btn btn-primary btn-lg btn-block"
-                  type="submit">
-            <div *ngIf="editing">Edit</div>
-            <div *ngIf="creation">Add</div>
-          </button>
-        </div>
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-          <button (click)="cancelEdit()" class="btn btn-danger btn-lg btn-block">Cancel</button>
-        </div>
-      </div>
+      <button (click)="onSubmitButton()"
+              [disabled]="manageActionForm.invalid"
+              class="btn btn-nc px-5 py-3 animation"
+              type="submit">
+        <div *ngIf="editing">Edit</div>
+        <div *ngIf="creation">Add</div>
+      </button>
+      <button (click)="cancelEdit()" class="btn btn-outline-danger m-3 px-5 py-3">Cancel</button>
     </form>
   </div>
 </div>

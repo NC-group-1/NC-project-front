@@ -106,7 +106,7 @@ export class RunningTestCaseComponent implements OnInit {
     this.testCaseService.runTestCase(test_case_id,"CANCEL", this.authorizedUserId)
       .subscribe(
         response => {console.log(response);
-        this.reloadRunningTestCases();},
+        setTimeout(()=>{this.reloadRunningTestCases()}, 1000);},
         error => console.log(error)
       )
   }
@@ -123,11 +123,6 @@ export class RunningTestCaseComponent implements OnInit {
 
   onChangeStatus(value, test_case_id) {
     const body = this.runningListTestCase.find(element => element.id === test_case_id);
-    console.log(new Date());
-    setTimeout(()=>{console.log(this.authorizedUserId)}, 3000);
-    console.log(new Date());
-    //console.log(this.authorizedUserId);
-    console.log(body.id);
     this.testCaseService.runTestCase(body.id, (value.checked === true) ? "RESUME" : "STOP", this.authorizedUserId)
       .subscribe(
         response => {
