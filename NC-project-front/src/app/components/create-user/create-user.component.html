@@ -8,7 +8,7 @@
 
     <div class="form-group">
       <form [formGroup]="userFormGroup" class="w3-container w-100">
-        <div class="col-6 float-left">
+        <div class="float-left">
           <div class="form-group">
             <label>Email <i aria-hidden="true" class="fa fa-envelope"></i></label>
             <input #emailUser class="form-control" name="email" type="text" formControlName="emailUser"
@@ -53,8 +53,9 @@
             <th *matHeaderCellDef mat-header-cell> Add admin</th>
             <ng-container *matCellDef="let element">
               <td mat-cell>
-                <ng-container *ngIf="(element.role == 'Admin'); then thenBlock; else elseBlock"></ng-container>
-                <ng-template #thenBlock><i class="fa fa-check w3-text-green w3-text-green"></i></ng-template>
+                <ng-container
+                  *ngIf="(element.role === 'ROLE_ADMIN'); then thenBlock; else elseBlock"></ng-container>
+                <ng-template #thenBlock><i class="fa fa-check w3-text-green"></i></ng-template>
                 <ng-template #elseBlock><i class="fa fa-times w3-text-red"></i></ng-template>
               </td>
             </ng-container>
@@ -64,7 +65,8 @@
             <th *matHeaderCellDef mat-header-cell>Add/Edit/Remove users</th>
             <ng-container *matCellDef="let element">
               <td mat-cell>
-                <ng-container *ngIf="(element.role == 'Admin'); then thenBlock; else elseBlock"></ng-container>
+                <ng-container
+                  *ngIf="(element.role === 'ROLE_ADMIN'); then thenBlock; else elseBlock"></ng-container>
                 <ng-template #thenBlock><i class="fa fa-check w3-text-green"></i></ng-template>
                 <ng-template #elseBlock><i class="fa fa-times w3-text-red"></i></ng-template>
               </td>
@@ -75,7 +77,8 @@
             <th *matHeaderCellDef mat-header-cell> Search/Filter users</th>
             <ng-container *matCellDef="let element">
               <td mat-cell>
-                <ng-container *ngIf="(element.role == 'Engineer'); then thenBlock; else elseBlock"></ng-container>
+                <ng-container
+                  *ngIf="(element.role === 'ROLE_ENGINEER'); then thenBlock; else elseBlock"></ng-container>
                 <ng-template #thenBlock><i class="fa fa-times w3-text-red"></i></ng-template>
                 <ng-template #elseBlock><i class="fa fa-check w3-text-green"></i></ng-template>
               </td>
