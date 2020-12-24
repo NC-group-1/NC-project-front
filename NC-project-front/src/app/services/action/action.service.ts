@@ -34,21 +34,23 @@ export class ActionService {
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 
-  getPaginatedActions(pageSize, pageIndex): Observable<ActionPage> {
-    return this.http.get<ActionPage>(apiPath + 'api/ncp/actions/oldPage?page='
-      + (!pageIndex ? '' : pageIndex) + '&size=' + (!pageSize ? '' : pageSize))
+  getPaginatedActions(pageSize, pageIndex, filter): Observable<ActionPage> {
+    return this.http.get<ActionPage>(apiPath + 'api/ncp/actions?page='
+      + (!pageIndex ? '' : pageIndex)
+      + '&size=' + (!pageSize ? '' : pageSize)
+      + '&filter=' + (!filter ? '' : filter))
       .pipe(tap(() => {}, e => {if (e.status) { this.router.navigate(['404']); } }));
   }
 
-  getPaginatedActionsWithoutTarget(targetId, pageSize, pageIndex): Observable<ActionPage> {
-    if (!targetId){
-      return this.getPaginatedActions(pageSize, pageIndex);
-    }else {
-      return this.http.get<ActionPage>(apiPath + 'api/ncp/actions/compounds/' + targetId + '?page='
-        + (!pageIndex ? '' : pageIndex) + '&size=' + (!pageSize ? '' : pageSize))
-        .pipe(tap(() => {}, e => {if (e.status) {this.router.navigate(['404']); } }));
-    }
-  }
+  // getPaginatedActionsWithoutTarget(targetId, pageSize, pageIndex): Observable<ActionPage> {
+  //   if (!targetId){
+  //     return this.getPaginatedActions(pageSize, pageIndex);
+  //   }else {
+  //     return this.http.get<ActionPage>(apiPath + 'api/ncp/actions/compounds/' + targetId + '?page='
+  //       + (!pageIndex ? '' : pageIndex) + '&size=' + (!pageSize ? '' : pageSize))
+  //       .pipe(tap(() => {}, e => {if (e.status) {this.router.navigate(['404']); } }));
+  //   }
+  // }
 
   getActionTypes(): Observable<string[]> {
     return this.http.get<string[]>(apiPath + 'api/ncp/actions/types')
