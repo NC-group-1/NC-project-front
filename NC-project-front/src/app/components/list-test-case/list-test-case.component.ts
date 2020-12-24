@@ -257,7 +257,8 @@ export class ListTestCaseComponent implements OnInit {
     this.selection.selected
       .forEach(element => {
         if (element.status === 'READY') {
-          if (moment(element.startDate).format('YYYY-MM-DDTHH:mm') > moment().format('YYYY-MM-DDTHH:mm')) {
+          if (element.startDate === undefined
+            || moment(element.startDate).format('YYYY-MM-DDTHH:mm') > moment().format('YYYY-MM-DDTHH:mm')) {
             this.testCaseService.runTestCase(element.id, !element.startDate ? "RUN" : "SCHEDULE", this.authorizedUserId)
               .subscribe(
                 response => {console.log(response);

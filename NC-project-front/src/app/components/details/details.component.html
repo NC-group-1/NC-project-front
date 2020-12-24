@@ -23,7 +23,10 @@
             class="text-shadow-gray">{{tcProgress?.status}}</span>
           </p>
           <p><span class="text-secondary text-shadow-gray mr-2"> Completed: </span>
-            <span class="text-shadow-gray">Test case completed in <b>{{tcProgress?.progress * 100}}%</b></span></p>
+            <span class="text-shadow-gray">
+              Test case completed in <b>{{tcProgress?.progress*100 | number: '1.1-2'}}%</b>
+            </span>
+          </p>
           <mat-progress-bar mode="determinate"
                             value="{{tcProgress?.progress*100}}"></mat-progress-bar>
         </div>
