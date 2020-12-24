@@ -14,7 +14,7 @@
   <div cdkDropListGroup class="row actions-container p-0 m-0">
 
     <form [formGroup]="form" class="w3-container w-100">
-      <div class="col-6 float-left">
+      <div class="float-left">
         <div class="form-group">
           <label>Name of project </label>
           <input [@invalidForm]="form.controls.name.invalid ? 'invalid': ''" type="text" class="form-control"

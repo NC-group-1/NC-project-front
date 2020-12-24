@@ -12,10 +12,10 @@
 </div>
 <div *ngIf="!editing && !creation">
   <form [formGroup]="actionTableForm" name="actionTableForm">
-    <div class="mat-elevation-z8">
+    <div class="bg-white mat-elevation-z8">
       <div class="row">
         <div class="col-md-9">
-          <h4 class="header">List of actions</h4>
+          <h4 class="p-0 header m-3">List of actions</h4>
         </div>
         <div class="col-md-3">
           <button (click)="createAction()" class="btn btn-primary btn-lg btn-block">Add action</button>
