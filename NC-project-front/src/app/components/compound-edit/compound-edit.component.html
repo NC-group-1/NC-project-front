@@ -41,6 +41,8 @@
         <div class="col-6 float-left" *ngIf="creating">
           <div class="example-container">
             <h2 class="color-nc font-italic font-weight-bold">List of actions</h2>
+            <input #search id="search" (input)="filterByName($event)" type="text" class="form-control form-control-lg" placeholder="Search by name...">
+            <br/>
             <div
               cdkDropList [id]="'cdk-drop-list-1'"
               [cdkDropListData]="actionsAsCompActions"
@@ -81,8 +83,7 @@
         <div *ngIf="!!selectedCompoundActions">
           <div class="row" *ngFor="let action of selectedCompoundActions">
             <div class="col border">{{action.action.name}}</div>
-            <input class="m-0 p-0 col border" matInput placeholder="Key"
-                   [ngModel]="action.parameterKey.key">
+            <p class="m-0 p-0 col border">{{action.parameterKey.key}}</p>
             <!--          <div >{{action.key.key || action.action.key.key}}</div>-->
           </div>
         </div>

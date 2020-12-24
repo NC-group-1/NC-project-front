@@ -54,15 +54,13 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
       this.size = !value.actionSize ? 10 : value.actionSize;
       this.page = !value.actionPage ? 0 : value.actionPage;
     });
-    this.activatedRoute.params.subscribe(value => {
+    this.activatedRoute.data.subscribe(data => {
       this.compound = this.activatedRoute.snapshot.data.compound;
       if (!!this.compound) {
         this.compoundActions = this.compound.actions.sort((a, b) => a.orderNum - b.orderNum);
       }
-    });
-    this.activatedRoute.data.subscribe(value => {
-      this.actions = this.activatedRoute.snapshot.data.actionPage;
-      this.actionsAsCompActions = this.actions.list.map<ActionOfCompound>(value1 => ({
+      this.actions = data.actionPage;
+      this.actionsAsCompActions = this.actions.list?.map<ActionOfCompound>(value1 => ({
         action: value1,
         orderNum: 0,
         parameterKey: value1.parameterKey
@@ -199,5 +197,9 @@ export class CompoundEditComponent implements OnInit, AfterViewInit {
   changeCompoundActionKey(event: any, action: ActionOfCompound, id: number) {
     this.compoundActions.find(compound => compound.action.id === id).compoundActions
       .find(cAction => action.orderNum === cAction.orderNum).parameterKey.key = event;
+  }
+
+  filterByName(event) {
+    this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: {filter: event.target.value}, queryParamsHandling: 'merge'});
   }
 }
