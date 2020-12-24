@@ -22,11 +22,6 @@ import { map, startWith, debounceTime } from 'rxjs/operators';
 import * as moment from 'moment';
 
 
-interface RecTime {
-  value: string;
-  viewValue: string;
-}
-
 @Component({
   selector: 'app-list-test-case',
   templateUrl: './list-test-case.component.html',
@@ -35,7 +30,7 @@ interface RecTime {
    trigger('detailExpand', [
      state('collapsed', style({height: '0px', minHeight: '0', display: 'none'})),
      state('expanded', style({height: '*'})),
-     transition('expanded <=> collapsed', animate('225ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
+     transition('expanded <=> collapsed', animate('125ms cubic-bezier(0.4, 0.0, 0.2, 1)')),
    ]),
  ],
 })
@@ -46,7 +41,7 @@ export class ListTestCaseComponent implements OnInit {
   authorizedUserId: number;
 
   selectedTestCase: string;
-  displayedColumns: string[] = ['id', 'select', 'name', 'creator', 'creationDate', 'iterationsAmount', 'recurringTime',  'watcherNumb', 'startDate', 'status','editBtn'];
+  displayedColumns: string[] = ['id', 'select', 'name', 'creator', 'creationDate', 'watcherNumb', 'startDate', 'status','editBtn'];
   responseTestCase?: TestCaseResponseModel;
   listTestCase: TestCaseModel[];
   dataSource: any;
@@ -75,26 +70,9 @@ export class ListTestCaseComponent implements OnInit {
   public color: ThemePalette = "primary";
   public disabled = false;
   minDate: string;
-  //minDate = moment().format().toString();
-  //public minDate = new Date().toString();
-
 
   selection = new SelectionModel<TestCaseModel>(true, []);
   @ViewChild(MatSort) sort: MatSort;
-
-  rectimes: RecTime[] = [
-  {value: '00:30:00', viewValue: '00:30:00'},
-  {value: '01:00:00', viewValue: '01:00:00'},
-  {value: '06:00:00', viewValue: '06:00:00'},
-  {value: '12:00:00', viewValue: '12:00:00'},
-  {value: '1 day', viewValue: '1 day'},
-  {value: '7 days', viewValue: '7 days'},
-  {value: '14 days', viewValue: '14 days'},
-  {value: '1 mon', viewValue: '1 mon'},
-  {value: '6 mon', viewValue: '6 mon'},
-  {value: '1 year', viewValue: '1 year'},
-  ];
-
 
   constructor(private _snackBar: MatSnackBar, private testCaseService: TestCaseService, private auth: AuthenticationService, private projectService: ProjectService, public router: ActivatedRoute) {
     this.minDate = moment().format('YYYY-MM-DDTHH:mm');
@@ -149,7 +127,6 @@ export class ListTestCaseComponent implements OnInit {
       response => {
         console.log(response);
         this.userList = response;
-        //this.filteredWatchers = this.userList;
       },
       error => console.log(error)
     );
@@ -163,7 +140,6 @@ export class ListTestCaseComponent implements OnInit {
         .subscribe(
           response => {console.log(response);
             const testCase = this.listTestCase.find(element => element.id === test_case_id);
-            console.log(testCase);
             if (testCase.watcherNumb === 0) {
               testCase.status = "READY";
               this.testCaseService.updateTestCase(testCase)
@@ -257,7 +233,8 @@ export class ListTestCaseComponent implements OnInit {
     this.selection.selected
       .forEach(element => {
         if (element.status === 'READY') {
-          if (moment(element.startDate).format('YYYY-MM-DDTHH:mm') > moment().format('YYYY-MM-DDTHH:mm')) {
+          if (element.startDate === undefined
+            || moment(element.startDate).format('YYYY-MM-DDTHH:mm') > moment().format('YYYY-MM-DDTHH:mm')) {
             this.testCaseService.runTestCase(element.id, !element.startDate ? "RUN" : "SCHEDULE", this.authorizedUserId)
               .subscribe(
                 response => {console.log(response);
@@ -289,27 +266,22 @@ export class ListTestCaseComponent implements OnInit {
         if (element.id === index) {
           if (value < moment().format('YYYY-MM-DDTHH:mm')){
             this.state = false;
-            console.log(this.state);
             return this.state;
           } else {
             element.startDate = value;
             this.state = true;
-            console.log(this.state);
             return this.state;
           }
         }
-        console.log(this.state);
         return this.state;
       }
     );
-    console.log(state);
     return this.state;
   }
 
 
 
   change(index: number) {
-
     const testCase = this.listTestCase.find(element => element.id === index);
     testCase.edit = !testCase.edit;
     const newListTestCase = {...testCase};

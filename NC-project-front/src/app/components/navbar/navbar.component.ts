@@ -18,6 +18,7 @@ import {NotificationService} from '../../services/notification/notification.serv
 export class NavbarComponent implements OnInit {
   user: UserDataModel;
   notifications: UserNotificationModel[];
+  notificationsCounter = 0;
   username: string;
   loggedIn: boolean;
   stompClient;
@@ -47,7 +48,11 @@ export class NavbarComponent implements OnInit {
       this.stompClient.send('/app/notify', {}, +this.auth.getId());
       this.stompClient.subscribe('/topic/notification/' + this.auth.getId(), notifications => {
         this.notifications = JSON.parse(notifications.body);
+        this.notificationsCounter = 0;
         for (const notification of this.notifications) {
+          if (!notification.isRead) {
+            this.notificationsCounter++;
+          }
           const find = this.tcProgress.find(value => value.testCaseId === notification.notification.testCase.id);
           if (!find) {
             this.subscribeOnTc(notification.notification.testCase.id);
@@ -98,6 +103,12 @@ export class NavbarComponent implements OnInit {
       this.nService.markRead(this.auth.getId(), ntf.notification.notificationId).subscribe(value => {
         if (value){
           ntf.isRead = true;
+          this.notificationsCounter = 0;
+          for (const notification of this.notifications) {
+            if (!notification.isRead) {
+              this.notificationsCounter++;
+            }
+          }
         }
       });
     }
