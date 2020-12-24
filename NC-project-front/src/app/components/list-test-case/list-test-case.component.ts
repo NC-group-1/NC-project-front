@@ -97,7 +97,7 @@ export class ListTestCaseComponent implements OnInit {
 
 
   constructor(private _snackBar: MatSnackBar, private testCaseService: TestCaseService, private auth: AuthenticationService, private projectService: ProjectService, public router: ActivatedRoute) {
-    this.minDate = moment().add(1,'hour').format('YYYY-MM-DDTHH:mm');
+    this.minDate = moment().format('YYYY-MM-DDTHH:mm');
     this.selectedTestCase = "";
     this.projectName = "";
     this.listTestCase = [];
@@ -125,7 +125,7 @@ export class ListTestCaseComponent implements OnInit {
 
   openSnackBar(message: string, type: string, action: string) {
     this._snackBar.open(message, action, {
-      duration: 3500,
+      duration: 4500,
       panelClass: [type],
     });
   }
@@ -184,7 +184,6 @@ export class ListTestCaseComponent implements OnInit {
   }
 
   openDetails(index: number) {
-    //this.listTestCase.forEach(element => { element.expanded = false});
     this.listTestCase.forEach(element => {
         if (element.id === index) {
           element.expanded = !element.expanded;
@@ -197,8 +196,6 @@ export class ListTestCaseComponent implements OnInit {
   }
 
   showDetail(index: number) {
-    console.log(index);
-    console.log(this.listTestCase);
     setTimeout(()=>{this.listTestCase.forEach(element => {
             if (element.id === index) {
               element.expanded = true;
@@ -259,12 +256,20 @@ export class ListTestCaseComponent implements OnInit {
   run(){
     this.selection.selected
       .forEach(element => {
-          this.testCaseService.runTestCase(element.id, !element.startDate ? "RUN" : "SCHEDULE", this.authorizedUserId)
-            .subscribe(
-              response => {console.log(response);
-              this.reloadTestCases();this.selection.clear();},
-              error => console.log(error)
-            )
+        if (element.status === 'READY') {
+          if (moment(element.startDate).format('YYYY-MM-DDTHH:mm') > moment().format('YYYY-MM-DDTHH:mm')) {
+            this.testCaseService.runTestCase(element.id, !element.startDate ? "RUN" : "SCHEDULE", this.authorizedUserId)
+              .subscribe(
+                response => {console.log(response);
+                this.reloadTestCases();this.selection.clear();},
+                error => console.log(error)
+              )
+            } else {
+              this.openSnackBar('Unable to run test case(s) because start time is in past!','error', '');
+            }
+          } else {
+            this.openSnackBar('The test case(s) cannot be run because the status is UNKNOWN, you need to add watcher!','error', '');
+          }
         }
       );
   }
@@ -282,7 +287,7 @@ export class ListTestCaseComponent implements OnInit {
   updateStartDate(index: number, value: any): boolean {
     this.listTestCase.forEach(element => {
         if (element.id === index) {
-          if (!moment(new Date()).isAfter(value)){
+          if (value < moment().format('YYYY-MM-DDTHH:mm')){
             this.state = false;
             console.log(this.state);
             return this.state;
@@ -304,7 +309,7 @@ export class ListTestCaseComponent implements OnInit {
 
 
   change(index: number) {
-    console.log(index);
+
     const testCase = this.listTestCase.find(element => element.id === index);
     testCase.edit = !testCase.edit;
     const newListTestCase = {...testCase};
