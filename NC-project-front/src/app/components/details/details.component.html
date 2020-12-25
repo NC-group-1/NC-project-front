@@ -15,8 +15,8 @@
             {{testCase?.creator.name + ' ' + testCase?.creator.surname}}</a></span>
           </p>
           <p><span class="text-secondary text-shadow-gray mr-2">Starter:</span><span
-            class="text-shadow-gray"><a [routerLink]="['/user',testCase?.starter.userId]">
-            {{testCase?.starter.name + ' ' + testCase?.starter.surname}}</a></span>
+            class="text-shadow-gray"><a [routerLink]="['/user',testCase?.starter?.userId]">
+            {{testCase?.starter?.name + ' ' + testCase?.starter?.surname}}</a></span>
           </p>
         </div>
 
@@ -44,12 +44,12 @@
         </p>
 
         <div class="btn-toolbar">
-          <button [routerLink]="['../../', 'new',testCase?.id]"
-                  [disabled]="tcProgress?.status !== 'PASSED' && tcProgress?.status !== 'FAILED' && tcProgress?.status !== 'CANCEL'"
+          <button [routerLink]="['../../', 'new',testCase?.testScenarioId]"
+                  [disabled]="tcProgress?.status !== 'PASSED' && tcProgress?.status !== 'FAILED' && tcProgress?.status !== 'CANCELED'"
                   class="btn btn-nc m-3 px-5 py-3"> Change dataset
           </button>
           <button
-            [disabled]="tcProgress?.status !== 'PASSED' && tcProgress?.status !== 'FAILED' && tcProgress?.status !== 'CANCEL'"
+            [disabled]="tcProgress?.status !== 'PASSED' && tcProgress?.status !== 'FAILED'"
             [routerLink]="['../../','report', testCase?.id]" [state]="testCase"
             class="btn btn-nc m-3 px-5 py-3"> Send Report
           </button>

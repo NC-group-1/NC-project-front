@@ -1,7 +1,6 @@
-import {DataSetGeneralInfoDto} from "./data-set-general-info-dto";
-import {UserDataModel} from "./UserDataModel";
-import {ProjectModel} from "./ProjectModel";
-import {ActionInstRun} from "./ActionInstRun";
+import {UserDataModel} from './UserDataModel';
+import {ProjectModel} from './ProjectModel';
+import {ActionInstRun} from './ActionInstRun';
 
 export class DetailsTestCaseModel{
   id?: number;
@@ -14,4 +13,5 @@ export class DetailsTestCaseModel{
   project?: ProjectModel;
   actionInstRunDtos?: ActionInstRun[];
   watchers?: UserDataModel[];
+  testScenarioId?: number;
 }

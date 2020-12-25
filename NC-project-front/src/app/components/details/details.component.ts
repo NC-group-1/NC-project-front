@@ -72,7 +72,7 @@ export class DetailsComponent implements OnInit {
         this.stompCase = this.webSocketService.connect();
         this.stompCase.connect({}, () => {
           this.subscribeOnTcProgress(id);
-          if (value.status !== 'PASSED' && value.status !== 'FAILED' && value.status !== 'CANCELED') {
+          if (value.status === 'IN_PROGRESS' || value.status === 'STOPPED') {
             this.subscribeOnActionInstUpdates(id);
           } else {
             this.tcService.getAllActionInstRun(id).subscribe(actionInstRuns => {
