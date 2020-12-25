@@ -47,7 +47,7 @@
           <th mat-header-cell mat-sort-header *matHeaderCellDef style="width: 30%;"> Link</th>
           <td mat-cell *matCellDef="let element;let i = index;">
             <p [hidden]="element.edit">
-              <a [routerLink]="['/testCase/list',element.projectId]" href="#" class="stretched-link" style="position: relative;">
+              <a [href]="element.link" class="stretched-link" style="position: relative;">
                 {{element.link}}
               </a>
             </p>

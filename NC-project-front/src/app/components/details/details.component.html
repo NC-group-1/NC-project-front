@@ -97,9 +97,9 @@
     <div class="col-4">
       <div class="panel">
         <p><span class="text-secondary text-shadow-gray mr-2">Name of project:</span><span class="text-shadow-gray">
-          <a [routerLink]="['/testCase/list',testCase?.id]">{{testCase?.project.name}}</a></span></p>
+          <a [routerLink]="['/testCase/list',testCase?.project.projectId]">{{testCase?.project.name}}</a></span></p>
         <p><span class="text-secondary text-shadow-gray mr-2">Link:</span><span
-          class="text-shadow-gray"> <a [routerLink]="['/testCase/list',testCase?.id]">{{testCase?.project.link}}</a> </span></p>
+          class="text-shadow-gray"> <a [href]="testCase?.project.link" >{{testCase?.project.link}}</a> </span></p>
 
         <p class="text-secondary text-shadow-gray mr-2"> Watchers: </p>
 
