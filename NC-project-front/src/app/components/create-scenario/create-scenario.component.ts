@@ -73,17 +73,15 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
       this.size = !value.actionSize ? 10 : value.actionSize;
       this.page = !value.actionPage ? 0 : value.actionPage;
     });
-    this.activatedRoute.params.subscribe(() => {
+    this.activatedRoute.data.subscribe(() => {
       this.projectId = parseInt(this.activatedRoute.snapshot.paramMap.get('projectId'), 10);
-      console.log(this.activatedRoute.snapshot.data);
       this.scenario = this.activatedRoute.snapshot.data.scenario;
       if (!!this.scenario) {
         this.scenarioActions = this.scenario.actions.sort((a, b) => a.orderNum - b.orderNum);
       }
-    });
-    this.activatedRoute.data.subscribe(() => {
       this.actions = this.activatedRoute.snapshot.data.actionPage;
-      this.actionsAsCompActions = this.actions.list.map<ActionOfCompound>(value1 => ({
+      console.log(this.actions);
+      this.actionsAsCompActions = this.actions.list?.map<ActionOfCompound>(value1 => ({
         action: value1,
         orderNum: 0,
         parameterKey: value1.parameterKey
@@ -121,6 +119,7 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
   //     return !!item.action.name.toLocaleLowerCase().trim().match(val.toLocaleLowerCase().trim());
   //   });
   // }
+
 
   adjustOrder(actions: ActionOfCompound[]): void {
     actions.forEach((value, index) => value.orderNum = index + 1);
@@ -216,6 +215,10 @@ export class CreateScenarioComponent implements OnInit, AfterViewInit {
     } else {
       this.router.navigate(['manageAction']);
     }
+  }
+
+  filterByName(event) {
+    this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: {filter: event.target.value}, queryParamsHandling: 'merge'});
   }
 }
 

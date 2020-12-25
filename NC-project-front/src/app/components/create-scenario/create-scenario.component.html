@@ -9,18 +9,18 @@
     <div class="bg-white shadow-lg p-3">
       <h2 class="color-nc font-italic font-weight-bold">Test Scenario</h2>
 
-        <div [formGroup]="scenarioForm">
-          <label class="m-3 color-nc font-weight-bold"> Name
-            <input [@invalidForm]="scenarioForm.controls.name.invalid ? 'invalid': ''"
-                   [attr.disabled]="!creating ? '' : null" type="text" class="form-control"
-                   formControlName="name" [ngModel]="scenario?.name">
-          </label>
-          <label class="m-3 color-nc font-weight-bold"> Description
-            <input [@invalidForm]="scenarioForm.controls.description.invalid ? 'invalid': ''"
-                   [attr.disabled]="!creating ? '' : null" type="text"
-                   class="form-control" formControlName="description" [ngModel]="scenario?.description">
-          </label>
-        </div>
+      <div [formGroup]="scenarioForm">
+        <label class="m-3 color-nc font-weight-bold"> Name
+          <input [@invalidForm]="scenarioForm.controls.name.invalid ? 'invalid': ''"
+                 [attr.disabled]="!creating ? '' : null" type="text" class="form-control"
+                 formControlName="name" [ngModel]="scenario?.name">
+        </label>
+        <label class="m-3 color-nc font-weight-bold"> Description
+          <input [@invalidForm]="scenarioForm.controls.description.invalid ? 'invalid': ''"
+                 [attr.disabled]="!creating ? '' : null" type="text"
+                 class="form-control" formControlName="description" [ngModel]="scenario?.description">
+        </label>
+      </div>
 
       <div cdkDropListGroup class="row actions-container w-100">
 
@@ -44,7 +44,7 @@
         <div class="col-6 float-left">
           <div class="example-container">
             <h2 class="color-nc font-italic font-weight-bold" *ngIf="!nameSearch">Library</h2>
-<!--            <input #search id="search" type="text" class="form-control form-control-lg" placeholder="Search by name...">-->
+            <input #search id="search" (input)="filterByName($event)" type="text" class="form-control form-control-lg" placeholder="Search by name...">
             <br/>
             <div cdkDropList [id]="'cdk-drop-list-1'"
                  [cdkDropListData]="actionsAsCompActions"
@@ -66,15 +66,17 @@
       <button type="submit" class="btn btn-nc m-3 px-5 py-3 animation"
               (click)="submit()">{{creating ? 'Create' : 'Save'}}</button>
       <button class="btn btn-outline-danger m-3 px-5 py-3" data-toggle="modal" data-target="discardModal"
-              (click)="modalShow()"> Discard </button>
+              (click)="modalShow()"> Discard
+      </button>
     </div>
   </div>
 
   <div class="col mr-5">
     <div *ngIf="!!selectedAction" class="bg-white shadow-lg p-3">
       <h1><strong class="color-nc">Name: </strong><a role="button"
-        (click)="navToCompound(selectedAction.action)">{{selectedAction.action.name}}</a></h1>
-<!--      <h3><strong class="color-nc">Key: </strong> {{selectedAction.parameterKey.key}}</h3>-->
+                                                     (click)="navToCompound(selectedAction.action)">{{selectedAction.action.name}}</a>
+      </h1>
+      <!--      <h3><strong class="color-nc">Key: </strong> {{selectedAction.parameterKey.key}}</h3>-->
       <h3 class="color-nc">Description: </h3>
       <h4>{{selectedAction.action.description}}</h4>
     </div>

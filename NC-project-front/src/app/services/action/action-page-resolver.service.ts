@@ -13,9 +13,9 @@ export class ActionPageResolverService implements Resolve<ActionPage>{
   constructor(private actionService: ActionService) { }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<ActionPage> | Promise<ActionPage> | ActionPage {
-    return this.actionService.getPaginatedActionsWithoutTarget(
-      route.paramMap.get('compoundId'),
+    return this.actionService.getPaginatedActions(
       route.queryParamMap.get('actionSize'),
-      route.queryParamMap.get('actionPage'));
+      route.queryParamMap.get('actionPage'),
+      route.queryParamMap.get('filter'));
   }
 }
