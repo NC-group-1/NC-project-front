@@ -208,12 +208,12 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
   initParamsCreation() {
     this.flattenedActions = [];
     this.actions = this.actionsSource.map(value1 => {
-        return {
+      return {
           action: value1.action,
           orderNum: value1.orderNum,
           datasetId: null,
           value: null,
-          parameterKey: {key: null, id: null}
+          parameterKey: value1.action?.parameterKey
         };
       }
     ).sort((a, b) => a.orderNum - b.orderNum);
@@ -221,9 +221,9 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
       if (action.action.type === 'COMPOUND') {
         this.flattenedActions.push(...action.action.actions.map((value1) => {
           if (getNeedParams(action.action.type) !== 0) {
-            if (value1.parameterKey === null) {
+            if (value1.parameterKey == null) {
               value1.parameterKey = {key: ''};
-            } else if (value1.parameterKey?.key === null) {
+            } else if (value1.parameterKey?.key == null) {
               value1.parameterKey.key = '';
             }
           }
@@ -232,9 +232,9 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
         }));
       } else {
         if (getNeedParams(action.action.type) !== 0) {
-          if (action.parameterKey === null) {
+          if (action.parameterKey == null) {
             action.parameterKey = {key: ''};
-          } else if (action.parameterKey?.key === null) {
+          } else if (action.parameterKey?.key == null) {
             action.parameterKey.key = '';
           }
         }
