@@ -232,11 +232,12 @@ export class TestCaseComponent implements OnInit, AfterViewInit {
         }));
       } else {
         if (getNeedParams(action.action.type) !== 0) {
-          if (action.parameterKey === null) {
-            action.parameterKey = {key: ''};
-          } else if (action.parameterKey?.key === null) {
-            action.parameterKey.key = '';
+          if (action.action.parameterKey == null) {
+            action.action.parameterKey = {key: ''};
+          } else if (action.action.parameterKey?.key == null) {
+            action.action.parameterKey.key = '';
           }
+          action.parameterKey = action.action.parameterKey;
         }
         this.flattenedActions.push(action);
       }
