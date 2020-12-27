@@ -54,7 +54,6 @@ export class AuthenticationService {
     const temp = this.token.toString().substr(8);
     const s = atob(temp.split('.')[1]);
     const parse = JSON.parse(s);
-    console.log(parse.userId);
     return parse.userId;
   }
   isTokenExpired(): boolean{

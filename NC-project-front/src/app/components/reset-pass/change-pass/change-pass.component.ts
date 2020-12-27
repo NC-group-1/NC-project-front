@@ -15,11 +15,10 @@ export class ChangePassComponent implements OnInit {
   submitTouched = false;
   error: boolean;
 
-  constructor(private router: Router, private passwordService: ResetPasswordService, private route: ActivatedRoute, private auth: AuthenticationService) {
-    this.form = new FormGroup({
-      password: new FormControl(null, [Validators.required, Validators.min(6)]),
-      confirmPassword: new FormControl(null, [Validators.required, Validators.min(6)])
-    }, {validators: this.passwordValidator.bind(this)});
+  constructor(private router: Router,
+              private passwordService: ResetPasswordService,
+              private route: ActivatedRoute,
+              private auth: AuthenticationService) {
   }
 
   passwordValidator: ValidatorFn = (control: FormGroup) => {
@@ -28,6 +27,10 @@ export class ChangePassComponent implements OnInit {
 
   ngOnInit(): void {
     this.auth.logout();
+    this.form = new FormGroup({
+      password: new FormControl(null, [Validators.required, Validators.min(6)]),
+      confirmPassword: new FormControl(null, [Validators.required, Validators.min(6)])
+    }, {validators: this.passwordValidator.bind(this)});
   }
 
   changePass(): void {

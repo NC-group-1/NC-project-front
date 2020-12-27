@@ -107,7 +107,7 @@
           <ng-container *ngFor="let watcher of testCase?.watchers">
             <div class="list-item" data-id="1">
               <div class="project-people">
-                <a data-abc="true" href=""><span><img alt="image" class="img-circle"
+                <a data-abc="true" href=""><span><img alt="image" class="img-circle" (error)="img.src = 'assets/images/Default-user.png'" #img
                                                       src="{{watcher.imageLink}}"></span><span><a [routerLink]="['/user',watcher.userId]">{{watcher.name + ' ' + watcher.surname}}</a></span></a>
               </div>
             </div>

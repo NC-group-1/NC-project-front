@@ -43,10 +43,6 @@ import {TestCaseViewComponent} from './components/test-case/test-case-view/test-
 
 const routes: Routes = [
   {
-    path: 'login',
-    component: LoginPageComponent
-  },
-  {
     path: 'password',
     children: [
       {
@@ -58,6 +54,10 @@ const routes: Routes = [
         component: ChangePassComponent
       }
     ]
+  },
+  {
+    path: 'login',
+    component: LoginPageComponent
   },
   {
     path: '', canActivate: [LoginActivateGuard], children: [

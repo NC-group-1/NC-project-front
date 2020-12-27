@@ -31,6 +31,7 @@ export class NavbarComponent implements OnInit {
               private tcService: TestCaseService,
               private nService: NotificationService) {
     this.stompClient = this.webSocketService.connect();
+    console.log(this.router.url);
     auth.authSubscribe().subscribe(value => {
       this.loggedIn = value;
       if (!!value) {
@@ -40,7 +41,7 @@ export class NavbarComponent implements OnInit {
             this.user = user;
           });
         }, 50);
-      } else {
+      } else if (!this.router.url.startsWith('/password/change')){
         this.router.navigate(['login']);
       }
     });
