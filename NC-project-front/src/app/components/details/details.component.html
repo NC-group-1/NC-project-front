@@ -16,7 +16,7 @@
           </p>
           <p><span class="text-secondary text-shadow-gray mr-2">Starter:</span><span
             class="text-shadow-gray"><a [routerLink]="['/user',testCase?.starter?.userId]">
-            {{testCase?.starter?.name + ' ' + testCase?.starter?.surname}}</a></span>
+            {{(testCase?.starter?.name ? testCase?.starter?.name : '') + ' ' + (testCase?.starter?.surname ? testCase?.starter?.surname : '') }}</a></span>
           </p>
         </div>
 
