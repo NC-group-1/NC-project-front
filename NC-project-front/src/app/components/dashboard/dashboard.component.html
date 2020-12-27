@@ -12,15 +12,9 @@
           </th>
           <td *matCellDef="let testCase" mat-cell>
             <p [hidden]="testCase.edit">
-              <a [routerLink]="['/testCase/',testCase.id]" class="stretched-link" style="position: relative;">
+              <a [routerLink]="['/testCase/details/',testCase.id]" class="stretched-link" style="position: relative;">
                 {{testCase.name}}</a>
             </p>
-            <!--        <div [hidden]="!testCase.edit">-->
-            <!--          <div class="input-group w-50">-->
-            <!--            <input #inputName type="text" class="form-control" (change)="updateName(i, inputName.value)"-->
-            <!--            [value]="testCase.name" placeholder="Element name">-->
-            <!--          </div>-->
-            <!--        </div>-->
           </td>
         </ng-container>
         <ng-container matColumnDef="created">

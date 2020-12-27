@@ -28,7 +28,7 @@ export class DashboardComponent implements OnInit {
   pageSize = 5;
   pageIndex = 0;
   userId: any;
-  pageSizeOptions: number[] = [5, 20, 50, 100];
+  pageSizeOptions: number[] = [5, 20];
   dashboardTableForm: FormGroup;
   testCasesPage: PageModel<DetailsTestCaseModel>;
 
@@ -46,6 +46,7 @@ export class DashboardComponent implements OnInit {
       }]
     }
   };
+
   barChartLabels: Label[] = ['Passed', 'Failed'];
   barChartType: ChartType = 'bar';
   barChartPlugins = [];
@@ -93,6 +94,7 @@ export class DashboardComponent implements OnInit {
         this.barChartData = [{
           data: [statistic.passedCount, statistic.failedCount],
           backgroundColor: ['#006600', '#ff5c33'],
+          hoverBackgroundColor: ['#006600', '#ff5c33']
         }];
       });
   }

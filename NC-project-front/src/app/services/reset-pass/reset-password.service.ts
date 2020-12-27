@@ -12,9 +12,9 @@ export class ResetPasswordService {
 
   constructor(private http: HttpClient) { }
   sendCodeOnEmail(email: string): Observable<any>{
-    return this.http.post(apiPath + 'api/recovery-password', email);
+    return this.http.post(apiPath + 'api/ncp/recovery-password', email);
   }
   updatePassword(password: PasswordModel): Observable<any>{
-    return this.http.post(apiPath + 'api/save-password', password);
+    return this.http.post(apiPath + 'api/ncp/save-password', password);
   }
 }
