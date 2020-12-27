@@ -191,7 +191,7 @@
 
 
       <div *ngFor="let progress of tcProgress" class="m-0">
-        <div class="row bg-nc-trans-hover">
+        <div class="row bg-nc-trans-hover" *ngIf="progress.progress < 1.0 && progress.status === 'IN_PROGRESS'">
           <p class="px-3 col-8 py-3 my-0 text-shadow-black break-word">
             {{progress.name}}
           </p>
